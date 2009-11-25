@@ -98,14 +98,6 @@ def make_choices_and_value(tuptup):
     keys = dict([ (x[0],x[1]) for x in tuptup ])
     return make_choices_and_dict(tuptup) + (values, keys)
 
-def to_int(num, default=None):
-    i = default
-    try:
-        i = int(num)
-    except :
-        pass
-    return i
-
 ESCAPEJS_JSON_STRING = (
     (u'<', u'\\u003c'),
     (u'>', u'\\u003e'),
