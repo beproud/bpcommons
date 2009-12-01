@@ -1,6 +1,13 @@
 # vim:fileencoding=utf8
 
-# from commons.js_utils import simplejson を使ってください
+__all__ = (
+    'simplejson',
+    'LazyEncoder',
+    'escapejs_json',
+    'force_js',
+)
+
+# from commons.utils.javascript import simplejson を使ってください
 try:
     import simplejson
 except ImportError:
