@@ -32,11 +32,15 @@ def redirect_to(request, url, permanent=True, **kwargs):
     Copied since redirect_to doesn't work for urls that contain non-ascii 
     keyword arguments.
     """
+    import re
+
     if url is not None:
         klass = permanent and HttpResponsePermanentRedirect or HttpResponseRedirect
         quoted_kwargs = {}
         for k,v in kwargs.iteritems():
             quoted_kwargs[k] = urlquote(v)
-        return klass(urlquote(url % quoted_kwargs))
+
+        # Encoded urls confuses python templating. Properly escape the templates.
+        return klass(urlquote(re.sub(r"%([0-9A-Z]{1,2})", r"%%\1", url) % quoted_kwargs))
     else:
         return HttpResponseGone()
