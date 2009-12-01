@@ -4,6 +4,15 @@ from django.forms.fields import Field,RegexField,CharField,ChoiceField
 from django.utils.translation import ugettext_lazy as _
 from django.forms.util import ErrorList, ValidationError
 
+__all__ = (
+    'EmailField',
+    'PCEmailField',
+    'AlphaNumField',
+    'NumCharField',
+    'LazyChoiceField',
+    'FullWidthCharField',
+)
+
 EMAIL_RE = re.compile(
         r"^[\w\.\-]+" # account
         r'@(?:[A-Z0-9]+(?:-*[A-Z0-9]+)*\.)+[A-Z]{2,6}$' # domain
