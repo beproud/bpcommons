@@ -4,6 +4,10 @@ import re
 from django.http import HttpResponseRedirect, HttpResponsePermanentRedirect, HttpResponseGone
 from django.utils.http import urlquote
 
+__all__ = (
+    'redirect_to',
+)
+
 def redirect_to(request, url, permanent=True, **kwargs):
     """
     A copy of the redirect_to view from django.views.generic.simple
