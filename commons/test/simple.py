@@ -82,10 +82,10 @@ class BaseURLTestCase(type):
             method = 'get'
             username = ''
             password = ''
-            urlparams = None
+            urlparams = {}
 
             # url only
-            if self.is_str(data):
+            if type(data) in (StringType, UnicodeType):
                 url = data
             else:
                 # url
@@ -97,7 +97,7 @@ class BaseURLTestCase(type):
                     options = data[1]
                     # check
                     if 'check' in options:
-                        if self.is_str(options['check']):
+                        if type(options['check']) in (StringType, UnicodeType):
                             check = tuple(options['check'])
                         else:
                             check = options['check']
@@ -113,31 +113,31 @@ class BaseURLTestCase(type):
                     if 'urlparams' in options:
                         urlparams = options['urlparams']
 
-            def _url_test(self):
-                if username:
-                    self.client.login(username=username, password=password)
-                response = getattr(self.client, method)(url, urlparams)
-                for check_options in check:
-                    # check method
-                    if type(_method) in (StringType, UnicodeType):
-                        getattr(self, check_options)(response)
-                    else:
-                        _method = getattr(self, check_options[0])
-                        if len(check_options) > 1:
-                            args = check_options[1]
-                            if len(check_options) > 2:
-                                kwargs = check_options[2]
-                                _method(response, *args, **kwargs)
-                            else:
-                                _method(response, *args)
+            def _outer(url, check, method, username, password, urlparams):
+                def _url_test(self):
+                    if username:
+                        self.assertTrue(self.client.login(username=username, password=password))
+                    response = getattr(self.client, method)(url, urlparams)
+                    for check_options in check:
+                        # check method
+                        if type(check_options) in (StringType, UnicodeType):
+                            getattr(self, check_options)(response)
                         else:
-                            _method(response)
-            dict['test_url_%d' % counter] = _url_test
+                            _method = getattr(self, check_options[0])
+                            if len(check_options) > 1:
+                                args = check_options[1]
+                                if len(check_options) > 2:
+                                    kwargs = check_options[2]
+                                    _method(response, *args, **kwargs)
+                                else:
+                                    _method(response, *args)
+                            else:
+                                _method(response)
+                return _url_test
+
+            dict['test_url_%d' % counter] = _outer(url, check, method, username, password, urlparams)
             counter += 1
         return type.__new__(cls, name, bases, dict)
-
-    def is_str(cls, val):
-        return type(val) in (StringType, UnicodeType)
 
 class URLTestCase(RequestTestCase):
     """
@@ -154,7 +154,5 @@ class URLTestCase(RequestTestCase):
         r'/',
     )
     """
-    # TODO:ログインの対応
-    # TODO:POSTの対応
-    # TODO:パラメータの対応
     url_list = ()
+    __metaclass__ = BaseURLTestCase
