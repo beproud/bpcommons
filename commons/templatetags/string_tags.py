@@ -8,13 +8,11 @@ from django.utils.encoding import force_unicode
 
 register = template.Library()
 
-@register.filter
-@stringfilter
 def abbrev(val, num=20):
-    ret = val
-    if len(val) > num:
-        ret = val[0:num] + "..."
-    return ret
+    from commons.utils.strutils import abbrev
+    return abbrev(val, num)
+abbrev = stringfilter(abbrev)
+register.filter(abbrev)
 
 def cat(value, arg): 
   """ 
