@@ -1,6 +1,11 @@
 # vim:fileencoding=utf8
 from django import template
 
+__all__ = (
+    'data_template_tag',
+    'DataNode',
+)
+
 def data_template_tag(data_func, *args, **kwargs):
     """
     データを取ってくるタグ。
