@@ -1,6 +1,11 @@
 # vim:fileencoding=utf8
 from django.db import models
 
+__all__ = (
+    'BigIntegerField',
+    'PositiveBigIntegerField',
+)
+
 class BigIntegerField(models.IntegerField):
     empty_strings_allowed = False
 

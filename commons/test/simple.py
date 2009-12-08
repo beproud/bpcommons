@@ -1,6 +1,10 @@
 # vim:fileencoding=utf8
 from django.test import TestCase
 
+__all__ = (
+    'URLTestCase',
+)
+
 class BaseURLTestCase(type):
     def __new__(cls, name, bases, dict):
         counter = 0
