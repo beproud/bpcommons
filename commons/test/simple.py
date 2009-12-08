@@ -1,4 +1,5 @@
 # vim:fileencoding=utf8
+from types import StringType, UnicodeType
 from django.test import TestCase
 
 __all__ = (
@@ -6,21 +7,28 @@ __all__ = (
     'URLTestCase',
 )
 
+class InvalidTest(Exception):
+    def __init__(self, msg=''):
+        self.msg = msg
+
+    def __str__(self):
+        return 'InvalidTest: %s' % self.msg
+
 class RequestTestCase(TestCase):
 
     def assertStatus(self, response, status=200):
         self.assertEquals(response.status_code, status)
 
-    def assertStatusOk(self, response):
+    def assertOk(self, response):
         self.assertStatus(response)
 
-    def assertStatusBadRequest(self, response):
+    def assertBadRequest(self, response):
         self.assertStatus(response, 400)
 
-    def assertStatusForbidden(self, response):
+    def assertForbidden(self, response):
         self.assertStatus(response, 403)
 
-    def assertStatusNotFound(self, response):
+    def assertNotFound(self, response):
         self.assertStatus(response, 404)
 
     def assertRedirect(self, response):
@@ -31,7 +39,7 @@ class RequestTestCase(TestCase):
         self.assertStatus(response, 301)
         self._assertLocationHeader(response)
 
-    def _assertLocationHeader(self, response)
+    def _assertLocationHeader(self, response):
         self.assertTrue(response.get("Location") is not None)
 
     def assertNotAllowed(self, response, allow=None):
@@ -67,18 +75,84 @@ class RequestTestCase(TestCase):
 class BaseURLTestCase(type):
     def __new__(cls, name, bases, dict):
         counter = 0
-        for url in dict['url_list']:
+        for data in dict['url_list']:
+            # default
+            url = ''
+            check = ('assertOk',)
+            method = 'get'
+            username = ''
+            password = ''
+            urlparams = None
+
+            # url only
+            if self.is_str(data):
+                url = data
+            else:
+                # url
+                if len(data) < 0:
+                    raise InvalidTest('"%s"' % data)
+                url = data[0]
+                # options
+                if len(data) > 1:
+                    options = data[1]
+                    # check
+                    if 'check' in options:
+                        if self.is_str(options['check']):
+                            check = tuple(options['check'])
+                        else:
+                            check = options['check']
+                    # method
+                    if 'method' in options:
+                        method = options['method']
+                    # login
+                    if 'username' in options:
+                        username = options['username']
+                    if 'password' in options:
+                        password = options['password']
+                    # urlparams
+                    if 'urlparams' in options:
+                        urlparams = options['urlparams']
+
             def _url_test(self):
-                response = self.client.get(url[0])
-                self.assertEquals(response.status_code, url[1],
-                        '%d != %d %s' % (response.status_code, url[1], url[0]))
+                if username:
+                    self.client.login(username=username, password=password)
+                response = getattr(self.client, method)(url, urlparams)
+                for check_options in check:
+                    # check method
+                    if type(_method) in (StringType, UnicodeType):
+                        getattr(self, check_options)(response)
+                    else:
+                        _method = getattr(self, check_options[0])
+                        if len(check_options) > 1:
+                            args = check_options[1]
+                            if len(check_options) > 2:
+                                kwargs = check_options[2]
+                                _method(response, *args, **kwargs)
+                            else:
+                                _method(response, *args)
+                        else:
+                            _method(response)
             dict['test_url_%d' % counter] = _url_test
             counter += 1
         return type.__new__(cls, name, bases, dict)
 
+    def is_str(cls, val):
+        return type(val) in (StringType, UnicodeType)
+
 class URLTestCase(RequestTestCase):
     """
-    URLに対してGETを実行してレスポンスを確認する
+    URLに対してGET/POSTを実行してレスポンスを確認する
+
+    url_list = (
+        ('/foo/bar', {
+            'check': ('assertOk', ('assertJson', [], {})),
+            'method': 'post',
+            'urlparams': {'param1': 'value1',
+            'username': 'user1',
+            'password': 'pass1'}
+        }),
+        r'/',
+    )
     """
     # TODO:ログインの対応
     # TODO:POSTの対応
