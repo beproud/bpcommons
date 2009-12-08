@@ -1,6 +1,7 @@
 # vim:fileencoding=utf-8
 import re
 
+from django.utils.encoding import force_unicode
 from django.utils.html import escape
 from django.conf import settings
 
