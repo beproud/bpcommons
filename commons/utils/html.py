@@ -2,6 +2,7 @@
 
 import re
 
+from django.utils.encoding import force_unicode
 from django.utils.html import escape
 from django.conf import settings
 
@@ -153,3 +154,23 @@ def urlize(text, trim_url_limit=None, nofollow=False, autoescape=False):
         anchor_re_result = anchor_re_res_str % ""
 
     return anchor_re.sub(anchor_re_result, text)
+
+def resolve_entities(value):
+    from htmlentitydefs import name2codepoint
+    def resolve_entity(match):
+        name = match.group(0)[1:-1]
+        if name:
+            if name.startswith('#'):
+                try:
+                    return unichr(int(name[1:]))
+                except ValueError:
+                    return name
+            elif name in name2codepoint:
+                return unichr(name2codepoint[name])
+        return name
+
+    return re.sub(
+        r'&(?:\w+|#\d+);', 
+        resolve_entity,
+        force_unicode(value),
+    )
