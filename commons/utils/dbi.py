@@ -1,4 +1,4 @@
-# vim:fileencoding:utf-8
+# vim:fileencoding=utf-8
 
 def select(connection, sql, params=None, model=None):
     """
