@@ -74,15 +74,18 @@ class RequestTestCase(TestCase):
             self.fail(e.message)
 
 class BaseURLTestCase(type):
-    def __new__(cls, name, bases, dict):
+    def __new__(cls, name, bases, attrs):
         counter = 0
-        for data in dict['url_list']:
+        _username = attrs.get('username')
+        _password = attrs.get('password')
+        for data in attrs['url_list']:
             # default
+            name = ''
             url = ''
             check = ('assertOk',)
             method = 'get'
-            username = ''
-            password = ''
+            username = _username
+            password = _password
             urlparams = {}
 
             # url only
@@ -99,9 +102,12 @@ class BaseURLTestCase(type):
                     # check
                     if 'check' in options:
                         if type(options['check']) in (StringType, UnicodeType):
-                            check = tuple(options['check'])
+                            check = (options['check'], )
                         else:
                             check = options['check']
+                    # name
+                    if 'name' in options:
+                        name = '_%s' % options['name']
                     # method
                     if 'method' in options:
                         method = options['method']
@@ -136,9 +142,9 @@ class BaseURLTestCase(type):
                                 _method(response)
                 return _url_test
 
-            dict['test_url_%d' % counter] = _outer(url, check, method, username, password, urlparams)
+            attrs['test_url_%d%s' % (counter, name)] = _outer(url, check, method, username, password, urlparams)
             counter += 1
-        return type.__new__(cls, name, bases, dict)
+        return type.__new__(cls, name, bases, attrs)
 
 class URLTestCase(RequestTestCase):
     """
@@ -155,5 +161,7 @@ class URLTestCase(RequestTestCase):
         r'/',
     )
     """
+    username = ''
+    password = ''
     url_list = ()
     __metaclass__ = BaseURLTestCase
