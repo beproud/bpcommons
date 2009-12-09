@@ -36,7 +36,7 @@ class EmailField(StripRegexField):
         'invalid': _(u'Eメールアドレスの形式が不正です'),
     }
 
-    def __init__(self, *args, **kwargs):a
+    def __init__(self, *args, **kwargs):
         super(EmailField, self).__init__(RE_EMAIL, *args, **kwargs)
 
 class AlphaNumField(StripRegexField):

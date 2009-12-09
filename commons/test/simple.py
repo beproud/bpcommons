@@ -3,6 +3,7 @@ from types import StringType, UnicodeType
 from django.test import TestCase
 
 __all__ = (
+    'InvalidTest',
     'RequestTestCase',
     'URLTestCase',
 )
