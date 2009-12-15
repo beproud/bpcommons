@@ -1,6 +1,10 @@
 # vim:fileencoding=utf-8
 from django.core.cache import cache
 
+__all__ = (
+    'cache_get',
+)
+
 def cache_get(key, func, timeout=None, too_empty=False):
     """
     キャッシュにあれば使う、なければfuncを実行してキャッシュする

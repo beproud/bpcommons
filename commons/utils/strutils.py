@@ -8,7 +8,8 @@ def trim(s):
     """
     全角・半角も含めてトリミング
     """
-    return RE_TRIM.sub(u'', s)
+    from django.utils.encoding import force_unicode
+    return RE_TRIM.sub(u'', force_unicode(s))
 
 def force_int(num, default=None):
     try:
@@ -21,7 +22,7 @@ def make_random_key(size=128):
     src = [x for x in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"]
     while True:
         diff = size - len(keys)
-        if diff == 0:
+        if diff <= 0:
             break
         keys += "".join(sample(src, (diff < 20 and diff or 20)))
     return keys
