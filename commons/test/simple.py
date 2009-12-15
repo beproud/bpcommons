@@ -1,26 +1,35 @@
 # vim:fileencoding=utf8
+from types import StringType, UnicodeType
 from django.test import TestCase
 
 __all__ = (
+    'InvalidTest',
     'RequestTestCase',
     'URLTestCase',
 )
+
+class InvalidTest(Exception):
+    def __init__(self, msg=''):
+        self.msg = msg
+
+    def __str__(self):
+        return 'InvalidTest: %s' % self.msg
 
 class RequestTestCase(TestCase):
 
     def assertStatus(self, response, status=200):
         self.assertEquals(response.status_code, status)
 
-    def assertStatusOk(self, response):
+    def assertOk(self, response):
         self.assertStatus(response)
 
-    def assertStatusBadRequest(self, response):
+    def assertBadRequest(self, response):
         self.assertStatus(response, 400)
 
-    def assertStatusForbidden(self, response):
+    def assertForbidden(self, response):
         self.assertStatus(response, 403)
 
-    def assertStatusNotFound(self, response):
+    def assertNotFound(self, response):
         self.assertStatus(response, 404)
 
     def assertRedirect(self, response):
@@ -31,7 +40,7 @@ class RequestTestCase(TestCase):
         self.assertStatus(response, 301)
         self._assertLocationHeader(response)
 
-    def _assertLocationHeader(self, response)
+    def _assertLocationHeader(self, response):
         self.assertTrue(response.get("Location") is not None)
 
     def assertNotAllowed(self, response, allow=None):
@@ -65,22 +74,94 @@ class RequestTestCase(TestCase):
             self.fail(e.message)
 
 class BaseURLTestCase(type):
-    def __new__(cls, name, bases, dict):
+    def __new__(cls, name, bases, attrs):
         counter = 0
-        for url in dict['url_list']:
-            def _url_test(self):
-                response = self.client.get(url[0])
-                self.assertEquals(response.status_code, url[1],
-                        '%d != %d %s' % (response.status_code, url[1], url[0]))
-            dict['test_url_%d' % counter] = _url_test
+        _username = attrs.get('username')
+        _password = attrs.get('password')
+        for data in attrs['url_list']:
+            # default
+            name = ''
+            url = ''
+            check = ('assertOk',)
+            method = 'get'
+            username = _username
+            password = _password
+            urlparams = {}
+
+            # url only
+            if type(data) in (StringType, UnicodeType):
+                url = data
+            else:
+                # url
+                if len(data) < 0:
+                    raise InvalidTest('"%s"' % data)
+                url = data[0]
+                # options
+                if len(data) > 1:
+                    options = data[1]
+                    # check
+                    if 'check' in options:
+                        if type(options['check']) in (StringType, UnicodeType):
+                            check = (options['check'], )
+                        else:
+                            check = options['check']
+                    # name
+                    if 'name' in options:
+                        name = '_%s' % options['name']
+                    # method
+                    if 'method' in options:
+                        method = options['method']
+                    # login
+                    if 'username' in options:
+                        username = options['username']
+                    if 'password' in options:
+                        password = options['password']
+                    # urlparams
+                    if 'urlparams' in options:
+                        urlparams = options['urlparams']
+
+            def _outer(url, check, method, username, password, urlparams):
+                def _url_test(self):
+                    if username:
+                        self.assertTrue(self.client.login(username=username, password=password))
+                    response = getattr(self.client, method)(url, urlparams)
+                    for check_options in check:
+                        # check method
+                        if type(check_options) in (StringType, UnicodeType):
+                            getattr(self, check_options)(response)
+                        else:
+                            _method = getattr(self, check_options[0])
+                            if len(check_options) > 1:
+                                args = check_options[1]
+                                if len(check_options) > 2:
+                                    kwargs = check_options[2]
+                                    _method(response, *args, **kwargs)
+                                else:
+                                    _method(response, *args)
+                            else:
+                                _method(response)
+                return _url_test
+
+            attrs['test_url_%d%s' % (counter, name)] = _outer(url, check, method, username, password, urlparams)
             counter += 1
-        return type.__new__(cls, name, bases, dict)
+        return type.__new__(cls, name, bases, attrs)
 
 class URLTestCase(RequestTestCase):
     """
-    URLに対してGETを実行してレスポンスを確認する
+    URLに対してGET/POSTを実行してレスポンスを確認する
+
+    url_list = (
+        ('/foo/bar', {
+            'check': ('assertOk', ('assertJson', [], {})),
+            'method': 'post',
+            'urlparams': {'param1': 'value1',
+            'username': 'user1',
+            'password': 'pass1'}
+        }),
+        r'/',
+    )
     """
-    # TODO:ログインの対応
-    # TODO:POSTの対応
-    # TODO:パラメータの対応
+    username = ''
+    password = ''
     url_list = ()
+    __metaclass__ = BaseURLTestCase
