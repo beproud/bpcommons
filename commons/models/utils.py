@@ -2,6 +2,7 @@
 
 __all__ = (
     'compare_obj',
+    'copy_obj',
 )
 
 def compare_obj(base_obj, new_obj, check_primary_key=False, check_related=False):
@@ -20,3 +21,15 @@ def compare_obj(base_obj, new_obj, check_primary_key=False, check_related=False)
         if v1 != v2:
             diff_dict[field] = (v1, v2)
     return diff_dict
+
+def copy_obj(from_obj, to_obj, check_primary_key=False, check_related=False):
+    """
+    モデルインスタンスのフィールドの内容をコピーする
+    """
+    for field in from_obj._meta.fields:
+        if field.primary_key and not check_primary_key:
+            continue
+        if field.rel and not check_primary_key:
+            continue
+        v = getattr(from_obj, field.name)
+        setattr(to_obj, field.name, v)
