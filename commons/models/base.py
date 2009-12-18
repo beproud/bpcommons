@@ -1,5 +1,6 @@
 # vim:fileencoding=utf8
 from django.db import models
+from datetime import datetime
 
 __all__ = (
     'BaseManager',
