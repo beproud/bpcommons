@@ -13,5 +13,5 @@ class JsonResponse(HttpResponse):
     """
     HttpResponse descendant, which return response with ``application/json`` mimetype.
     """
-    def __init__(self, data={}, status=200 content_type='application/json'):
+    def __init__(self, data={}, status=200, content_type='application/json'):
         super(JsonResponse, self).__init__(simplejson.dumps(obj, cls=DjangoJSONEncoder), content_type=content_type)
