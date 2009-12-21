@@ -24,7 +24,7 @@ def compare_obj(base_obj, new_obj, check_primary_key=False, check_related=False,
             diff_dict[field] = (v1, v2)
     return diff_dict
 
-def copy_obj(from_obj, to_obj, check_primary_key=False, check_related=False, exclude=[]):
+def copy_obj(from_obj, to_obj, check_primary_key=False, check_related=False, exclude=[], copy_related_id=False):
     """
     モデルインスタンスのフィールドの内容をコピーする
     """
@@ -35,5 +35,9 @@ def copy_obj(from_obj, to_obj, check_primary_key=False, check_related=False, exc
             continue
         if field.name in exclude:
             continue
-        v = getattr(from_obj, field.name)
-        setattr(to_obj, field.name, v)
+        if field.rel and copy_related_id:
+            v = getattr(from_obj, field.name + '_id')
+            setattr(to_obj, field.name + '_id', v)
+        else:
+            v = getattr(from_obj, field.name)
+            setattr(to_obj, field.name, v)
