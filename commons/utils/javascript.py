@@ -1,8 +1,12 @@
 # vim:fileencoding=utf-8
 
+from django.core.serializers.json import DjangoJSONEncoder as BaseJSONEncoder
+
+from django.utils.encoding import force_unicode
+
 __all__ = (
     'simplejson',
-    'LazyEncoder',
+    'DjangoJSONEncoder',
     'escapejs_json',
     'force_js',
 )
@@ -29,12 +33,18 @@ JS_CONVERT_TYPES = {
     'array': list,
 }
 
-class LazyEncoder(simplejson.JSONEncoder):
+class DjangoJSONEncoder(BaseJSONEncoder):
     def default(self, obj):
-        from django.utils.functional import Promise
-        if isinstance(obj, Promise):
-            return force_unicode(obj)
-        return obj
+        try:
+            #datetime対応
+            return super(DjangoJSONEncoder, self).default(obj)
+        except TypeError:
+            # lazy翻訳オブジェクトなどの対応
+            from django.utils.functional import Promise
+            if isinstance(obj, Promise):
+                return force_unicode(obj)
+            else:
+                raise
 
 def escapejs_json(s):
     """
@@ -52,4 +62,4 @@ def force_js(value, typename=None, encoder=None):
         typename = typename.lower()
         if typename in JS_CONVERT_TYPES:
             value = JS_CONVERT_TYPES[typename](value)
-    return simplejson.dumps(value, cls=(encoder or LazyEncoder))
+    return simplejson.dumps(value, cls=(encoder or DjangoJSONEncoder))
