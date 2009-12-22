@@ -5,7 +5,7 @@ __all__ = (
     'copy_obj',
 )
 
-def compare_obj(base_obj, new_obj, check_primary_key=False, check_related=False, exclude=[]):
+def compare_obj(base_obj, new_obj, check_primary_key=False, check_related=False, exclude=[], check_related_id=False, display=False):
     """
     モデルインスタンスの比較を行う
     差分を辞書で返す
@@ -18,10 +18,20 @@ def compare_obj(base_obj, new_obj, check_primary_key=False, check_related=False,
             continue
         if field.name in exclude:
             continue
-        v1 = getattr(base_obj, field.name)
-        v2 = getattr(new_obj, field.name)
+        if field.rel and check_related_id:
+            v1 = getattr(base_obj, field.name + '_id')
+            v2 = getattr(new_obj, field.name + '_id')
+        else:
+            v1 = getattr(base_obj, field.name)
+            v2 = getattr(new_obj, field.name)
         if v1 != v2:
-            diff_dict[field] = (v1, v2)
+            if field.choices and display:
+                diff_dict[field] = (
+                    getattr(base_obj, 'get_%s_display' % field.name)(),
+                    getattr(new_obj, 'get_%s_display' % field.name)()
+                )
+            else:
+                diff_dict[field] = (v1, v2)
     return diff_dict
 
 def copy_obj(from_obj, to_obj, check_primary_key=False, check_related=False, exclude=[], copy_related_id=False):
