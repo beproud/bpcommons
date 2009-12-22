@@ -2,7 +2,8 @@
 
 from django.http import HttpResponse
 
-from commons.utils.javascript import simplejson, DjangoJSONEncoder
+from commons.utils.javascript import DjangoJSONEncoder
+from django.utils import simplejson
 
 __all__ = (
     'JsonResponse',

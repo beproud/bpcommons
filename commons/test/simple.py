@@ -60,6 +60,7 @@ class RequestTestCase(TestCase):
         self.assertContains(response, "</body>")
 
     def assertJson(self, response):
+        from django.utils import simplejson
         try:
             return simplejson.loads(response.content)
         except ValueError,e:

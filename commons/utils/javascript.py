@@ -5,20 +5,12 @@ from django.core.serializers.json import DjangoJSONEncoder as BaseJSONEncoder
 from django.utils.encoding import force_unicode
 
 __all__ = (
-    'simplejson',
     'DjangoJSONEncoder',
     'escapejs_json',
     'force_js',
 )
 
-# from commons.utils.javascript import simplejson を使ってください
-try:
-    import simplejson
-except ImportError:
-    try:
-        import json as simplejson
-    except ImportError:
-        from django.utils import simplejson
+from django.utils import simplejson
 
 ESCAPEJS_JSON_STRING = (
     (u'<', u'\\u003c'),
