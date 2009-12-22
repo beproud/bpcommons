@@ -1,8 +1,8 @@
 # vim:fileencoding=utf-8
 
 from django.core.serializers.json import DjangoJSONEncoder as BaseJSONEncoder
-
 from django.utils.encoding import force_unicode
+from django.utils import simplejson
 
 __all__ = (
     'DjangoJSONEncoder',
@@ -10,7 +10,6 @@ __all__ = (
     'force_js',
 )
 
-from django.utils import simplejson
 
 ESCAPEJS_JSON_STRING = (
     (u'<', u'\\u003c'),
