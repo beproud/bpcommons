@@ -24,6 +24,9 @@ class Bag(object):
         setattr(self, key, value)
         self.__remember(key)
 
+    def __delitem__(self, key):
+        self.__delattr__(key)
+
     def has_key(self, key):
         return hasattr(self, key)
 
