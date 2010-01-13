@@ -11,6 +11,8 @@ __all__ = (
     'AlphaNumField',
     'NumCharField',
     'FullWidthCharField',
+    'HiraganaCharField',
+    'JsonField',
 )
 
 RE_EMAIL = re.compile(
