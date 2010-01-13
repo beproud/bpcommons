@@ -21,6 +21,7 @@ RE_EMAIL = re.compile(
 RE_ALPHA_NUM = re.compile(ur'^[a-zA-Z0-9\-_]*$')
 RE_NUM = re.compile(ur'^[0-9]*$')
 RE_FULL_WIDTH = re.compile(ur'[一-龠]+|[ぁ-ん]+|[ァ-ヴ]+|[０-９]+')
+RE_HIRAGANA = re.compile(ur'^[ぁ-ゞー〜～＆ 　、・]*$')
 
 class StripRegexField(RegexField):
     """
@@ -71,3 +72,13 @@ class FullWidthCharField(StripRegexField):
 
     def __init__(self, *args, **kwargs):
         super(FullWidthCharField, self).__init__(RE_FULL_WIDTH, *args, **kwargs)
+
+class HiraganaCharField(StripRegexField):
+    u"""
+    全角ひらがなのみ許容するフィールド
+    """
+    default_error_messages = {
+        'invalid': _(u'ひらがなで入力してください'),
+    }
+    def __init__(self, *args, **kwargs):
+        super(HiraganaCharField, self).__init__(RE_HIRAGANA, *args, **kwargs)
