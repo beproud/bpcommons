@@ -14,3 +14,4 @@ def cache_get(key, func, timeout=None, too_empty=False):
     if (not val) if too_empty else (val is None):
         val = func()
         cache.set(key, val, timeout)
+    return val
