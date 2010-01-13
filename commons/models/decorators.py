@@ -1,4 +1,5 @@
 # vim:fileencoding=utf8
+from django.db.models import signals as signalmodule
 
 __all__ = (
     'signals',
