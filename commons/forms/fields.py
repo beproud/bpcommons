@@ -2,7 +2,7 @@
 import re
 from types import StringType, UnicodeType
 
-from django.forms import RegexField, ValidationError
+from django.forms import CharField, RegexField, ValidationError
 from django.utils.translation import ugettext_lazy as _
 
 __all__ = (
@@ -82,3 +82,18 @@ class HiraganaCharField(StripRegexField):
     }
     def __init__(self, *args, **kwargs):
         super(HiraganaCharField, self).__init__(RE_HIRAGANA, *args, **kwargs)
+
+class JsonField(CharField):
+    u""" JSONデータをポストする場合のフィールド。AJAXに便利かも """
+    
+    def __init__(self, *args, **kwargs):
+        super(JsonField, self).__init__(*args, **kwargs)
+
+    def clean(self, value):
+        from django.utils import simplejson
+        value = super(JsonField, self).clean(value)
+        try:
+            json_data = simplejson.loads(value)
+        except Exception, e:
+            raise ValidationError(self.error_messages['invalid'])
+        return json_data
