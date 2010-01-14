@@ -16,13 +16,13 @@ stripentities.is_safe = True
 stripentities = stringfilter(stripentities)
 register.filter(stripentities)
 
-def resolve_entities(value):
-    """Resolves HTML entities to unicode values"""
-    from commons.utils.html import resolve_entities
-    return resolve_entities(value)
-stripentities.is_safe = True
-stripentities = stringfilter(resolve_entities)
-register.filter(resolve_entities)
+#def resolve_entities(value):
+#    """Resolves HTML entities to unicode values"""
+#    from commons.utils.html import resolve_entities
+#    return resolve_entities(value)
+#stripentities.is_safe = True
+#stripentities = stringfilter(resolve_entities)
+#register.filter(resolve_entities)
 
 url_re = re.compile(r'(http(s)?:\/\/[A-Za-z0-9%&=~?+-_/.#]+)')
 @register.filter
