@@ -9,7 +9,7 @@ __all__ = (
 
 class BaseManager(models.Manager):
     def get_query_set(self):
-        return self.filter(del_flg=True)
+        return super(BaseManager, self).get_query_set().filter(del_flg=True)
 
     def recently_updated(self):
         return self.order_by('-utime')
