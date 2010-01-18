@@ -9,7 +9,7 @@ __all__ = (
 
 class BaseManager(models.Manager):
     def get_query_set(self):
-        return super(BaseManager, self).get_query_set().filter(del_flg=True)
+        return super(BaseManager, self).get_query_set().filter(pub_flg=True)
 
     def recently_updated(self):
         return self.order_by('-utime')
@@ -27,15 +27,19 @@ class BaseModel(models.Model):
 
     MyModel.published.filter(myfield=True)
     """
-    del_flg = models.BooleanField(u'公開フラグ', default=True, db_index=True)
+    pub_flg = models.BooleanField(u'公開フラグ', default=True, db_index=True)
     ctime = models.DateTimeField(u'作成日時', default=datetime.now, db_index=True)
     utime = models.DateTimeField(u'更新日時', auto_now=True, db_index=True) 
 
     objects = models.Manager()
     published = BaseManager()
 
-    def remove():
-        self.del_flg = False
+    def remove(self):
+        self.pub_flg = False
+        self.save()
+
+    def publish(self):
+        self.pub_flg = True 
         self.save()
 
     class Meta:
