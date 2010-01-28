@@ -1,11 +1,11 @@
 # vim:fileencoding=utf-8
 
-from django.http import HttpResponse
-
-from commons.utils.javascript import DjangoJSONEncoder
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect
+from django.core.urlresolvers import reverse
 from django.utils import simplejson
 from django.utils.encoding import iri_to_uri
 
+from commons.utils.javascript import DjangoJSONEncoder
 __all__ = (
     'JsonResponse',
 )
@@ -39,3 +39,11 @@ class HttpResponseReload(HttpResponse):
         HttpResponse.__init__(self)
         referer = request.META.get('HTTP_REFERER')
         self['Location'] = iri_to_uri(referer or "/")
+
+class HttpResponseNamedRedirect(HttpResponseRedirect):
+    def __init__(self, lookup_view, *args, **kwargs):
+        super(HttpResponseNamedRedirect, self).__init__(reverse(lookup_view, *args, **kwargs))
+
+class HttpResponseNamedPermanentRedirect(HttpResponsePermanentRedirect):
+    def __init__(self, lookup_view, *args, **kwargs):
+        super(HttpResponseNamedPermanentRedirect, self).__init__(reverse(lookup_view, *args, **kwargs))
