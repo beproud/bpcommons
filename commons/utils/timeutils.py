@@ -1,7 +1,6 @@
 # vim:fileencoding=utf-8
 import time
 import calendar
-import rfc822
 from datetime import datetime, timedelta
 
 SEC_1_MINUTES = 60
@@ -13,11 +12,11 @@ __all__ = (
     'times_left',
 )
 
-def utc_to_local(utc_date_str):
+def utc_to_local(utc_datetime):
     """
-    rfc822 UTC date string => local datetime obj
+    UTC datetime obj => local datetime obj
     """
-    return datetime(*time.localtime(calendar.timegm(rfc822.parsedate(utc_date_str)))[:6])
+    return datetime(*time.localtime(calendar.timegm(utc_date.timetuple()))[:6])
 
 def relative_time(d, basetime=None, shortname=False, delta=None):
     """
