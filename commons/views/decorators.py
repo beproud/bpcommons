@@ -76,7 +76,7 @@ def ajax_request(func):
     @wraps(func)
     def wrapper(request, *args, **kwargs):
         response = func(request, *args, **kwargs)
-        if isinstance(response, dict):
+        if isinstance(response, (dict, list, tuple)):
             return JsonResponse(response)
         else:
             return response
