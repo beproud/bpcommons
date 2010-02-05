@@ -3,7 +3,7 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
-from commons.http import JSONResponse
+from commons.http import JsonResponse
 
 def render_to(template=None):
     """
