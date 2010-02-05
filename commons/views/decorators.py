@@ -1,5 +1,7 @@
 #:coding=utf8:
 
+from functools import wraps
+
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
