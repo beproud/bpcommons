@@ -9,4 +9,7 @@ syntax: glob
 *.swp
 
 syntax: regexp
-.*\#.*\#$ 
+.*\#.*\#$
+^bpcommons.egg-info/
+^build/
+^dist/

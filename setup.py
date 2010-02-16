@@ -20,4 +20,5 @@ setup (
       'Topic :: Software Development :: Libraries :: Python Modules',
     ],
     packages=["commons"],
+    test_suite='tests.main',
 )
