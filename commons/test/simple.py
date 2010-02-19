@@ -32,16 +32,19 @@ class RequestTestCase(TestCase):
     def assertNotFound(self, response):
         self.assertStatus(response, 404)
 
-    def assertRedirect(self, response):
+    def assertRedirect(self, response, redirect_url=None):
         self.assertStatus(response, 302)
-        self._assertLocationHeader(response)
+        self._assertLocationHeader(response, redirect_url)
 
-    def assertPermanentRedirect(self, response):
+    def assertPermanentRedirect(self, response, redirect_url=None):
         self.assertStatus(response, 301)
-        self._assertLocationHeader(response)
+        self._assertLocationHeader(response, redirect_url)
 
-    def _assertLocationHeader(self, response):
-        self.assertTrue(response.get("Location") is not None)
+    def _assertLocationHeader(self, response, redirect_url=None):
+        if request_url is None: 
+            self.assertTrue(response.get("Location", None) is not None)
+        else:
+            self.assertEquals(response.get("Location", None), redirect_url)
 
     def assertNotAllowed(self, response, allow=None):
         self.assertEquals(response.status_code, 405)
