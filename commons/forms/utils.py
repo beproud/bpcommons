@@ -60,6 +60,9 @@ class Choices(object):
     def __getitem__(self, prop):
         return self.code(prop)
 
+    def __contains__(self, prop):
+        return prop in self.reverse_map 
+
     def code(self, prop):
         """
         Return the code version of the verbose name.
