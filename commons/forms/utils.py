@@ -14,9 +14,9 @@ class Choices(object):
     Easy declarative "choices" tool::
     
         >>> STATUSES = Choices(
-        ...     ('live', 'Live'),
-        ...     ('draft', 'Draft'),
-        ...     ('hidden', 'Not Live'),
+        ...     (1, 'live', 'Live'),
+        ...     (2, 'draft', 'Draft'),
+        ...     (3, 'hidden', 'Not Live'),
         ... )
         
         # Acts like a choices list:
@@ -39,17 +39,13 @@ class Choices(object):
         
     """
     def __init__(self, *args, **kwargs):
-        start = kwargs.pop("start", 1)
-
         self.code_map = SortedDict()
         self.prop_map = SortedDict() 
         self.reverse_map = {}
-        for code, (prop, verbose) in enumerate(args):
-            # Enumerate starts from 0, but for convention's sake we'd prefer to
-            # start choices from 1.
-            self.code_map[code+start] = verbose
-            self.prop_map[code+start] = prop
-            self.reverse_map[prop] = code+start
+        for code, prop, verbose in args:
+            self.code_map[code] = verbose
+            self.prop_map[code] = prop
+            self.reverse_map[prop] = code
             
     def __iter__(self):
         return self.code_map.iteritems()
