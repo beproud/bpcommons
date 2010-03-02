@@ -2,6 +2,7 @@ import os
 import sys
 import unittest
 import doctest
+import django
 
 def main():
     """
@@ -23,7 +24,11 @@ def main():
     from django.test.utils import get_runner
     test_runner = get_runner(global_settings)
 
-    failures = test_runner(['commons'], verbosity=1)
+    if django.VERSION > (1,2):
+        test_runner = test_runner()
+        failures = test_runner.run_tests(['commons'])
+    else:
+        failures = test_runner(['commons'], verbosity=1)
     sys.exit(failures)
 
 if __name__ == '__main__':
