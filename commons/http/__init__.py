@@ -7,15 +7,18 @@ from django.utils.encoding import iri_to_uri
 
 from commons.utils.javascript import DjangoJSONEncoder
 __all__ = (
-    'JsonResponse',
+    'JSONResponse',
+    'HttpResponseReload',
+    'HttpResponseNamedRedirect',
+    'HttpResponseNamedPermanentRedirect',
 )
 
-class JsonResponse(HttpResponse):
+class JSONResponse(HttpResponse):
     """
     HttpResponse descendant, which return response with ``application/json`` mimetype.
     """
     def __init__(self, data={}, status=200, content_type='application/json'):
-        super(JsonResponse, self).__init__(simplejson.dumps(data, cls=DjangoJSONEncoder), content_type=content_type)
+        super(JSONResponse, self).__init__(simplejson.dumps(data, cls=DjangoJSONEncoder), content_type=content_type)
 
 class HttpResponseReload(HttpResponse):
     """
