@@ -27,3 +27,4 @@ def select(connection, sql, params=None, model=None):
         for key, value in item.iteritems():
             setattr(instance, key, value)
         obj_results.append(instance)
+    return obj_results
