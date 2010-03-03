@@ -25,7 +25,7 @@ except ImportError:
     from django.utils.translation import ugettext_lazy as _
     from django.conf import settings
 
-    class BigIntegerField(IntegerField):
+    class BigIntegerField(models.IntegerField):
         empty_strings_allowed = False
         description = _("Big (8 byte) integer")
         MAX_BIGINT = 9223372036854775807
