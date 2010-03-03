@@ -5,7 +5,7 @@ from functools import wraps
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
-from commons.http import JsonResponse
+from commons.http import JSONResponse
 
 def render_to(template=None):
     """
@@ -63,7 +63,7 @@ def render_to(template=None):
 
 def ajax_request(func):
     """
-    If view returned serializable dict, returns JsonResponse with this dict as content.
+    If view returned serializable dict, returns JSONResponse with this dict as content.
 
     example:
         
@@ -79,7 +79,7 @@ def ajax_request(func):
     def wrapper(request, *args, **kwargs):
         response = func(request, *args, **kwargs)
         if isinstance(response, (dict, list, tuple)):
-            return JsonResponse(response)
+            return JSONResponse(response)
         else:
             return response
     return wrapper
