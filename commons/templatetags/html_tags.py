@@ -34,5 +34,5 @@ def to_anchor(text):
 
 @register.filter
 def force_js(value, type=None):
-    from commons.utils.javascript import force_js
+    from bputils.javascript import force_js
     return mark_safe(force_js(value, type))
