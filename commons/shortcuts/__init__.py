@@ -1,6 +1,6 @@
 # vim:fileencoding=utf-8
 
-from commons.http import JsonResponse
+from commons.http import JSONResponse
 
 __all__ = (
         'get_object_or_None',
@@ -21,6 +21,7 @@ def get_object_or_None(klass, *args, **kwargs):
     Note: Like with get(), an MultipleObjectsReturned will be raised if more than one
     object is found.
     """
+    from django.shortcuts import _get_queryset
     queryset = _get_queryset(klass)
     try:
         return queryset.get(*args, **kwargs)
@@ -31,7 +32,7 @@ def make_simple_response(msg=u'処理が成功しました', extra_context=None,
     obj = {'msg': msg}
     if extra_context:
         obj.update(extra_context)
-    return JsonResponse(obj, status=status, content_type=content_type)
+    return JSONResponse(obj, status=status, content_type=content_type)
 
 def make_simple_response400(msg=u'パラメータが不正です'):
     return make_simple_response(msg, status=400)
