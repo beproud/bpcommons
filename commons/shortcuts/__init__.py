@@ -21,6 +21,7 @@ def get_object_or_None(klass, *args, **kwargs):
     Note: Like with get(), an MultipleObjectsReturned will be raised if more than one
     object is found.
     """
+    from django.shortcuts import _get_queryset
     queryset = _get_queryset(klass)
     try:
         return queryset.get(*args, **kwargs)
