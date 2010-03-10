@@ -86,6 +86,7 @@ class BaseURLTestCase(type):
             # default
             name = ''
             url = ''
+            headers = {}
             check = ('assertOk',)
             method = 'get'
             username = _username
@@ -112,6 +113,8 @@ class BaseURLTestCase(type):
                     # name
                     if 'name' in options:
                         name = '_%s' % options['name']
+                    if 'headers' in options:
+                        headers = options['headers']
                     # method
                     if 'method' in options:
                         method = options['method']
@@ -124,11 +127,11 @@ class BaseURLTestCase(type):
                     if 'urlparams' in options:
                         urlparams = options['urlparams']
 
-            def _outer(url, check, method, username, password, urlparams):
+            def _outer(url, check, method, headers, username, password, urlparams):
                 def _url_test(self):
                     if username:
                         self.assertTrue(self.client.login(username=username, password=password))
-                    response = getattr(self.client, method)(url, urlparams)
+                    response = getattr(self.client, method)(url, urlparams, **headers)
                     for check_options in check:
                         # check method
                         if type(check_options) in (StringType, UnicodeType):
@@ -146,7 +149,7 @@ class BaseURLTestCase(type):
                                 _method(response)
                 return _url_test
 
-            attrs['test_url_%d%s' % (counter, name)] = _outer(url, check, method, username, password, urlparams)
+            attrs['test_url_%d%s' % (counter, name)] = _outer(url, check, method, headers, username, password, urlparams)
             counter += 1
         return type.__new__(cls, name, bases, attrs)
 
