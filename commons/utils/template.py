@@ -46,7 +46,7 @@ def data_template_tag(data_func, *args, **kwargs):
                 args.append(bit)
                  
         if not name:
-            raise TemplateSyntaxError("%r expected format is '%s *args as <name>'" %
+            raise template.TemplateSyntaxError("%r expected format is '%s *args as <name>'" %
                                       (bits[0], bits[0]))
         return DataNode(data_func, args, name)
 
