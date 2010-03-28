@@ -11,6 +11,10 @@ from commons.views.decorators import *
 def myview(request):
     return {"my_value": "MY VALUE"}
 
+@render_to("view_tests/render_to.html")
+def myview2(request):
+    return HttpResponse("Error!") 
+
 class RenderToTestCase(DjangoTestCase):
     def setUp(self):
         self.template_dirs = settings.TEMPLATE_DIRS
@@ -22,6 +26,11 @@ class RenderToTestCase(DjangoTestCase):
         settings.TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), 'templates'),)
         resp = myview(HttpRequest())
         self.assertEquals(resp.content, '<html><body>MY VALUE</body></html>\n')
+
+    def test_render_to_httpresponse(self):
+        settings.TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), 'templates'),)
+        resp = myview2(HttpRequest())
+        self.assertEquals(resp.content, 'Error!')
 
 @ajax_request
 def my_ajax_view(request):
