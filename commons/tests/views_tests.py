@@ -1,7 +1,7 @@
 #:coding=utf-8:
 import os
 
-from django.http import HttpRequest
+from django.http import HttpRequest, HttpResponse
 from django.test import TestCase as DjangoTestCase
 from django.conf import settings
 
@@ -27,7 +27,17 @@ class RenderToTestCase(DjangoTestCase):
 def my_ajax_view(request):
     return {'my_value': 'MY VALUE'}
 
+@ajax_request
+def my_ajax_view2(request):
+    return HttpResponse("Error!") 
+
 class AjaxResponseTestCase(DjangoTestCase):
     def test_ajax_view(self):
         resp = my_ajax_view(HttpRequest())
+        self.assertEquals(resp["content-type"], 'application/json')
         self.assertEquals(resp.content, '{"my_value": "MY VALUE"}')
+
+    def test_ajax_view_httpresponse(self):
+        resp = my_ajax_view2(HttpRequest())
+        self.assertEquals(resp["content-type"], 'text/html; charset=utf-8')
+        self.assertEquals(resp.content, 'Error!')
