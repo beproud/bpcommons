@@ -9,7 +9,7 @@ from django.utils.encoding import force_unicode
 register = template.Library()
 
 def abbrev(val, num=20):
-    from commons.utils.strutils import abbrev
+    from bputils.strutils import abbrev
     return abbrev(val, num)
 abbrev = stringfilter(abbrev)
 register.filter(abbrev)
