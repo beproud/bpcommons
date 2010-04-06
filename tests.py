@@ -20,6 +20,7 @@ def main():
     )
     global_settings.DATABASE_ENGINE = "sqlite3"
     global_settings.DATABASE_NAME = ":memory:"
+    global_settings.ROOT_URLCONF = 'commons.tests.urls'
 
     from django.test.utils import get_runner
     test_runner = get_runner(global_settings)

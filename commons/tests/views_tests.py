@@ -6,6 +6,29 @@ from django.test import TestCase as DjangoTestCase
 from django.conf import settings
 
 from commons.views.decorators import * 
+from commons.views import Views
+
+class TestViews(Views):
+    def test(self, request):
+        return HttpResponse("OK")
+
+    def get_urls(self):
+        from django.conf.urls.defaults import url,patterns
+        urls = super(TestViews, self).get_urls()
+        my_urls = patterns('',
+            url(
+                r'^test$',
+                self.test,
+                name='testview_test',
+            ),
+        )
+        return my_urls + urls
+
+class ClassesTestCase(DjangoTestCase):
+    def test_simple(self):
+        response = self.client.get("/test")
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.content, "OK")
 
 @render_to("view_tests/render_to.html")
 def myview(request):
