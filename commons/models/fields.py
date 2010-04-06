@@ -6,8 +6,12 @@ try:
 except ImportError:
 	import pickle
 
+from django import VERSION as DJANGO_VERSION
+from django.utils.translation import ugettext_lazy as _
+from django.db import connection
 from django.utils import simplejson
 from django.db import models
+from django.conf import settings
 
 from commons.forms import JSONField as JSONFormField 
 from commons.utils.javascript import DjangoJSONEncoder
@@ -15,6 +19,8 @@ from commons.utils.javascript import DjangoJSONEncoder
 __all__ = (
     'BigIntegerField',
     'PositiveBigIntegerField',
+    'BigAutoField',
+    'BigForeignKey',
     'PickledObjectField',
     'JSONField',
 )
@@ -23,7 +29,6 @@ try:
     from django.db.models import BigIntegerField
 except ImportError:
     from django.utils.translation import ugettext_lazy as _
-    from django.conf import settings
 
     class BigIntegerField(models.IntegerField):
         empty_strings_allowed = False
@@ -49,6 +54,96 @@ class PositiveBigIntegerField(BigIntegerField):
         defaults = {'min_value': 0}
         defaults.update(kwargs)
         return super(PositiveBigIntegerField, self).formfield(**defaults)
+
+if DJANGO_VERSION > (1,2):
+    class BigAutoField(models.AutoField):
+        description = _("Big (8 byte) integer")
+     
+        CREATION_DATA = {
+            'django.db.backends.mysql': "bigint AUTO_INCREMENT",
+            'django.db.backends.oracle': "NUMBER(19)",
+            'django.db.backends.postgres': "bigserial",
+            'django.db.backends.postgres_psycopg2': "bigserial",
+            'django.db.backends.sqlite3': "integer", # Not a bigint!!!
+        }
+
+        def db_type(self, connection):
+            try:
+                return self.CREATION_DATA[connection.settings_dict["ENGINE"]]
+            except KeyError:
+                raise NotImplemented
+
+        def get_prep_value(self, value):
+            if value is None:
+                return None
+            return long(value)
+        
+        def to_python(self, value):
+            if value is None:
+                return value
+            try:
+                return long(value)
+            except (TypeError, ValueError):
+                raise exceptions.ValidationError(self.error_messages['invalid'])
+
+    class BigForeignKey(models.ForeignKey):
+        
+        def db_type(self, connection):
+            # The database column type of a ForeignKey is the column type
+            # of the field to which it points. An exception is if the ForeignKey
+            # points to an AutoField/PositiveIntegerField/PositiveSmallIntegerField,
+            # in which case the column type is simply that of an IntegerField.
+            # If the database needs similar types for key fields however, the only
+            # thing we can do is making AutoField an IntegerField.
+            rel_field = self.rel.get_related_field()
+            if (isinstance(rel_field, BigAutoField) or
+                    (not connection.features.related_fields_match_type and
+                    isinstance(rel_field, (BigIntegerField, PositiveBigIntegerField)))):
+                return BigIntegerField().db_type(connection=connection)
+            return rel_field.db_type(connection=connection)
+else:
+    """
+    For Django 1.1
+    """
+    class BigAutoField(models.AutoField):
+        
+        def db_type(self):
+            if settings.DATABASE_ENGINE == 'mysql':
+                return "bigint AUTO_INCREMENT"
+            elif settings.DATABASE_ENGINE == 'oracle':
+                return "NUMBER(19)"
+            elif settings.DATABASE_ENGINE[:8] == 'postgres':
+                return "bigserial"
+            elif settings.DATABASE_ENGINE[:6] == 'sqlite':
+                return "integer", # Not a bigint!!!
+            else:
+                raise NotImplemented
+        
+        def get_internal_type(self):
+            return "BigAutoField"
+        
+        def to_python(self, value):
+            if value is None:
+                return value
+            try:
+                return long(value)
+            except (TypeError, ValueError):
+                raise exceptions.ValidationError(
+                    _("This value must be a long integer."))
+
+    class BigForeignKey(models.ForeignKey):
+        
+        def db_type(self):
+            rel_field = self.rel.get_related_field()
+            # next lines are the "bad tooth" in the original code:
+            if (isinstance(rel_field, BigAutoField) or
+                    (not connection.features.related_fields_match_type and
+                    isinstance(rel_field, BigIntegerField))):
+                # because it continues here in the django code:
+                # return IntegerField().db_type()
+                # thereby fixing any AutoField as IntegerField
+                return BigIntegerField().db_type()
+            return rel_field.db_type()
 
 class PickledObjectField(models.TextField):
     __metaclass__ = models.SubfieldBase
