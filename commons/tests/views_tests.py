@@ -73,3 +73,13 @@ class AjaxResponseTestCase(DjangoTestCase):
         resp = my_ajax_view2(HttpRequest())
         self.assertEquals(resp["content-type"], 'text/html; charset=utf-8')
         self.assertEquals(resp.content, 'Error!')
+
+def my_json_view(request):
+    return JSONResponse({"msg":"テスト"}, status=400)
+
+class JSONResponseTestCase(DjangoTestCase):
+    def test_json_view(self):
+        resp = my_json_view(HttpRequest())
+        self.assertEquals(resp["content-type"], 'application/json')
+        self.assertEquals(resp.content, r'{"msg": "\u30c6\u30b9\u30c8"}')
+        self.assertEquals(resp.status_code, 400)
