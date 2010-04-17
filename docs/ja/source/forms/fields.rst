@@ -15,3 +15,12 @@
 
         class MyForm(forms.Form):
             name = StripRegexField('^Monty', label=u'名前', error_message=u'名前はMontyから始まらないといけません。')
+
+.. class:: commons.forms.fields.AlphaNumField
+
+    半角英数字と"_","-"のみ許容するフィールド::
+
+        from django import forms
+
+        class MyForm(forms.Form):
+            username = AlphaNumField(label=u'ユーザ名')
