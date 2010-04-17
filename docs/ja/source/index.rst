@@ -15,6 +15,7 @@ https://project.beproud.jp/hg/bpcommons/
   :maxdepth: 1
 
   forms/decorators
+  forms/fields
   forms/utils 
 
 Indices and tables
