@@ -11,5 +11,6 @@ syntax: glob
 syntax: regexp
 .*\#.*\#$
 ^bpcommons.egg-info/
+^docs/[^/]+/build/
 ^build/
 ^dist/
