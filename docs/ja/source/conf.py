@@ -11,10 +11,11 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import sys, os
+import sys
+from os.path import abspath, dirname
 
-sys.path.append(os.path.abspath('.'))
-sys.path.append(os.path.abspath('../../../'))
+sys.path.append(abspath('.'))
+sys.path.append(abspath(dirname(dirname(dirname('.')))))
 
 # General configuration
 # ---------------------
@@ -168,7 +169,7 @@ htmlhelp_basename = 'bpcommonsdoc'
 # (source start file, target name, title, author, document class [howto/manual]).
 latex_documents = [
   ('index', 'bpcommonsdoc.tex', ur'bpcommons Documentation',
-   ur'Ian Lewis', 'manual'),
+   ur'K.K. BeProud', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -205,7 +206,7 @@ latex_documents = [
 # regardless of the global pdf_compressed setting.
 
 pdf_documents = [
-  ('index', u'bpcommons-Documentation', u'bpcommons ドキュメント', u'Ian Lewis'),
+  ('index', u'bpcommons-Documentation', u'bpcommons ドキュメント', u'K.K. BeProud'),
 ]
 
 # A comma-separated list of custom stylesheets. Example:
