@@ -37,6 +37,41 @@
     半角英数字と"_","-"のみ許容するフィールド::
 
         from django import forms
+        from commons.forms import AlphaNumField
 
         class MyForm(forms.Form):
             username = AlphaNumField(label=u'ユーザ名')
+
+.. class:: NumCharField
+
+    NumCharField は数字のみを許容するフィールド::
+
+        from django import forms
+        from commons.forms import NumCharField
+
+        class MyForm(forms.Form):
+            voucher_id = NumCharField(label=u'伝票ID')
+
+.. class:: FullWidthCharField
+
+    全角文字のみを許容するフィールド::
+
+        from django import forms
+        from commons.forms import FullWidthCharField
+
+        class MyForm(forms.Form):
+            name = FullWidthCharField(label=u'名前')
+
+    .. note:: 現在の実装ですと、utf-8のみに対応しています。
+
+.. class:: HiraganaCharField
+
+    全角ひらがなのみを許容するフィールド::
+
+        from django import forms
+        from commons.forms import HiraganaCharField
+
+        class MyForm(forms.Form):
+            name = HiraganaCharField(label=u'名前')
+
+    .. note:: 現在の実装ですと、utf-8のみに対応しています。
