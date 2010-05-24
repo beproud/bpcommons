@@ -1,0 +1,10 @@
+#!/bin/sh
+set -e
+
+if [ ! -d 'setup/venv' ]; then
+    ./bin/bootstrap
+fi
+
+. ./setup/venv/bin/activate
+python setup.py test $@
+deactivate

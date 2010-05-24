@@ -7,6 +7,8 @@ syntax: glob
 *.o
 *.pyc
 *.swp
+setup/venv/
+setup/bootstrap.py
 
 syntax: regexp
 .*\#.*\#$

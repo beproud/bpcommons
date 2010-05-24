@@ -1,0 +1,5 @@
+#!/bin/sh
+set -e
+
+rm -f ./setup/bootstrap.py
+rm -Rf ./setup/venv/

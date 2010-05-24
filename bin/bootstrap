@@ -1,0 +1,13 @@
+#!/bin/sh
+set -e
+
+unset PIP_VIRTUALENV_BASE
+unset PIP_RESPECT_VIRTUALENV
+
+if [ ! -d 'setup/venv' ]; then
+    if [ ! -e 'setup/bootstrap.py' ]; then
+        python ./setup/bootstrap-bootstrap.py
+        chmod +x ./setup/bootstrap.py
+    fi
+    python ./setup/bootstrap.py $@ setup/venv
+fi
