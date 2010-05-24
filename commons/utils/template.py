@@ -29,11 +29,14 @@ def data_template_tag(data_func, *args, **kwargs):
         return MyData.objects.filter(user=user)
 
     {% get_my_data user as my_data %}
+
+    キーワード引数も使えます
     """
     def wrapped(parser, token):
         bits = list(token.split_contents())
 
         args = []
+        kwargs = {}
         name = None
         next_as = False 
         for bit in bits[1:]:
@@ -43,21 +46,31 @@ def data_template_tag(data_func, *args, **kwargs):
                 name = bit
                 break
             else:
-                args.append(bit)
+                if '=' in bit:
+                    key, value = bit.split('=', 1)
+                    if key and value:
+                        kwargs[key] = value
+                    else:
+                        raise template.TemplateSyntaxError("invalid keyword arguments: %r" % bit)
+                else:
+                    args.append(bit)
                  
         if not name:
-            raise template.TemplateSyntaxError("%r expected format is '%s *args as <name>'" %
+            raise template.TemplateSyntaxError("%r expected format is '%s *args **kwargs as <name>'" %
                                       (bits[0], bits[0]))
-        return DataNode(data_func, args, name)
+        return DataNode(data_func, args, kwargs, name)
 
     #名前を直す
+    wrapped.__module__ = data_func.__module__
     wrapped.__name__ = data_func.__name__
+    wrapped.__doc__ = data_func.__doc__
     return wrapped
 
 class DataNode(template.Node):
-    def __init__(self, data_func, args, var_name):
+    def __init__(self, data_func, args, kwargs, var_name):
         self.data_func = data_func 
         self.args = args
+        self.kwargs = kwargs
         self.var_name = var_name
 
     def __repr__(self):
@@ -65,5 +78,6 @@ class DataNode(template.Node):
 
     def render(self, context):
         args = [template.Variable(arg).resolve(context) for arg in self.args]
-        context[self.var_name] = self.data_func(*args)
+        kwargs = dict((str(key), template.Variable(value).resolve(context)) for key, value in self.kwargs.iteritems())
+        context[self.var_name] = self.data_func(*args, **kwargs)
         return u''
