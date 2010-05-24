@@ -1,7 +1,8 @@
 #:coding=utf-8:
 
+from django import VERSION as DJANGO_VERSION
 from django.test import TestCase as DjangoTestCase
-from django.template import Template, Lexer, Parser, get_library, TemplateSyntaxError
+from django.template import Template, Lexer, Parser, TemplateSyntaxError
 from django.template.loader import LoaderOrigin 
 from django.template.context import Context
 
@@ -12,7 +13,14 @@ class BaseTemplateTagTest(object):
         return LoaderOrigin("Commons Test", lambda x,y: ("<string>", "<string>"), "commons", [])
 
     def _render_html(self, template_string, context={}):
-        tag_lib = get_library('commons.tests.test_tags')
+        # :(
+        if DJANGO_VERSION > (1,2):
+            from django.template import import_library
+            tag_lib = import_library('commons.tests.test_tags')
+        else:
+            from django.template import get_library
+            tag_lib = get_library('commons.tests.test_tags')
+
         lexer = Lexer(template_string, self._make_origin())
         parser = Parser(lexer.tokenize())
         parser.add_library(tag_lib)
