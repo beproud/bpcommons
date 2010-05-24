@@ -12,3 +12,8 @@ def get_my_data(num):
         return "MY DATA"
     else:
         return "ERROR"
+
+@register.tag
+@data_template_tag
+def get_my_kwarg_data(num, status=None, other="other"):
+    return "%s:%s:%s" % (num, status, other)
