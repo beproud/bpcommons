@@ -41,7 +41,7 @@ class RequestTestCase(TestCase):
         self._assertLocationHeader(response, redirect_url)
 
     def _assertLocationHeader(self, response, redirect_url=None):
-        if request_url is None: 
+        if redirect_url is None: 
             self.assertTrue(response.get("Location", None) is not None)
         else:
             self.assertEquals(response.get("Location", None), redirect_url)
