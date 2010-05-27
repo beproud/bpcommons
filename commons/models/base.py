@@ -30,9 +30,6 @@ class BaseManager(DatedModelManager):
     def get_query_set(self):
         return super(BaseManager, self).get_query_set().filter(del_flg=False)
 
-    def recently_updated(self):
-        return self.order_by('-utime')
-
 class BaseModel(DatedModel):
     """
     BaseModelの実装
