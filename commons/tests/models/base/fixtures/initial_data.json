@@ -1,0 +1,47 @@
+[
+    {
+        "pk": 1,
+        "model": "base.testdatedmodel",
+        "fields": {
+            "utime": "2010-05-28 13:13",
+            "ctime": "2010-05-28 13:13"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "base.testdatedmodel",
+        "fields": {
+            "utime": "2010-05-29 13:13",
+            "ctime": "2010-05-28 13:13"
+        }
+    },
+
+    {
+        "pk": 1,
+        "model": "base.testbasemodel",
+        "fields": {
+            "del_flg": false,
+            "utime": "2010-05-29 13:13",
+            "ctime": "2010-05-28 13:13"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "base.testbasemodel",
+        "fields": {
+            "del_flg": false,
+            "utime": "2010-05-30 13:13",
+            "ctime": "2010-05-28 13:13"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "base.testbasemodel",
+        "fields": {
+            "del_flg": true,
+            "utime": "2010-05-30 13:13",
+            "ctime": "2010-05-28 13:13"
+        }
+    }
+
+]

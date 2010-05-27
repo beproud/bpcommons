@@ -17,6 +17,7 @@ def main():
         'django.contrib.auth',
         'django.contrib.contenttypes',
         'commons',
+        'commons.tests.models.base',
     )
     global_settings.DATABASE_ENGINE = "sqlite3"
     global_settings.DATABASE_NAME = ":memory:"
