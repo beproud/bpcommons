@@ -18,7 +18,7 @@ class DatedModel(models.Model):
     日付が付けたモデル
     """
     ctime = models.DateTimeField(u'作成日時', default=datetime.now, db_index=True)
-    utime = models.DateTimeField(u'更新日時', auto_now=True, db_index=True) 
+    utime = models.DateTimeField(u'更新日時', auto_now=True, db_index=True)
 
     objects = DatedModelManager()
 
@@ -28,7 +28,7 @@ class DatedModel(models.Model):
 
 class BaseManager(DatedModelManager):
     def get_query_set(self):
-        return super(BaseManager, self).get_query_set().filter(pub_flg=True)
+        return super(BaseManager, self).get_query_set().filter(del_flg=False)
 
     def recently_updated(self):
         return self.order_by('-utime')
@@ -44,19 +44,19 @@ class BaseModel(DatedModel):
     class MyModel(BaseModel):
         myfield = models.BooleanField()
 
-    MyModel.published.filter(myfield=True)
+    MyModel.existing.filter(myfield=True)
     """
-    pub_flg = models.BooleanField(u'公開フラグ', default=True, db_index=True)
+    del_flg = models.BooleanField(u'削除フラグ', default=False)
 
     objects = DatedModelManager()
-    published = BaseManager()
+    existing = BaseManager()
 
     def remove(self):
-        self.pub_flg = False
+        self.del_flg = True
         self.save()
 
-    def publish(self):
-        self.pub_flg = True 
+    def unremove(self):
+        self.del_flg = False 
         self.save()
 
     class Meta:
