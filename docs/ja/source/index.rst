@@ -17,6 +17,7 @@ https://project.beproud.jp/hg/bpcommons/
   forms/decorators
   forms/fields
   forms/utils 
+  http/index
 
 Indices and tables
 ===================================
