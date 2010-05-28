@@ -4,9 +4,9 @@
 .. module:: commons.forms.utils
    :synopsis:  データユティリティクラス
 .. moduleauthor:: Ian Lewis <ian@beproud.jp>
+.. currentmodule:: commons.forms.utils
 
-
-.. class:: commons.forms.utils.Choices
+.. class:: Choices
 
     ChoicesはDjangoのforms.ChoiceFieldに使える便利なクラス。普段には
     ChoiceFieldのchoicesパラメータとして、2-tupleを使いますが、実は

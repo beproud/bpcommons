@@ -4,9 +4,10 @@
 .. module:: commons.forms.decorators
    :synopsis:  フォームデコレーター
 .. moduleauthor:: Ian Lewis <ian@beproud.jp>
+.. currentmodule:: commons.forms.decorators
 
 
-.. function:: commons.forms.decorators.autostrip
+.. function:: autostrip
 
     検証する前に、CharFieldのデータをstripするクラスデコレーター::
 

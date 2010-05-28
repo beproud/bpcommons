@@ -4,6 +4,7 @@
 .. module:: commons.http
    :synopsis:  HTTP ユティリティ
 .. moduleauthor:: Ian Lewis <ian@beproud.jp>
+.. currentmodule:: commons.http
 
 .. class:: JSONResponse
 
