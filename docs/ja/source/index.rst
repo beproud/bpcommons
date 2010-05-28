@@ -19,6 +19,7 @@ https://project.beproud.jp/hg/bpcommons/
   forms/utils 
   http/index
   management/commands
+  middleware/debug
 
 Indices and tables
 ===================================
