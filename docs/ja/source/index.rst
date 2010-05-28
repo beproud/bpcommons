@@ -18,6 +18,7 @@ https://project.beproud.jp/hg/bpcommons/
   forms/fields
   forms/utils 
   http/index
+  management/commands
 
 Indices and tables
 ===================================
