@@ -5,5 +5,6 @@ from views_tests import *
 from templatetags_tests import *
 
 from http import *
+from shortcuts import *
 
 from models.base.models import *

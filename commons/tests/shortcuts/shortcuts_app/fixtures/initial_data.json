@@ -1,0 +1,42 @@
+[
+    {
+        "pk": 1,
+        "model": "shortcuts_app.shortcutmodel",
+        "fields": {
+            "name": "test",
+            "del_flg": false,
+            "utime": "2010-05-28 13:13",
+            "ctime": "2010-05-28 13:13"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "shortcuts_app.shortcutmodel",
+        "fields": {
+            "name": "queryset",
+            "del_flg": false,
+            "utime": "2010-05-29 13:13",
+            "ctime": "2010-05-28 13:13"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "shortcuts_app.shortcutmodel",
+        "fields": {
+            "name": "queryset",
+            "del_flg": false,
+            "utime": "2010-05-29 13:13",
+            "ctime": "2010-05-28 13:13"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "shortcuts_app.shortcutmodel",
+        "fields": {
+            "name": "queryset",
+            "del_flg": false,
+            "utime": "2010-05-30 13:13",
+            "ctime": "2010-05-28 13:13"
+        }
+    }
+]

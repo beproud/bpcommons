@@ -18,6 +18,7 @@ def main():
         'django.contrib.contenttypes',
         'commons',
         'commons.tests.models.base',
+        'commons.tests.shortcuts.shortcuts_app',
     )
     global_settings.DATABASE_ENGINE = "sqlite3"
     global_settings.DATABASE_NAME = ":memory:"
