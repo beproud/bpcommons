@@ -1,7 +1,5 @@
 #:coding=utf8:
 
-from django.test import TestCase as DjangoTestCase
-
 from commons.test import URLTestCase
 
 from commons.http import *
