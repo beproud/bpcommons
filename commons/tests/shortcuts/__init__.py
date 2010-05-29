@@ -20,3 +20,9 @@ class GetObjectOrNoneTestCase(DjangoTestCase):
     def test_none(self):
         obj = get_object_or_None(ShortcutModel, pk=5)
         self.assertTrue(obj is None)
+
+class MakeSimpleResponseTestCase(DjangoTestCase):
+
+    def test_simple(self):
+        response = make_simple_response()
+        self.assertEqual(response.content, u'{"msg": "\\u51e6\\u7406\\u304c\\u6210\\u529f\\u3057\\u307e\\u3057\\u305f"}')
