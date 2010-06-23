@@ -1,9 +1,7 @@
 #!/bin/sh
 set -e
 
-if [ ! -d 'setup/venv' ]; then
-    ./bin/bootstrap
-fi
+./bin/bootstrap
 
 . ./setup/venv/bin/activate
 python setup.py test $@
