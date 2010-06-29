@@ -1,8 +1,0 @@
-#!/bin/sh
-set -e
-
-./bin/bootstrap
-
-. ./setup/venv/bin/activate
-python setup.py test $@
-deactivate
