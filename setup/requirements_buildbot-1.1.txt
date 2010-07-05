@@ -1,5 +1,5 @@
 Django==1.1.1
 zenhan==0.4
 
--e hg+/var/hg/beproud/bputils/#egg=bputils
+-e hg+/var/hg/beproud/bputils/@7379657dbb94#egg=bputils
 http://downloads.sourceforge.net/project/mecab/mecab-python/0.98/mecab-python-0.98.tar.gz

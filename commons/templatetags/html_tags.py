@@ -24,13 +24,22 @@ register.filter(stripentities)
 #stripentities = stringfilter(resolve_entities)
 #register.filter(resolve_entities)
 
-url_re = re.compile(r'(http(s)?:\/\/[A-Za-z0-9%&=~?+-_/.#]+)')
 @register.filter
-def to_anchor(text):
-    from django.utils.html import escape
-    text = escape(text)
-    text = url_re.sub(r'<a href="\1" target="_blank">\1</a>', text)
-    return mark_safe(text.replace('\n', '<br />'))
+def to_anchor(text, autoescape=None):
+    from bputils.html import urlize
+    return mark_safe(urlize(text, attrs={"rel": "nofollow", "target": "_blank"}, autoescape=autoescape))
+to_anchor.is_safe=True
+to_anchor.needs_autoescape = True
+to_anchor = stringfilter(to_anchor)
+
+@register.filter
+def to_anchortrunc(text, limit, autoescape=None):
+    from bputils.html import urlize
+    return mark_safe(urlize(text, attrs={"rel": "nofollow", "target": "_blank"}, 
+                     trim_url_limit=limit, autoescape=autoescape))
+to_anchortrunc.is_safe=True
+to_anchortrunc.needs_autoescape = True
+to_anchortrunc = stringfilter(to_anchortrunc)
 
 @register.filter
 def force_js(value, type=None):
