@@ -19,6 +19,6 @@ setup (
       'Programming Language :: Python',
       'Topic :: Software Development :: Libraries :: Python Modules',
     ],
-    packages=find_packages("commons"),
+    packages=find_packages(),
     test_suite='tests.main',
 )
