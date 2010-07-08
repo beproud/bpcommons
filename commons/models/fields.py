@@ -47,8 +47,7 @@ except ImportError:
             return 'NUMBER(19)' if settings.DATABASE_ENGINE == 'oracle' else 'bigint'
 
 class PositiveBigIntegerField(BigIntegerField):
-    def get_internal_type(self):
-        return "PositiveBigIntegerField"
+    # Note: Same internal type as BigIntegerField
 
     def formfield(self, **kwargs):
         defaults = {'min_value': 0}
@@ -73,6 +72,9 @@ if DJANGO_VERSION > (1,2):
             except KeyError:
                 raise NotImplemented
 
+        def get_internal_type(self):
+            return "BigAutoField"
+        
         def get_prep_value(self, value):
             if value is None:
                 return None
