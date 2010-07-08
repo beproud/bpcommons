@@ -96,9 +96,11 @@ if DJANGO_VERSION > (1,2):
             # If the database needs similar types for key fields however, the only
             # thing we can do is making AutoField an IntegerField.
             rel_field = self.rel.get_related_field()
-            if (isinstance(rel_field, BigAutoField) or
+            if (isinstance(rel_field, models.AutoField) or
                     (not connection.features.related_fields_match_type and
-                    isinstance(rel_field, (BigIntegerField, PositiveBigIntegerField)))):
+                    isinstance(rel_field, (PositiveBigIntegerField,
+                                           models.PositiveIntegerField,
+                                           models.PositiveSmallIntegerField)))):
                 return BigIntegerField().db_type(connection=connection)
             return rel_field.db_type(connection=connection)
 else:
@@ -136,9 +138,11 @@ else:
         def db_type(self):
             rel_field = self.rel.get_related_field()
             # next lines are the "bad tooth" in the original code:
-            if (isinstance(rel_field, BigAutoField) or
+            if (isinstance(rel_field, models.AutoField) or
                     (not connection.features.related_fields_match_type and
-                    isinstance(rel_field, BigIntegerField))):
+                    isinstance(rel_field, (PositiveBigIntegerField,
+                                           models.PositiveIntegerField,
+                                           models.PositiveSmallIntegerField)))):
                 # because it continues here in the django code:
                 # return IntegerField().db_type()
                 # thereby fixing any AutoField as IntegerField
