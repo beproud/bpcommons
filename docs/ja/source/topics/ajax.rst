@@ -5,7 +5,7 @@ Ajax/JSONの処理
 面倒な部分はいっぱいあります。標準Djangoでは、HttpResponseで
 mimetypeを指定した上、返すデータをJSONに直列化することも必要です。
 
-.. code-block:: guess
+.. code-block:: python 
 
     from django.contrib.auth.models import User
     from django.utils import simplejson
@@ -15,7 +15,7 @@ mimetypeを指定した上、返すデータをJSONに直列化することも�
         return HttpResponse(simplejson.dumps({
             "username": user.username,
             "fullname": user.get_full_name(),
-        }, mimetype="text/javascript")
+        }), mimetype="text/javascript")
 
 上のやり方にしても、decimal.Decimal, datetime.datetime, DjangoのLazyObjectなどを
 直列化することができません。
