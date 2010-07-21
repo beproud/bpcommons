@@ -119,7 +119,7 @@ else:
             elif settings.DATABASE_ENGINE[:8] == 'postgres':
                 return "bigserial"
             elif settings.DATABASE_ENGINE[:6] == 'sqlite':
-                return "integer", # Not a bigint!!!
+                return "integer" # Not a bigint!!!
             else:
                 raise NotImplemented
         
