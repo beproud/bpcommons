@@ -7,12 +7,19 @@ syntax: glob
 *.o
 *.pyc
 *.swp
-setup/venv/
-setup/bootstrap.py
+*.sqlite
+build
+parts
+eggs
+site_media
+develop-eggs
+bin/buildout
+bin/python
+bin/test
+.installed.cfg
+*-log.txt
+*.egg-info
+docs/ja/build
 
 syntax: regexp
 .*\#.*\#$
-^bpcommons.egg-info/
-^docs/[^/]+/build/
-^build/
-^dist/
