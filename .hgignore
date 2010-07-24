@@ -20,6 +20,7 @@ bin/test
 *-log.txt
 *.egg-info
 docs/ja/build
+download*
 
 syntax: regexp
 .*\#.*\#$
