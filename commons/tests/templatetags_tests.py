@@ -19,6 +19,11 @@ class StringTagsTestCase(DjangoTestCase):
         output = render_to_string("templatetags_tests/string_tags.html", {"my_data": "1234567890abcdefghi"})
         self.assertEquals(output, "<html><body>1234567...</body></html>\n") 
 
+    def test_abbrev_filter_tag(self):
+        settings.TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), 'templates'),)
+        output = render_to_string("templatetags_tests/string_tags2.html", {"my_data": "1234567890abcdefghi"})
+        self.assertEquals(output, "<html><body>1234567...</body></html>\n") 
+
 class HtmlTagsTestCase(DjangoTestCase):
 
     def setUp(self):
