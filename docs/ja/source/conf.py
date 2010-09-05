@@ -89,7 +89,6 @@ pygments_style = 'sphinx'
 
 # Options for HTML output
 # -----------------------
--
 html_theme='default'
 
 # The style sheet to use for HTML and HTML Help pages. A file of that name
