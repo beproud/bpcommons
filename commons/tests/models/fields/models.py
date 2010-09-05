@@ -1,6 +1,7 @@
 #:coding=utf-8:
 
 from django.test import TestCase as DjangoTestCase
+from django.core.exceptions import ValidationError
 
 from commons.models import *
 
@@ -54,3 +55,11 @@ class BigForeignKeyTest(DjangoTestCase):
             for f in obj._meta.fields:
                 if f.name == "small_id_obj":
                     self.assertEquals(f.db_type(), 'bigint') # oracleでは動かない
+
+class BadBigAutoIdTest(DjangoTestCase):
+    def test_bad_id(self):
+        try:
+            bad_id = BigIDModel._meta.pk.to_python("bad id")
+            self.fail("Expected fail")
+        except ValidationError:
+            pass

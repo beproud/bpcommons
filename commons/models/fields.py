@@ -7,6 +7,7 @@ except ImportError:
 	import pickle
 
 from django import VERSION as DJANGO_VERSION
+from django.core import exceptions
 from django.utils.translation import ugettext_lazy as _
 from django.db import connection
 from django.utils import simplejson
