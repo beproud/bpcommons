@@ -220,22 +220,3 @@ class JSONField(models.TextField):
     def value_to_string(self, obj):
         value = self._get_val_from_obj(obj)
         return self.get_db_prep_value(value)
-
-try:
-    from south.modelsinspector import add_introspection_rules
-
-    south_rules = [
-      (
-        (BigForeignKey,),
-        [],
-        {
-            "to": ["rel.to", {}],
-            "to_field": ["rel.field_name", {"default_attr": "rel.to._meta.pk.name"}],
-            "related_name": ["rel.related_name", {"default": None}],
-            "db_index": ["db_index", {"default": True}],
-        },
-      ),
-    ]
-    add_introspection_rules(south_rules, [r"^commons\.models"])
-except ImportError:
-    pass
