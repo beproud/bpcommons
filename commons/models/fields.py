@@ -22,7 +22,6 @@ __all__ = (
     'BigIntegerField',
     'PositiveBigIntegerField',
     'BigAutoField',
-    'BigForeignKey',
     'PickledObjectField',
     'JSONField',
 )
@@ -70,23 +69,30 @@ if DJANGO_VERSION > (1,2):
             except (TypeError, ValueError):
                 raise exceptions.ValidationError(self.error_messages['invalid'])
 
-    class BigForeignKey(models.ForeignKey):
-        
-        def db_type(self, connection):
-            # The database column type of a ForeignKey is the column type
-            # of the field to which it points. An exception is if the ForeignKey
-            # points to an AutoField/PositiveIntegerField/PositiveSmallIntegerField,
-            # in which case the column type is simply that of an IntegerField.
-            # If the database needs similar types for key fields however, the only
-            # thing we can do is making AutoField an IntegerField.
-            rel_field = self.rel.get_related_field()
-            if (isinstance(rel_field, models.AutoField) or
-                    (not connection.features.related_fields_match_type and
-                    isinstance(rel_field, (PositiveBigIntegerField,
-                                           models.PositiveIntegerField,
-                                           models.PositiveSmallIntegerField)))):
-                return BigIntegerField().db_type(connection=connection)
-            return rel_field.db_type(connection=connection)
+    def fk_db_type(self, connection):
+        # The database column type of a ForeignKey is the column type
+        # of the field to which it points. An exception is if the ForeignKey
+        # points to an AutoField/PositiveIntegerField/PositiveSmallIntegerField,
+        # in which case the column type is simply that of an IntegerField.
+        # If the database needs similar types for key fields however, the only
+        # thing we can do is making AutoField an IntegerField.
+        rel_field = self.rel.get_related_field()
+
+        if (isinstance(rel_field, BigAutoField) or
+                (not connection.features.related_fields_match_type and
+                isinstance(rel_field, PositiveBigIntegerField))):
+            return BigIntegerField().db_type(connection=connection)
+
+        if (isinstance(rel_field, models.AutoField) or
+                (not connection.features.related_fields_match_type and
+                isinstance(rel_field, (models.PositiveIntegerField,
+                                       models.PositiveSmallIntegerField)))):
+            return models.IntegerField().db_type(connection=connection)
+        return rel_field.db_type(connection=connection)
+
+    # ForeignKey monkey-patch to support BigAutoId
+    models.ForeignKey.db_type = fk_db_type
+
 else:
     """
     For Django 1.1
@@ -150,21 +156,31 @@ else:
                 raise exceptions.ValidationError(
                     _("This value must be a long integer."))
 
-    class BigForeignKey(models.ForeignKey):
-        
-        def db_type(self):
-            rel_field = self.rel.get_related_field()
-            # next lines are the "bad tooth" in the original code:
-            if (isinstance(rel_field, models.AutoField) or
-                    (not connection.features.related_fields_match_type and
-                    isinstance(rel_field, (PositiveBigIntegerField,
-                                           models.PositiveIntegerField,
-                                           models.PositiveSmallIntegerField)))):
-                # because it continues here in the django code:
-                # return IntegerField().db_type()
-                # thereby fixing any AutoField as IntegerField
-                return BigIntegerField().db_type()
-            return rel_field.db_type()
+    def fk_db_type(self):
+        # The database column type of a ForeignKey is the column type
+        # of the field to which it points. An exception is if the ForeignKey
+        # points to an AutoField/PositiveIntegerField/PositiveSmallIntegerField,
+        # in which case the column type is simply that of an IntegerField.
+        # If the database needs similar types for key fields however, the only
+        # thing we can do is making AutoField an IntegerField.
+        rel_field = self.rel.get_related_field()
+
+        if (isinstance(rel_field, BigAutoField) or
+                (not connection.features.related_fields_match_type and
+                isinstance(rel_field, PositiveBigIntegerField))):
+            return BigIntegerField().db_type()
+
+        if (isinstance(rel_field, models.AutoField) or
+                (not connection.features.related_fields_match_type and
+                isinstance(rel_field, (models.PositiveIntegerField,
+                                       models.PositiveSmallIntegerField)))):
+            return models.IntegerField().db_type()
+        return rel_field.db_type()
+
+    # ForeignKey monkey-patch to support BigAutoId
+    ForeignKey.db_type = fk_db_type
+
+
 
 class PositiveBigIntegerField(BigIntegerField):
     # Note: Same internal type as BigIntegerField
