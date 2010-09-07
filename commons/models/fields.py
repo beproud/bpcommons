@@ -178,7 +178,7 @@ else:
         return rel_field.db_type()
 
     # ForeignKey monkey-patch to support BigAutoId
-    ForeignKey.db_type = fk_db_type
+    models.ForeignKey.db_type = fk_db_type
 
 
 
