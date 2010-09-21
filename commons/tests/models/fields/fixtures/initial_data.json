@@ -92,5 +92,32 @@
             "utime": "2010-05-28 13:13",
             "ctime": "2010-05-28 13:13"
         }
+    },
+    {
+        "pk": 1,
+        "model": "fields.manytomanytestmodel",
+        "fields": {
+            "bigids": [333333333331, 333333333333],
+            "utime": "2010-05-28 13:13",
+            "ctime": "2010-05-28 13:13"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "fields.manytomanytestmodel",
+        "fields": {
+            "bigids": [333333333333],
+            "utime": "2010-05-28 13:13",
+            "ctime": "2010-05-28 13:13"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "fields.manytomanytestmodel",
+        "fields": {
+            "bigids": [333333333331, 333333333332, 333333333333],
+            "utime": "2010-05-28 13:13",
+            "ctime": "2010-05-28 13:13"
+        }
     }
 ]
