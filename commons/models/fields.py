@@ -215,7 +215,7 @@ class JSONField(models.TextField):
  
     def get_db_prep_save(self, value):
         if value is None: return
-        return simplejson.dumps(data, cls=DjangoJSONEncoder)
+        return simplejson.dumps(value, cls=DjangoJSONEncoder)
  
     def value_to_string(self, obj):
         value = self._get_val_from_obj(obj)
