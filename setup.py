@@ -4,7 +4,7 @@
 from setuptools import setup, find_packages
  
 setup (
-    name='bpcommons',
+    name='beproud.django.commons',
     version='0.1',
     description='Common utilities for Django',
     author='K.K. BeProud',
@@ -20,5 +20,9 @@ setup (
       'Topic :: Software Development :: Libraries :: Python Modules',
     ],
     packages=find_packages(),
+    namespace_packages=[
+        'beproud',
+        'beproud.django',
+    ],
     test_suite='tests.main',
 )
