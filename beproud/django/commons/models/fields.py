@@ -15,7 +15,8 @@ from django.db import connection
 from django.db import models
 from django.conf import settings
 
-from beproud.django.commons.forms import JSONField as JSONFormField 
+from beproud.django.commons.forms import JSONField as JSONFormField
+from beproud.django.commons.forms.widgets import JSONWidget
 from beproud.django.commons.utils.javascript import DjangoJSONEncoder
 
 __all__ = (
@@ -206,14 +207,20 @@ class JSONField(models.TextField):
     __metaclass__ = models.SubfieldBase
  
     def formfield(self, **kwargs):
-        return super(JSONField, self).formfield(form_class=JSONFormField, **kwargs)
+        defaults = {'widget': JSONWidget, 'form_class': JSONFormField}
+        defaults.update(kwargs)
+        return super(JSONField, self).formfield(**defaults)
  
     def to_python(self, value):
+        # If value is a bastring but empty then pass
         if isinstance(value, basestring):
-            value = simplejson.loads(value)
+            if value == '':
+                return None
+            else:
+                value = simplejson.loads(value)
         return value
- 
-    def get_db_prep_save(self, value):
+
+    def get_db_prep_value(self, value):
         if value is None: return
         return simplejson.dumps(value, cls=DjangoJSONEncoder)
  
