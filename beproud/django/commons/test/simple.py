@@ -23,6 +23,35 @@ class RequestTestCase(TestCase):
     def assertOk(self, response):
         self.assertStatus(response)
 
+    def assertCreated(self, response):
+        self.assertStatus(response, 201)
+
+    def assertAccepted(self, response):
+        self.assertStatus(response, 202)
+
+    def assertNonAuthoritativeInfo(self, response):
+        self.assertStatus(response, 203)
+
+    def assertNoContent(self, response):
+        self.assertStatus(response, 204)
+
+    def assertResetContent(self, response):
+        self.assertStatus(response, 205)
+
+    def assertPartialContent(self, response):
+        self.assertStatus(response, 206)
+
+    def assertMultipleChoices(self, response):
+        self.assertStatus(response, 300)
+
+    def assertPermanentRedirect(self, response, redirect_url=None):
+        self.assertStatus(response, 301)
+        self._assertLocationHeader(response, redirect_url)
+
+    def assertRedirect(self, response, redirect_url=None):
+        self.assertStatus(response, 302)
+        self._assertLocationHeader(response, redirect_url)
+
     def assertBadRequest(self, response):
         self.assertStatus(response, 400)
 
@@ -32,19 +61,6 @@ class RequestTestCase(TestCase):
     def assertNotFound(self, response):
         self.assertStatus(response, 404)
 
-    def assertRedirect(self, response, redirect_url=None):
-        self.assertStatus(response, 302)
-        self._assertLocationHeader(response, redirect_url)
-
-    def assertPermanentRedirect(self, response, redirect_url=None):
-        self.assertStatus(response, 301)
-        self._assertLocationHeader(response, redirect_url)
-
-    def _assertLocationHeader(self, response, redirect_url=None):
-        if redirect_url is None: 
-            self.assertTrue(response.get("Location", None) is not None)
-        else:
-            self.assertEquals(response.get("Location", None), redirect_url)
 
     def assertNotAllowed(self, response, allow=None):
         self.assertEquals(response.status_code, 405)
@@ -76,6 +92,12 @@ class RequestTestCase(TestCase):
             return p.Parse(response.content)
         except expat.ExpatError, e:
             self.fail(e.message)
+
+    def _assertLocationHeader(self, response, redirect_url=None):
+        if redirect_url is None: 
+            self.assertTrue(response.get("Location", None) is not None)
+        else:
+            self.assertEquals(response.get("Location", None), redirect_url)
 
 class BaseURLTestCase(type):
     def __new__(cls, name, bases, attrs):
