@@ -27,8 +27,11 @@ class DatedModel(models.Model):
         ordering = ['-ctime']
 
 class BaseManager(DatedModelManager):
-    def get_query_set(self):
-        return super(BaseManager, self).get_query_set().filter(del_flg=False)
+    def be(self):
+        """
+        削除されてないBaseModelオブジェクトを取得
+        """
+        return self.filter(del_flg=False)
 
 class BaseModel(DatedModel):
     """
@@ -45,8 +48,7 @@ class BaseModel(DatedModel):
     """
     del_flg = models.BooleanField(u'削除フラグ', default=False)
 
-    objects = DatedModelManager()
-    existing = BaseManager()
+    objects = BaseManager()
 
     def remove(self):
         self.del_flg = True
