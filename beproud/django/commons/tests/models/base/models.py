@@ -26,15 +26,11 @@ class DatedModelTest(DjangoTestCase):
 
 class BaseModelTest(DjangoTestCase):
 
-    def test_existing(self):
-        qs = TestBaseModel.existing.recently_updated()
+    def test_be(self):
+        qs = TestBaseModel.objects.be()
         
-        previous = None
         for obj in qs:
-            if previous:
-                self.assertTrue(obj.utime <= previous.utime)
             self.assertTrue(not obj.del_flg)
-            previous = obj
 
     def test_remove(self):
         obj = TestBaseModel.objects.get(pk=1)
