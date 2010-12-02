@@ -67,6 +67,30 @@ class JSONFormFieldTest(DjangoTestCase):
         form = JSONTestForm({"json": {"spam": "eggs"}})
         self.assertFalse(form.is_valid())
 
+    def test_to_python_empty_values_required(self):
+        class JSONTestForm(Form):
+            json = JSONField(label="json", required=True)
+
+        form = JSONTestForm({'json': '{}'})
+        self.assertTrue(form.is_valid())
+        self.assertEquals(form.cleaned_data["json"], {})
+
+        form = JSONTestForm({'json': {}})
+        self.assertTrue(form.is_valid())
+        self.assertEquals(form.cleaned_data["json"], {})
+
+        form = JSONTestForm({'json': ''})
+        self.assertFalse(form.is_valid())
+        self.assertTrue(form.errors.get('json'), form.fields['json'].error_messages['required'])
+
+    def test_to_python_not_required(self):
+        class JSONTestForm(Form):
+            json = JSONField(label="json", required=False)
+
+        form = JSONTestForm({'json': ''})
+        self.assertTrue(form.is_valid())
+        self.assertTrue(form.cleaned_data['json'] is None)
+
 class JSONWidgetTest(DjangoTestCase):
     def test_jsonwidget(self):
         class JSONTestForm(Form):

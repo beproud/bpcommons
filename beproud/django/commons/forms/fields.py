@@ -99,7 +99,7 @@ class JSONField(CharField):
 
     def to_python(self, value):
         from django.utils import simplejson
-        if value in validators.EMPTY_VALUES:
+        if value in ('', None):
             return u''
         if isinstance(value, basestring):
             return smart_unicode(value)
@@ -109,6 +109,9 @@ class JSONField(CharField):
     def clean(self, value):
         from django.utils import simplejson
         value = super(JSONField, self).clean(value)
+        if value in ('', None):
+            return None
+
         try:
             json_data = simplejson.loads(value)
         except Exception, e:
