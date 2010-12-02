@@ -2,8 +2,10 @@
 import re
 from types import StringType, UnicodeType
 
+from django.core import validators
 from django.forms import CharField, RegexField, ValidationError
 from django.utils.translation import ugettext_lazy as _
+from django.utils.encoding import smart_unicode 
 
 from widgets import JSONWidget
 
@@ -94,6 +96,15 @@ class JSONField(CharField):
         if "widget" not in kwargs:
             kwargs["widget"] = JSONWidget
         super(JSONField, self).__init__(*args, **kwargs)
+
+    def to_python(self, value):
+        from django.utils import simplejson
+        if value in validators.EMPTY_VALUES:
+            return u''
+        if isinstance(value, basestring):
+            return smart_unicode(value)
+        else:
+            return simplejson.dumps(value)
 
     def clean(self, value):
         from django.utils import simplejson

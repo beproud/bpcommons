@@ -27,22 +27,51 @@ class EmailFieldTest(DjangoTestCase):
         form = EmailTestForm({"email": "spam+extra@eggs.com"})
         self.assertTrue(form.is_valid())
 
-class JSONTestForm(Form):
-    json = JSONField(label="json")
-
 class JSONFormFieldTest(DjangoTestCase):
 
     def test_json(self):
+        class JSONTestForm(Form):
+            json = JSONField(label="json")
+
         form = JSONTestForm({"json": '{"spam": "eggs"}'})
         self.assertTrue(form.is_valid())
         self.assertEquals(form.cleaned_data["json"], {"spam": "eggs"})
 
-    def test_bad_json(self):
+    def test_json_fail(self):
+        class JSONTestForm(Form):
+            json = JSONField(label="json")
+
         form = JSONTestForm({"json": '{"spam": "eggs"'})
+        self.assertFalse(form.is_valid())
+
+    def test_to_python(self):
+        class JSONTestForm(Form):
+            json = JSONField(label="json")
+
+        form = JSONTestForm({"json": {"spam": "eggs"}})
+        self.assertTrue(form.is_valid())
+        self.assertEquals(form.cleaned_data["json"], {"spam": "eggs"})
+
+    def test_to_python_with_max_length(self):
+        class JSONTestForm(Form):
+            json = JSONField(label="json", max_length=100)
+
+        form = JSONTestForm({"json": {"spam": "eggs"}})
+        self.assertTrue(form.is_valid())
+        self.assertEquals(form.cleaned_data["json"], {"spam": "eggs"})
+
+    def test_to_python_with_max_length_fail(self):
+        class JSONTestForm(Form):
+            json = JSONField(label="json", max_length=5)
+
+        form = JSONTestForm({"json": {"spam": "eggs"}})
         self.assertFalse(form.is_valid())
 
 class JSONWidgetTest(DjangoTestCase):
     def test_jsonwidget(self):
+        class JSONTestForm(Form):
+            json = JSONField(label="json")
+
         form = JSONTestForm({"json": '{"spam": "eggs"}'})
         self.assertEquals(str(form), '<tr><th><label for="id_json">json:</label></th><td><textarea id="id_json" rows="10" cols="40" name="json">{&quot;spam&quot;: &quot;eggs&quot;}</textarea></td></tr>')
 
