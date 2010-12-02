@@ -2,7 +2,6 @@
 import re
 from types import StringType, UnicodeType
 
-from django.core import validators
 from django.forms import CharField, RegexField, ValidationError
 from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import smart_unicode 
