@@ -106,8 +106,15 @@ class JSONField(CharField):
             return simplejson.dumps(value)
 
     def clean(self, value):
+        """
+        Django 1.1 の場合、to_python()がないので、
+        ここで、to_python() を呼び出して、super().clean()に渡す。
+        Django 1.2 の場合、clean() の中に to_python() を
+        ２重呼び出すが、２回呼び出しても、同じ結果になるのを
+        保証するので、大丈夫。
+        """
         from django.utils import simplejson
-        value = super(JSONField, self).clean(value)
+        value = super(JSONField, self).clean(self.to_python(value))
         if value in ('', None):
             return None
 
