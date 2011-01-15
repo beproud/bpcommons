@@ -16,14 +16,14 @@ def main():
     global_settings.INSTALLED_APPS = (
         'django.contrib.auth',
         'django.contrib.contenttypes',
-        'commons',
-        'commons.tests.models.base',
-        'commons.tests.models.fields',
-        'commons.tests.shortcuts.shortcuts_app',
+        'beproud.django.commons',
+        'beproud.django.commons.tests.models.base',
+        'beproud.django.commons.tests.models.fields',
+        'beproud.django.commons.tests.shortcuts.shortcuts_app',
     )
     global_settings.DATABASE_ENGINE = "sqlite3"
     global_settings.DATABASE_NAME = ":memory:"
-    global_settings.ROOT_URLCONF = 'commons.tests.urls'
+    global_settings.ROOT_URLCONF = 'beproud.django.commons.tests.urls'
 
     from django.test.utils import get_runner
     test_runner = get_runner(global_settings)
