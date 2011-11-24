@@ -46,7 +46,7 @@ class DatedModelAdmin(admin.ModelAdmin):
 
         form = self.get_form(request, obj)
         fields = form.base_fields.keys() + list(self.get_readonly_fields(request, obj))
-        normal_fields = filter(lambda f: f not in self.system_fields, fields)
+        normal_fields = [f for f in fields if f not in self.system_fields]
 
         return (
             (None, {'fields': normal_fields}),
