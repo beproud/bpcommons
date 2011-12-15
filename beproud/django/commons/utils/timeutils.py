@@ -16,7 +16,7 @@ def utc_to_local(utc_datetime):
     """
     UTC datetime obj => local datetime obj
     """
-    return datetime(*time.localtime(calendar.timegm(utc_date.timetuple()))[:6])
+    return datetime(*time.localtime(calendar.timegm(utc_datetime.timetuple()))[:6])
 
 def relative_time(d, basetime=None, shortname=False, delta=None):
     """
