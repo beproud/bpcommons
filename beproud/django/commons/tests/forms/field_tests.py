@@ -4,8 +4,14 @@ from django.test import TestCase as DjangoTestCase
 
 from django.forms import Form
 
-from beproud.django.commons.forms import *
-from beproud.django.commons.forms.widgets import *
+from beproud.django.commons.forms import EmailField, JSONField
+from beproud.django.commons.forms.widgets import JSONWidget
+
+__all__ = (
+    'EmailFieldTest',
+    'JSONFormFieldTest',
+    'JSONWidgetTest',
+)
 
 class EmailTestForm(Form):
     email = EmailField(label="email")
