@@ -1,0 +1,2 @@
+-r base.include.txt
+Django==1.4

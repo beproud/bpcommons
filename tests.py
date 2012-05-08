@@ -1,7 +1,7 @@
+#:coding-utf-8:
+
 import os
 import sys
-import unittest
-import doctest
 import django
 
 def main():
@@ -21,8 +21,20 @@ def main():
         'beproud.django.commons.tests.models.fields',
         'beproud.django.commons.tests.shortcuts.shortcuts_app',
     )
-    global_settings.DATABASE_ENGINE = "sqlite3"
-    global_settings.DATABASE_NAME = ":memory:"
+    if django.VERSION > (1,2):
+        global_settings.DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': ':memory:',
+                'USER': '',
+                'PASSWORD': '',
+                'HOST': '',
+                'PORT': '',
+            }
+        }
+    else:
+        global_settings.DATABASE_ENGINE = "sqlite3"
+        global_settings.DATABASE_NAME = ":memory:"
     global_settings.ROOT_URLCONF = 'beproud.django.commons.tests.urls'
 
     from django.test.utils import get_runner
