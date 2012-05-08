@@ -25,7 +25,7 @@ def relative_time(d, basetime=None, shortname=False, delta=None):
     if not delta:
         basetime = basetime or datetime.now()
         delta = basetime - d
-    if basetime < s or (delta.days < 1 and delta.seconds < 1):
+    if basetime < d or (delta.days < 1 and delta.seconds < 1):
         return u"たった今"
     if delta.days > 0:
         if shortname:
@@ -50,7 +50,7 @@ def times_left(d, basetime=None, delta=None):
         basetime = basetime or datetime.now()
         delta = d - basetime
     if delta < timedelta(0):
-        s = u'終了'
+        result = u'終了'
     elif delta.days > 0:
         days = delta.seconds >= SEC_1_HOURS * 12 and delta.days + 1 or delta.days
         result = u"あと%s日" % (days)
