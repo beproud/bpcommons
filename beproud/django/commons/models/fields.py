@@ -1,5 +1,7 @@
 # vim:fileencoding=utf8
+
 import base64
+import warnings
 
 try:
 	import cPickle as pickle
@@ -193,6 +195,10 @@ class PositiveBigIntegerField(BigIntegerField):
 
 class PickledObjectField(models.TextField):
     __metaclass__ = models.SubfieldBase
+
+    def __init__(self, *args, **kwargs):
+        warnings.warn('PickledObjectField is deprecated. Use django-picklefield instead.')
+        super(PickledObjectField, self).__init__(*args, **kwargs)
  
     def to_python(self, value):
         if value is None: return None
