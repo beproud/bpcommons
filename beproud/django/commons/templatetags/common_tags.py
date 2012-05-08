@@ -1,4 +1,12 @@
-from django.template import Library, Node, NodeList, Variable, TemplateSyntaxError,VariableDoesNotExist
+#:coding=utf-8:
+
+from django.template import (
+    Library,
+    Node, 
+    TemplateSyntaxError,
+    VariableDoesNotExist,
+)
+
 register = Library()
 
 @register.tag(name="switch")
@@ -31,7 +39,7 @@ def do_switch(parser, token):
     bits = token.contents.split()
     tag_name = bits[0]
     if len(bits) != 2:
-        raise template.TemplateSyntaxError("'%s' tag requires one argument" % tag_name)
+        raise TemplateSyntaxError("'%s' tag requires one argument" % tag_name)
     variable = parser.compile_filter(bits[1])
 
     class BlockTagList(object):

@@ -1,4 +1,5 @@
 # vim:fileencoding=utf8
+
 import re
 from types import StringType, UnicodeType
 

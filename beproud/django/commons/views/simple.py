@@ -1,4 +1,5 @@
 # vim:fileencoding=utf-8
+
 import re
 
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect, HttpResponseGone

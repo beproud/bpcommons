@@ -1,9 +1,7 @@
 # vim:fileencoding=utf8
-import re
 
 from django.template import Library
 from django.template.defaultfilters import stringfilter
-from django.utils.html import escape
 from django.utils.safestring import mark_safe
 
 register = Library()
@@ -15,14 +13,6 @@ def stripentities(value):
 stripentities.is_safe = True
 stripentities = stringfilter(stripentities)
 register.filter(stripentities)
-
-#def resolve_entities(value):
-#    """Resolves HTML entities to unicode values"""
-#    from commons.utils.html import resolve_entities
-#    return resolve_entities(value)
-#stripentities.is_safe = True
-#stripentities = stringfilter(resolve_entities)
-#register.filter(resolve_entities)
 
 @register.filter
 def to_anchor(text, autoescape=None):
