@@ -1,4 +1,12 @@
-from django.template import Library, Node, NodeList, Variable, TemplateSyntaxError,VariableDoesNotExist
+#:coding=utf-8:
+
+from django.template import (
+    Library,
+    Node, 
+    TemplateSyntaxError,
+    VariableDoesNotExist,
+)
+
 register = Library()
 
 @register.tag(name="switch")

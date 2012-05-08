@@ -6,6 +6,12 @@ from django.conf import settings
 
 from django.template.loader import render_to_string
 
+__all__ = (
+    'StringTagsTestCase',
+    'HtmlTagsTestCase',
+    'SwitchTestCase',
+)
+
 class StringTagsTestCase(DjangoTestCase):
 
     def setUp(self):
@@ -45,3 +51,37 @@ class HtmlTagsTestCase(DjangoTestCase):
             "my_data": u"これはテストデータ。http://www.beproud.jp/これはテストデータ。",
         })
         self.assertEquals(output, u'<html><body>これはテストデータ。<a href="http://www.beproud.jp/" target="_blank" rel="nofollow">http://www.b...</a>これはテストデータ。</body></html>\n')
+
+class SwitchTestCase(DjangoTestCase):
+
+    def setUp(self):
+        self.template_dirs = settings.TEMPLATE_DIRS
+
+    def tearDown(self):
+        settings.TEMPLATE_DIRS = self.template_dirs
+
+    def test_first(self):
+        settings.TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), 'templates'),)
+        output = render_to_string("templatetags_tests/switch_test.html", {
+            'value': 'first',
+        })
+        self.assertEquals(output, u'<html><body>first value</body></html>\n')
+
+    def test_second(self):
+        settings.TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), 'templates'),)
+        output = render_to_string("templatetags_tests/switch_test.html", {
+            'value': 'second',
+        })
+        self.assertEquals(output, u'<html><body>second value</body></html>\n')
+
+    def test_default(self):
+        settings.TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), 'templates'),)
+        output = render_to_string("templatetags_tests/switch_test.html", {
+            'value': 'not_exists',
+        })
+        self.assertEquals(output, u'<html><body>default</body></html>\n')
+
+    def test_missing(self):
+        settings.TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), 'templates'),)
+        output = render_to_string("templatetags_tests/switch_test.html", {})
+        self.assertEquals(output, u'<html><body>default</body></html>\n')
