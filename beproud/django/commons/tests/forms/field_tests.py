@@ -32,6 +32,10 @@ class EmailFieldTest(DjangoTestCase):
     def test_plus_email(self):
         form = EmailTestForm({"email": "spam+extra@eggs.com"})
         self.assertTrue(form.is_valid())
+    
+    def test_multi_email(self):
+        form = EmailTestForm({"email": "aaa spam+extra@eggs.com email@email.com"})
+        self.assertFalse(form.is_valid())
 
 class JSONFormFieldTest(DjangoTestCase):
 
