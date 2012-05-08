@@ -1,5 +1,2 @@
-Django==1.1.2
-zenhan==0.4
-http://downloads.sourceforge.net/project/mecab/mecab-python/0.98/mecab-python-0.98.tar.gz
-
--e hg+/var/hg/beproud/bputils/@12bdc3f8c89f#egg=bputils
+-r base.include.txt
+Django==1.1.4
