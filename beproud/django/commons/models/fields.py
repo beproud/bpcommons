@@ -210,6 +210,10 @@ class PickledObjectField(models.TextField):
 
 class JSONField(models.TextField):
     __metaclass__ = models.SubfieldBase
+
+    def __init__(self, *args, **kwargs):
+        warnings.warn('JSONField is deprecated. Use django-jsonfield instead.')
+        super(JSONField, self).__init__(*args, **kwargs)
  
     def formfield(self, **kwargs):
         defaults = {'widget': JSONWidget, 'form_class': JSONFormField}

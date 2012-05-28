@@ -1,6 +1,7 @@
 # vim:fileencoding=utf8
 
 import re
+import warnings
 from types import StringType, UnicodeType
 
 from django.forms import CharField, RegexField, ValidationError
@@ -93,6 +94,7 @@ class JSONField(CharField):
     u""" JSONデータをポストする場合のフィールド。AJAXに便利かも """
     
     def __init__(self, *args, **kwargs):
+        warnings.warn('JSONField is deprecated. Use django-jsonfield instead.')
         if "widget" not in kwargs:
             kwargs["widget"] = JSONWidget
         super(JSONField, self).__init__(*args, **kwargs)
