@@ -200,12 +200,15 @@ class PickledObjectField(models.TextField):
         super(PickledObjectField, self).__init__(*args, **kwargs)
  
     def to_python(self, value):
-        if value is None: return None
-        if not isinstance(value, basestring): return value
+        if value is None: 
+            return None
+        if not isinstance(value, basestring):
+            return value
         return pickle.loads(base64.b64decode(value))
  
-    def get_db_prep_save(self, value):
-        if value is None: return
+    def get_db_prep_save(self, value, connection=None):
+        if value is None: 
+            return
         return base64.b64encode(pickle.dumps(value))
 
 class JSONField(models.TextField):
@@ -229,7 +232,7 @@ class JSONField(models.TextField):
                 value = simplejson.loads(value)
         return value
 
-    def get_db_prep_value(self, value):
+    def get_db_prep_value(self, value, connection=None, prepared=None):
         if value is None: return
         return simplejson.dumps(value, cls=DjangoJSONEncoder)
  
