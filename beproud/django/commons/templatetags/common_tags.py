@@ -1,5 +1,7 @@
 #:coding=utf-8:
 
+import warnings
+
 from django.template import (
     Library,
     Node, 
@@ -36,6 +38,8 @@ def do_switch(parser, token):
                 Hello {{ username }}
         {% endswitch %}
     """
+    warnings.warn('The switch template tag is deprecated. Use {% if ... %}...{% elif ... %}...{% endif %} (Django >1.4)')
+
     bits = token.contents.split()
     tag_name = bits[0]
     if len(bits) != 2:
