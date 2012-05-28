@@ -7,8 +7,8 @@ setup (
     name='beproud.django.commons',
     version='0.2',
     description='Common utilities for Django',
-    author='K.K. BeProud',
-    author_email='ianmlewis@beproud.jp',
+    author='BeProud Inc.',
+    author_email='ian@beproud.jp',
     url='https://project.beproud.jp/hg/bpcommons/',
     classifiers=[
       'Development Status :: 3 - Alpha',
@@ -19,10 +19,14 @@ setup (
       'Programming Language :: Python',
       'Topic :: Software Development :: Libraries :: Python Modules',
     ],
+    include_package_data=True,
     packages=find_packages(),
-    namespace_packages=[
-        'beproud',
-        'beproud.django',
+    namespace_packages=['beproud', 'beproud.django'],
+    install_requires=[
+        'Django>=1.2',
+        'zenhan>=0.4',
+        # 'bputils>=0.31'
     ],
     test_suite='tests.main',
+    zip_safe=False,
 )

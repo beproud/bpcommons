@@ -1,12 +1,16 @@
 #:coding=utf-8:
 
-from django import VERSION as DJANGO_VERSION
 from django.test import TestCase as DjangoTestCase
 from django.core.exceptions import ValidationError
 from django.db import connection
 from django.db import models
 
-from beproud.django.commons.models import *
+from beproud.django.commons.models import (
+    BaseModel,
+    BigAutoField,
+    BigIntegerField,
+    JSONField,
+)
 
 class BigIDModel(BaseModel):
     id = BigAutoField(primary_key=True)
@@ -55,12 +59,8 @@ class BigForeignKeyTest(DjangoTestCase):
         for obj in qs:
             for f in obj._meta.fields:
                 if f.name == "big_id_obj":
-                    if DJANGO_VERSION > (1,2):
-                        db_type = f.db_type(connection)
-                        bigint_type = BigIntegerField().db_type(connection=connection)
-                    else:
-                        db_type = f.db_type()
-                        bigint_type = BigIntegerField().db_type()
+                    db_type = f.db_type(connection)
+                    bigint_type = BigIntegerField().db_type(connection=connection)
                     self.assertEquals(db_type, bigint_type) # oracleでは動かない
 
         qs = TestBigToSmallModel.objects.recently_updated()
@@ -69,12 +69,8 @@ class BigForeignKeyTest(DjangoTestCase):
         for obj in qs:
             for f in obj._meta.fields:
                 if f.name == "small_id_obj":
-                    if DJANGO_VERSION > (1,2):
-                        db_type = f.db_type(connection)
-                        int_type = models.IntegerField().db_type(connection=connection)
-                    else:
-                        db_type = f.db_type()
-                        int_type = models.IntegerField().db_type()
+                    db_type = f.db_type(connection)
+                    int_type = models.IntegerField().db_type(connection=connection)
                     self.assertEquals(db_type, int_type) # oracleでは動かない
 
     def test_manytomany_db_type(self):

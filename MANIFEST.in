@@ -1,0 +1,4 @@
+recursive-include beproud/django/commons/tests/models/base/fixtures *
+recursive-include beproud/django/commons/tests/models/fields/fixtures *
+recursive-include beproud/django/commons/tests/shortcuts/shortcuts_app/fixtures *
+recursive-include beproud/django/commons/tests/templates *

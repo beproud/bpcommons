@@ -8,6 +8,7 @@ syntax: glob
 *.pyc
 *.swp
 *.sqlite
+.tox
 dist
 build
 site_media
