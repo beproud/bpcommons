@@ -100,7 +100,6 @@ else:
     """
     For Django 1.1
     """
-    from django.utils.translation import ugettext_lazy as _
 
     class BigIntegerField(models.IntegerField):
         empty_strings_allowed = False
@@ -233,3 +232,15 @@ class JSONField(models.TextField):
     def value_to_string(self, obj):
         value = self._get_val_from_obj(obj)
         return self.get_db_prep_value(value)
+
+
+try:
+    from south.modelsinspector import add_introspection_rules
+
+    add_introspection_rules([
+
+        ((BigAutoField,), [], {},),
+
+    ], [r"^beproud\.django\.commons\.models"])
+except ImportError:
+    pass
