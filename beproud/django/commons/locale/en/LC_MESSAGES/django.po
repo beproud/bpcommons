@@ -1,0 +1,45 @@
+# English Translations for bpcommons
+# Copyright (C) 2012 BeProud Inc.
+# This file is distributed under the same license as the bpcommons package.
+# Ian Lewis <ian@beproud.jp>, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: bpcommons 0.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-06-11 14:35+0900\n"
+"PO-Revision-Date: 2012-06-11 14:35+0900\n"
+"Last-Translator: Ian Lewis <ian@beproud.jp>\n"
+"Language-Team: project <project@beproud.jp>\n"
+"Language: EN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: forms/fields.py:44
+msgid "Eメールアドレスの形式が不正です"
+msgstr "Enter a valid e-mail address."
+
+#: forms/fields.py:55
+msgid "半角英数字で入力してください"
+msgstr "Enter half-width English characters."
+
+#: forms/fields.py:66
+msgid "数字で入力してください"
+msgstr "Enter a whole number."
+
+#: forms/fields.py:77
+msgid "全角文字を入力してください。"
+msgstr "Enter full-width characters."
+
+#: forms/fields.py:88
+msgid "ひらがなで入力してください"
+msgstr "Enter Japanese Hiragana."
+
+#: models/fields.py:36 models/fields.py:106
+msgid "Big (8 byte) integer"
+msgstr ""
+
+#: models/fields.py:159
+msgid "This value must be a long integer."
+msgstr ""

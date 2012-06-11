@@ -1,4 +1,4 @@
-# vim:fileencoding=utf8
+#:coding=utf-8:
 
 import re
 import warnings

@@ -1,4 +1,5 @@
-# vim:fileencoding=utf8
+#:coding=utf-8:
+
 from types import StringType, UnicodeType
 from django.test import TestCase
 

@@ -1,4 +1,5 @@
-# vim:fileencoding=utf8
+#:coding=utf-8:
+
 from django import template
 from django.template.defaultfilters import stringfilter
 from django.utils.encoding import force_unicode

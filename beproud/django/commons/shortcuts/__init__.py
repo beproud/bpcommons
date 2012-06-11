@@ -1,4 +1,4 @@
-# vim:fileencoding=utf-8
+#:coding=utf-8:
 
 from beproud.django.commons.http import JSONResponse
 
