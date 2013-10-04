@@ -9,7 +9,7 @@ setup (
     description='Common utilities for Django',
     author='BeProud Inc.',
     author_email='ian@beproud.jp',
-    url='https://project.beproud.jp/hg/bpcommons/',
+    url='http://www.beproud.jp/',
     classifiers=[
       'Development Status :: 3 - Alpha',
       'Environment :: Plugins',
