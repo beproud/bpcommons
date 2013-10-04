@@ -6,8 +6,6 @@ bpcommonsとは？
 
 bpcommonsはDjango用のプロジェクト共有ライブラリです。
 
-https://project.beproud.jp/hg/bpcommons/
-
 目次:
 
 .. toctree::
