@@ -2,8 +2,8 @@
 #:coding=utf-8:
 
 from setuptools import setup, find_packages
- 
-setup (
+
+setup(
     name='beproud.django.commons',
     version='0.3',
     description='Common utilities for Django',
@@ -11,13 +11,13 @@ setup (
     author_email='ian@beproud.jp',
     url='http://www.beproud.jp/',
     classifiers=[
-      'Development Status :: 3 - Alpha',
-      'Environment :: Plugins',
-      'Framework :: Django',
-      'Intended Audience :: Developers',
-      'License :: OSI Approved :: BSD License',
-      'Programming Language :: Python',
-      'Topic :: Software Development :: Libraries :: Python Modules',
+        'Development Status :: 3 - Alpha',
+        'Environment :: Plugins',
+        'Framework :: Django',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: BSD License',
+        'Programming Language :: Python',
+        'Topic :: Software Development :: Libraries :: Python Modules',
     ],
     include_package_data=True,
     packages=find_packages(),
@@ -25,7 +25,7 @@ setup (
     install_requires=[
         'Django>=1.2',
         'zenhan>=0.4',
-        # 'bputils>=0.31'
+        # 'bputils>=0.34'
     ],
     test_suite='tests.main',
     zip_safe=False,

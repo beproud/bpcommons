@@ -2,6 +2,7 @@
 
 __all__ = ['sort_form_field']
 
+
 def sort_form_field(form_class, field_names):
     """
     フォームクラスのフィールドをソートする

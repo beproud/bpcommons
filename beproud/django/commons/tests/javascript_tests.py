@@ -1,12 +1,23 @@
 #:coding=utf-8:
 
+try:
+    import json
+except ImportError:
+    import simplejson as json
+
 from django.test import TestCase as DjangoTestCase
-from django.utils import simplejson
+from django.utils.functional import lazy
 
 from beproud.django.commons.utils.javascript import DjangoJSONEncoder
 
+__all__ = (
+    'DjangoJSONEncoderTestCase',
+)
+
+
 def dump_json(data):
-    return simplejson.dumps(data, cls=DjangoJSONEncoder)
+    return json.dumps(data, cls=DjangoJSONEncoder)
+
 
 class DjangoJSONEncoderTestCase(DjangoTestCase):
 
@@ -17,7 +28,6 @@ class DjangoJSONEncoderTestCase(DjangoTestCase):
 
     def test_lazy(self):
         # lazyオブジェクトテスト
-        from django.utils.functional import lazy
         def test_func():
             return "value"
         lazy_test_func = lazy(test_func, str)

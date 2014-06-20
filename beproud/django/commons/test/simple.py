@@ -1,5 +1,10 @@
 #:coding=utf-8:
 
+try:
+    import json
+except ImportError:
+    import simplejson as json
+
 from types import StringType, UnicodeType
 from django.test import TestCase
 
@@ -9,12 +14,14 @@ __all__ = (
     'URLTestCase',
 )
 
+
 class InvalidTest(Exception):
     def __init__(self, msg=''):
         self.msg = msg
 
     def __str__(self):
         return 'InvalidTest: %s' % self.msg
+
 
 class RequestTestCase(TestCase):
 
@@ -62,7 +69,6 @@ class RequestTestCase(TestCase):
     def assertNotFound(self, response):
         self.assertStatus(response, 404)
 
-
     def assertNotAllowed(self, response, allow=None):
         self.assertEquals(response.status_code, 405)
         if allow is not None:
@@ -72,33 +78,33 @@ class RequestTestCase(TestCase):
         self.assertEquals(response.status_code, 410)
 
     def assertHtml(self, response):
-        self.assertContains(response, "<html") # open tag
-        self.assertContains(response, "</html>") # close tag
+        self.assertContains(response, "<html")  # open tag
+        self.assertContains(response, "</html>")  # close tag
         self.assertContains(response, "<head")
         self.assertContains(response, "</head>")
         self.assertContains(response, "<body")
         self.assertContains(response, "</body>")
 
     def assertJson(self, response):
-        from django.utils import simplejson
         try:
-            return simplejson.loads(response.content)
-        except ValueError,e:
+            return json.loads(response.content)
+        except ValueError, e:
             self.fail(e.message)
 
     def assertXml(self, response):
         from xml.parsers import expat
         try:
-            p = expat.ParserCreate() 
+            p = expat.ParserCreate()
             return p.Parse(response.content)
         except expat.ExpatError, e:
             self.fail(e.message)
 
     def _assertLocationHeader(self, response, redirect_url=None):
-        if redirect_url is None: 
+        if redirect_url is None:
             self.assertTrue(response.get("Location", None) is not None)
         else:
             self.assertEquals(response.get("Location", None), redirect_url)
+
 
 class BaseURLTestCase(type):
     def __new__(cls, name, bases, attrs):
@@ -175,6 +181,7 @@ class BaseURLTestCase(type):
             attrs['test_url_%d%s' % (counter, name)] = _outer(url, check, method, headers, username, password, urlparams)
             counter += 1
         return type.__new__(cls, name, bases, attrs)
+
 
 class URLTestCase(RequestTestCase):
     """

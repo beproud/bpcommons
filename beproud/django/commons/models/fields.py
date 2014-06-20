@@ -4,14 +4,18 @@ import base64
 import warnings
 
 try:
-	import cPickle as pickle
+    import cPickle as pickle
 except ImportError:
-	import pickle
+    import pickle
+
+try:
+    import json
+except ImportError:
+    import simplejson as json
 
 from django import VERSION as DJANGO_VERSION
 from django.core import exceptions
 from django.utils.translation import ugettext_lazy as _
-from django.utils import simplejson
 from django.db import load_backend
 from django.db import connection
 from django.db import models
@@ -29,18 +33,19 @@ __all__ = (
     'JSONField',
 )
 
-if DJANGO_VERSION > (1,2):
+
+if DJANGO_VERSION > (1, 2):
     from django.db.models import BigIntegerField
 
     class BigAutoField(models.AutoField):
         description = _("Big (8 byte) integer")
-     
+
         CREATION_DATA = {
             'django.db.backends.mysql': "bigint AUTO_INCREMENT",
             'django.db.backends.oracle': "NUMBER(19)",
             'django.db.backends.postgresql': "bigserial",
             'django.db.backends.postgresql_psycopg2': "bigserial",
-            'django.db.backends.sqlite3': "integer", # Not a bigint!!!
+            'django.db.backends.sqlite3': "integer",  # Not a bigint!!!
         }
 
         def db_type(self, connection):
@@ -58,12 +63,12 @@ if DJANGO_VERSION > (1,2):
 
         def get_internal_type(self):
             return "BigAutoField"
-        
+
         def get_prep_value(self, value):
             if value is None:
                 return None
             return long(value)
-        
+
         def to_python(self, value):
             if value is None:
                 return value
@@ -83,13 +88,13 @@ if DJANGO_VERSION > (1,2):
 
         if (isinstance(rel_field, BigAutoField) or
                 (not connection.features.related_fields_match_type and
-                isinstance(rel_field, PositiveBigIntegerField))):
+                 isinstance(rel_field, PositiveBigIntegerField))):
             return BigIntegerField().db_type(connection=connection)
 
         if (isinstance(rel_field, models.AutoField) or
                 (not connection.features.related_fields_match_type and
-                isinstance(rel_field, (models.PositiveIntegerField,
-                                       models.PositiveSmallIntegerField)))):
+                 isinstance(rel_field, (models.PositiveIntegerField,
+                                        models.PositiveSmallIntegerField)))):
             return models.IntegerField().db_type(connection=connection)
         return rel_field.db_type(connection=connection)
 
@@ -105,6 +110,7 @@ else:
         empty_strings_allowed = False
         description = _("Big (8 byte) integer")
         MAX_BIGINT = 9223372036854775807
+
         def get_internal_type(self):
             return "BigIntegerField"
 
@@ -124,13 +130,13 @@ else:
             return 'bigint'
 
     class BigAutoField(models.AutoField):
-        
+
         CREATION_DATA = {
             'mysql': "bigint AUTO_INCREMENT",
             'oracle': "NUMBER(19)",
             'postgresql': "bigserial",
             'postgresql_psycopg2': "bigserial",
-            'sqlite3': "integer", # Not a bigint!!!
+            'sqlite3': "integer",  # Not a bigint!!!
         }
 
         def db_type(self):
@@ -148,7 +154,7 @@ else:
 
         def get_internal_type(self):
             return "BigAutoField"
-        
+
         def to_python(self, value):
             if value is None:
                 return value
@@ -169,19 +175,18 @@ else:
 
         if (isinstance(rel_field, BigAutoField) or
                 (not connection.features.related_fields_match_type and
-                isinstance(rel_field, PositiveBigIntegerField))):
+                 isinstance(rel_field, PositiveBigIntegerField))):
             return BigIntegerField().db_type()
 
         if (isinstance(rel_field, models.AutoField) or
                 (not connection.features.related_fields_match_type and
-                isinstance(rel_field, (models.PositiveIntegerField,
-                                       models.PositiveSmallIntegerField)))):
+                 isinstance(rel_field, (models.PositiveIntegerField,
+                                        models.PositiveSmallIntegerField)))):
             return models.IntegerField().db_type()
         return rel_field.db_type()
 
     # ForeignKey monkey-patch to support BigAutoId
     models.ForeignKey.db_type = fk_db_type
-
 
 
 class PositiveBigIntegerField(BigIntegerField):
@@ -192,24 +197,26 @@ class PositiveBigIntegerField(BigIntegerField):
         defaults.update(kwargs)
         return super(PositiveBigIntegerField, self).formfield(**defaults)
 
+
 class PickledObjectField(models.TextField):
     __metaclass__ = models.SubfieldBase
 
     def __init__(self, *args, **kwargs):
         warnings.warn('PickledObjectField is deprecated. Use django-picklefield instead.')
         super(PickledObjectField, self).__init__(*args, **kwargs)
- 
+
     def to_python(self, value):
-        if value is None: 
+        if value is None:
             return None
         if not isinstance(value, basestring):
             return value
         return pickle.loads(base64.b64decode(value))
- 
+
     def get_db_prep_save(self, value, connection=None):
-        if value is None: 
+        if value is None:
             return
         return base64.b64encode(pickle.dumps(value))
+
 
 class JSONField(models.TextField):
     __metaclass__ = models.SubfieldBase
@@ -217,25 +224,26 @@ class JSONField(models.TextField):
     def __init__(self, *args, **kwargs):
         warnings.warn('JSONField is deprecated. Use django-jsonfield instead.')
         super(JSONField, self).__init__(*args, **kwargs)
- 
+
     def formfield(self, **kwargs):
         defaults = {'widget': JSONWidget, 'form_class': JSONFormField}
         defaults.update(kwargs)
         return super(JSONField, self).formfield(**defaults)
- 
+
     def to_python(self, value):
         # If value is a bastring but empty then pass
         if isinstance(value, basestring):
             if value == '':
                 return None
             else:
-                value = simplejson.loads(value)
+                value = json.loads(value)
         return value
 
     def get_db_prep_value(self, value, connection=None, prepared=None):
-        if value is None: return
-        return simplejson.dumps(value, cls=DjangoJSONEncoder)
- 
+        if value is None:
+            return
+        return json.dumps(value, cls=DjangoJSONEncoder)
+
     def value_to_string(self, obj):
         value = self._get_val_from_obj(obj)
         return self.get_db_prep_value(value)

@@ -4,9 +4,14 @@ import re
 import warnings
 from types import StringType, UnicodeType
 
+try:
+    import json
+except ImportError:
+    import simplejson as json
+
 from django.forms import CharField, RegexField, ValidationError
 from django.utils.translation import ugettext_lazy as _
-from django.utils.encoding import smart_unicode 
+from django.utils.encoding import smart_unicode
 
 from widgets import JSONWidget
 
@@ -100,13 +105,12 @@ class JSONField(CharField):
         super(JSONField, self).__init__(*args, **kwargs)
 
     def to_python(self, value):
-        from django.utils import simplejson
         if value in ('', None):
             return u''
         if isinstance(value, basestring):
             return smart_unicode(value)
         else:
-            return simplejson.dumps(value)
+            return json.dumps(value)
 
     def clean(self, value):
         """
@@ -116,13 +120,12 @@ class JSONField(CharField):
         ２重呼び出すが、２回呼び出しても、同じ結果になるのを
         保証するので、大丈夫。
         """
-        from django.utils import simplejson
         value = super(JSONField, self).clean(self.to_python(value))
         if value in ('', None):
             return None
 
         try:
-            json_data = simplejson.loads(value)
+            json_data = json.loads(value)
         except Exception, e:
             raise ValidationError(self.error_messages['invalid'])
         return json_data

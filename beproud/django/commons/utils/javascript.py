@@ -1,13 +1,18 @@
 # vim:fileencoding=utf-8
 
+try:
+    import json
+except ImportError:
+    import simplejson as json
+
 from django.utils.encoding import force_unicode
-from django.utils import simplejson
 
 from beproud.utils.javascript import escapejs_json, SafeJSONEncoder
 
 __all__ = (
     'DjangoJSONEncoder',
 )
+
 
 class DjangoJSONEncoder(SafeJSONEncoder):
     def default(self, obj):

@@ -107,11 +107,20 @@ class JSONWidgetTest(DjangoTestCase):
             json = JSONField(label="json")
 
         form = JSONTestForm({"json": '{"spam": "eggs"}'})
-        self.assertEquals(str(form), '<tr><th><label for="id_json">json:</label></th><td><textarea id="id_json" rows="10" cols="40" name="json">{&quot;spam&quot;: &quot;eggs&quot;}</textarea></td></tr>')
+        rendered_form = str(form)
+        self.assertTrue("<tr" in rendered_form)
+        self.assertTrue("</tr>" in rendered_form)
+        self.assertTrue("<th" in rendered_form)
+        self.assertTrue("</th>" in rendered_form)
+        self.assertTrue("<textarea" in rendered_form)
+        self.assertTrue('name="json"' in rendered_form)
+        self.assertTrue('id="id_json"' in rendered_form)
+        self.assertTrue("{&quot;spam&quot;: &quot;eggs&quot;}" in rendered_form)
 
     def test_render(self):
         widget = JSONWidget()
-        self.assertEquals(
-            widget.render("json", {"spam": "eggs"}),
-            '<textarea rows="10" cols="40" name="json">{\n  &quot;spam&quot;: &quot;eggs&quot;\n}</textarea>');
+        rendered = widget.render("json", {"spam": "eggs"})
 
+        self.assertTrue("<textarea" in rendered)
+        self.assertTrue('name="json"' in rendered)
+        self.assertTrue("{\n  &quot;spam&quot;: &quot;eggs&quot;\n}" in rendered)
