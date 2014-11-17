@@ -4,10 +4,8 @@ from beproud.django.commons.models import DatedModel, BaseModel
 
 
 class TestDatedModel(DatedModel):
-    class Meta:
-        app_label = "base"
+    pass
 
 
 class TestBaseModel(BaseModel):
-    class Meta:
-        app_label = "base"
+    pass

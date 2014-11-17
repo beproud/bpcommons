@@ -19,10 +19,10 @@ def main():
     global_settings.INSTALLED_APPS = (
         'django.contrib.auth',
         'django.contrib.contenttypes',
-        'beproud.django.commons',
+        'beproud.django.commons.tests.test_shortcuts.shortcuts_app',
         'beproud.django.commons.tests.models.base',
         'beproud.django.commons.tests.models.fields',
-        'beproud.django.commons.tests.test_shortcuts.shortcuts_app',
+        'beproud.django.commons',
     )
 
     global_settings.DATABASES = {
