@@ -1,6 +1,11 @@
+#:coding=utf-8:
+
+from django.conf.urls import patterns
+
 __all__ = (
-  'Views',
+    'Views',
 )
+
 
 class Views(object):
     default_name = ''
@@ -16,7 +21,6 @@ class Views(object):
             self.app_name = app_name
 
     def patterns(self, *args, **kwargs):
-        from django.conf.urls.defaults import patterns
         return patterns(*args, **kwargs)
 
     def get_urls(self):

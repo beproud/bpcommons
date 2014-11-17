@@ -1,10 +1,11 @@
 #:coding=utf-8:
-from django.conf.urls.defaults import *
-from django.conf import settings
 
-from beproud.django.commons.tests.views_tests import TestViews
+from django.conf.urls import patterns, include
 
-urlpatterns = patterns('',
+from beproud.django.commons.tests.test_views import TestViews
+
+urlpatterns = patterns(
+    '',
     (r'', include(TestViews().urls)),
-    (r'json_response', 'beproud.django.commons.tests.http.test_json_response'),
+    (r'json_response', 'beproud.django.commons.tests.test_http.test_json_response'),
 )

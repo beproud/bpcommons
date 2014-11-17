@@ -26,14 +26,15 @@ __all__ = (
 )
 
 RE_EMAIL = re.compile(
-    r"^[-\.!#$%&'*+/=?^_`{}|~0-9A-Z]+" # account
-    r"@(?:[A-Z0-9]+(?:-*[A-Z0-9]+)*\.)+[A-Z]{2,6}$" # domain
-    , re.IGNORECASE
+    r"^[-\.!#$%&'*+/=?^_`{}|~0-9A-Z]+"  # account
+    r"@(?:[A-Z0-9]+(?:-*[A-Z0-9]+)*\.)+[A-Z]{2,6}$",  # domain
+    re.IGNORECASE
 )
 RE_ALPHA_NUM = re.compile(ur'^[a-zA-Z0-9\-_]*$')
 RE_NUM = re.compile(ur'^[0-9]*$')
 RE_FULL_WIDTH = re.compile(ur'[一-龠]+|[ぁ-ん]+|[ァ-ヴ]+|[０-９]+')
 RE_HIRAGANA = re.compile(ur'^[ぁ-ゞー〜～＆ 　、・]*$')
+
 
 class StripRegexField(RegexField):
     """
@@ -44,6 +45,7 @@ class StripRegexField(RegexField):
             value = value.strip()
         return super(StripRegexField, self).clean(value)
 
+
 class EmailField(StripRegexField):
     default_error_messages = {
         'invalid': _(u'Eメールアドレスの形式が不正です'),
@@ -51,6 +53,7 @@ class EmailField(StripRegexField):
 
     def __init__(self, *args, **kwargs):
         super(EmailField, self).__init__(RE_EMAIL, *args, **kwargs)
+
 
 class AlphaNumField(StripRegexField):
     """
@@ -63,6 +66,7 @@ class AlphaNumField(StripRegexField):
     def __init__(self, *args, **kwargs):
         super(AlphaNumField, self).__init__(RE_ALPHA_NUM, *args, **kwargs)
 
+
 class NumCharField(StripRegexField):
     """
     数字のみを許容するフィールド
@@ -73,6 +77,7 @@ class NumCharField(StripRegexField):
 
     def __init__(self, *args, **kwargs):
         super(NumCharField, self).__init__(RE_NUM, *args, **kwargs)
+
 
 class FullWidthCharField(StripRegexField):
     """
@@ -85,6 +90,7 @@ class FullWidthCharField(StripRegexField):
     def __init__(self, *args, **kwargs):
         super(FullWidthCharField, self).__init__(RE_FULL_WIDTH, *args, **kwargs)
 
+
 class HiraganaCharField(StripRegexField):
     u"""
     全角ひらがなのみ許容するフィールド
@@ -92,12 +98,18 @@ class HiraganaCharField(StripRegexField):
     default_error_messages = {
         'invalid': _(u'ひらがなで入力してください'),
     }
+
     def __init__(self, *args, **kwargs):
         super(HiraganaCharField, self).__init__(RE_HIRAGANA, *args, **kwargs)
 
+
 class JSONField(CharField):
     u""" JSONデータをポストする場合のフィールド。AJAXに便利かも """
-    
+    default_error_messages = {
+        'required': _('This field is required.'),
+        'invalid': _('Enter a valid value.'),
+    }
+
     def __init__(self, *args, **kwargs):
         warnings.warn('JSONField is deprecated. Use django-jsonfield instead.')
         if "widget" not in kwargs:
@@ -126,6 +138,6 @@ class JSONField(CharField):
 
         try:
             json_data = json.loads(value)
-        except Exception, e:
+        except Exception:
             raise ValidationError(self.error_messages['invalid'])
         return json_data
