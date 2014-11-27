@@ -13,8 +13,10 @@ __all__ = (
     'JSONWidgetTest',
 )
 
+
 class EmailTestForm(Form):
     email = EmailField(label="email")
+
 
 class EmailFieldTest(DjangoTestCase):
 
@@ -32,10 +34,11 @@ class EmailFieldTest(DjangoTestCase):
     def test_plus_email(self):
         form = EmailTestForm({"email": "spam+extra@eggs.com"})
         self.assertTrue(form.is_valid())
-    
+
     def test_multi_email(self):
         form = EmailTestForm({"email": "aaa spam+extra@eggs.com email@email.com"})
         self.assertFalse(form.is_valid())
+
 
 class JSONFormFieldTest(DjangoTestCase):
 
@@ -100,6 +103,7 @@ class JSONFormFieldTest(DjangoTestCase):
         form = JSONTestForm({'json': ''})
         self.assertTrue(form.is_valid())
         self.assertTrue(form.cleaned_data['json'] is None)
+
 
 class JSONWidgetTest(DjangoTestCase):
     def test_jsonwidget(self):

@@ -4,6 +4,7 @@ import os
 import sys
 import django
 
+
 def main():
     """
     Standalone django model test with a 'memory-only-django-installation'.
@@ -18,35 +19,39 @@ def main():
     global_settings.INSTALLED_APPS = (
         'django.contrib.auth',
         'django.contrib.contenttypes',
-        'beproud.django.commons',
+        'beproud.django.commons.tests.test_shortcuts.shortcuts_app',
         'beproud.django.commons.tests.models.base',
         'beproud.django.commons.tests.models.fields',
-        'beproud.django.commons.tests.shortcuts.shortcuts_app',
+        'beproud.django.commons',
     )
-    if django.VERSION > (1,2):
-        global_settings.DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.sqlite3',
-                'NAME': ':memory:',
-                'USER': '',
-                'PASSWORD': '',
-                'HOST': '',
-                'PORT': '',
-            }
+
+    global_settings.DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+            'USER': '',
+            'PASSWORD': '',
+            'HOST': '',
+            'PORT': '',
         }
-    else:
-        global_settings.DATABASE_ENGINE = "sqlite3"
-        global_settings.DATABASE_NAME = ":memory:"
+    }
     global_settings.ROOT_URLCONF = 'beproud.django.commons.tests.urls'
+
+    if django.VERSION > (1, 7):
+        django.setup()
 
     from django.test.utils import get_runner
     test_runner = get_runner(global_settings)
 
-    if django.VERSION > (1,2):
-        test_runner = test_runner()
-        failures = test_runner.run_tests(['commons'])
+    if django.VERSION > (1, 6):
+        # See: https://docs.djangoproject.com/en/1.6/topics/testing/overview/#running-tests
+        tests = ['beproud.django.commons']
     else:
-        failures = test_runner(['commons'], verbosity=1)
+        tests = ['commons']
+
+    test_runner = test_runner()
+    failures = test_runner.run_tests(tests)
+
     sys.exit(failures)
 
 if __name__ == '__main__':

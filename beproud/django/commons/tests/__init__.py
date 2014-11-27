@@ -1,13 +1,20 @@
-from javascript_tests import *
-from template_tests import *
-from cache_tests import *
-from views_tests import *
-from templatetags_tests import *
+#:coding=utf-8:
 
-from http import *
-from shortcuts import *
+# NOTE: Django 1.6 以上の場合はテストランナーは test*.py
+# というパターンにマッチするファイルしか認識しないので、
+# このファイル (__init__.py) に入っているテストは認識しない。
+# このファイルは主に Django 1.5以下のテストランナーのために
+# テストをインポートしています。
 
-from models.base.models import *
-from models.fields.models import *
+from beproud.django.commons.tests.test_javascript import *  # NOQA
+from beproud.django.commons.tests.test_template import *  # NOQA
+from beproud.django.commons.tests.test_cache import *  # NOQA
+from beproud.django.commons.tests.test_views import *  # NOQA
+from beproud.django.commons.tests.test_templatetags import *  # NOQA
+from beproud.django.commons.tests.test_http import *  # NOQA
+from beproud.django.commons.tests.test_shortcuts import *  # NOQA
 
-from forms.field_tests import *
+from beproud.django.commons.tests.models.base.tests import *  # NOQA
+from beproud.django.commons.tests.models.fields.tests import *  # NOQA
+
+from beproud.django.commons.tests.forms.test_field import *  # NOQA

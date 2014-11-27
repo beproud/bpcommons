@@ -1,5 +1,8 @@
 #:coding=utf-8:
+
 import os
+
+from BeautifulSoup import BeautifulSoup
 
 from django.test import TestCase as DjangoTestCase
 from django.conf import settings
@@ -12,6 +15,7 @@ __all__ = (
     'SwitchTestCase',
 )
 
+
 class StringTagsTestCase(DjangoTestCase):
 
     def setUp(self):
@@ -19,16 +23,19 @@ class StringTagsTestCase(DjangoTestCase):
 
     def tearDown(self):
         settings.TEMPLATE_DIRS = self.template_dirs
- 
+
     def test_abbrev(self):
         settings.TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), 'templates'),)
-        output = render_to_string("templatetags_tests/string_tags.html", {"my_data": "1234567890abcdefghi"})
-        self.assertEquals(output, "<html><body>1234567...</body></html>\n") 
+        output = render_to_string("templatetags_tests/string_tags.html",
+                                  {"my_data": "1234567890abcdefghi"})
+        self.assertEquals(output, "<html><body>1234567...</body></html>\n")
 
     def test_abbrev_filter_tag(self):
         settings.TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), 'templates'),)
-        output = render_to_string("templatetags_tests/string_tags2.html", {"my_data": "1234567890abcdefghi"})
-        self.assertEquals(output, "<html><body>1234567...</body></html>\n") 
+        output = render_to_string("templatetags_tests/string_tags2.html",
+                                  {"my_data": "1234567890abcdefghi"})
+        self.assertEquals(output, "<html><body>1234567...</body></html>\n")
+
 
 class HtmlTagsTestCase(DjangoTestCase):
 
@@ -37,20 +44,33 @@ class HtmlTagsTestCase(DjangoTestCase):
 
     def tearDown(self):
         settings.TEMPLATE_DIRS = self.template_dirs
- 
+
     def test_to_anchor(self):
         settings.TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), 'templates'),)
         output = render_to_string("templatetags_tests/to_anchor.html", {
             "my_data": u"これはテストデータ。http://www.beproud.jp/これはテストデータ。",
         })
-        self.assertEquals(output, u'<html><body>これはテストデータ。<a href="http://www.beproud.jp/" target="_blank" rel="nofollow">http://www.beproud.jp/</a>これはテストデータ。</body></html>\n')
+
+        soup = BeautifulSoup(output)
+        anchors = soup.findAll('a')
+        self.assertTrue(len(anchors), 1)
+        self.assertEquals(anchors[0]['target'], '_blank')
+        self.assertEquals(anchors[0]['rel'], 'nofollow')
+        self.assertEquals(anchors[0].contents[0], 'http://www.beproud.jp/')
 
     def test_to_anchortrunc(self):
         settings.TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), 'templates'),)
         output = render_to_string("templatetags_tests/to_anchortrunc.html", {
             "my_data": u"これはテストデータ。http://www.beproud.jp/これはテストデータ。",
         })
-        self.assertEquals(output, u'<html><body>これはテストデータ。<a href="http://www.beproud.jp/" target="_blank" rel="nofollow">http://www.b...</a>これはテストデータ。</body></html>\n')
+
+        soup = BeautifulSoup(output)
+        anchors = soup.findAll('a')
+        self.assertTrue(len(anchors), 1)
+        self.assertEquals(anchors[0]['target'], '_blank')
+        self.assertEquals(anchors[0]['rel'], 'nofollow')
+        self.assertEquals(anchors[0].contents[0], 'http://www.b...')
+
 
 class SwitchTestCase(DjangoTestCase):
 
