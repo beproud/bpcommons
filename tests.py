@@ -35,6 +35,20 @@ def main():
             'PORT': '',
         }
     }
+
+    # For MySQL
+    # NOTE: Django < 1.7 の場合は bpcommons データベースは存在しないとダメ
+    #global_settings.DATABASES = {
+    #    'default': {
+    #        'ENGINE': 'django.db.backends.mysql',
+    #        'NAME': 'bpcommons',
+    #        'USER': '<user>',
+    #        'PASSWORD': '<password>',
+    #        'HOST': '<host>,
+    #        #'PORT': '',
+    #    }
+    #}
+
     global_settings.ROOT_URLCONF = 'beproud.django.commons.tests.urls'
 
     if django.VERSION > (1, 7):
@@ -49,7 +63,7 @@ def main():
     else:
         tests = ['commons']
 
-    test_runner = test_runner()
+    test_runner = test_runner(interactive=False)
     failures = test_runner.run_tests(tests)
 
     sys.exit(failures)
