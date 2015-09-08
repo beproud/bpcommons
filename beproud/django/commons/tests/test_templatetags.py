@@ -2,7 +2,11 @@
 
 import os
 
-from BeautifulSoup import BeautifulSoup
+try:
+    from BeautifulSoup import BeautifulSoup
+except ImportError:
+    from bs4 import BeautifulSoup
+
 
 from django.test import TestCase as DjangoTestCase
 from django.conf import settings
