@@ -1,5 +1,6 @@
 #:coding=utf-8:
 
+import sys
 import base64
 import warnings
 
@@ -16,7 +17,12 @@ except ImportError:
 from django import VERSION as DJANGO_VERSION
 from django.core import exceptions
 from django.utils.translation import ugettext_lazy as _
-from django.db import load_backend
+
+if DJANGO_VERSION > (1, 7):
+    from django.db.utils import load_backend
+else:
+    from django.db import load_backend
+
 from django.db.models import BigIntegerField
 
 from django.db import models
@@ -32,6 +38,10 @@ __all__ = (
     'PickledObjectField',
     'JSONField',
 )
+
+
+if sys.version_info[0] == 3:
+    long = int
 
 
 class BigAutoField(models.AutoField):

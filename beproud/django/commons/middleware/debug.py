@@ -7,5 +7,5 @@ class DebugMiddleware(object):
         if settings.DEBUG: 
             from django.db import connection
             for query in connection.queries:
-                print query
+                print(query)
         return response

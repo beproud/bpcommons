@@ -5,7 +5,7 @@ try:
 except ImportError:
     import simplejson as json
 
-from django.utils.encoding import force_unicode
+from django.utils.encoding import force_text
 
 from beproud.utils.javascript import escapejs_json, SafeJSONEncoder
 
@@ -23,6 +23,6 @@ class DjangoJSONEncoder(SafeJSONEncoder):
             # lazy翻訳オブジェクトなどの対応
             from django.utils.functional import Promise
             if isinstance(obj, Promise):
-                return escapejs_json(force_unicode(obj))
+                return escapejs_json(force_text(obj))
             else:
                 raise
