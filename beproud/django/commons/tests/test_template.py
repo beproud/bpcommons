@@ -2,7 +2,18 @@
 
 from django import VERSION as DJANGO_VERSION
 from django.test import TestCase as DjangoTestCase
-from django.template import Template, Lexer, Parser, TemplateSyntaxError
+from django.template import Template, TemplateSyntaxError
+try:
+    from django.template import (
+        Lexer,
+        Parser,
+    )
+except ImportError:
+    from django.template.base import (
+        Lexer,
+        Parser,
+    )
+
 from django.template.loader import LoaderOrigin 
 from django.template.context import Context
 
@@ -14,7 +25,10 @@ class BaseTemplateTagTest(object):
 
     def _render_html(self, template_string, context={}):
         # :(
-        if DJANGO_VERSION > (1,2):
+        if DJANGO_VERSION > (1,7):
+            from django.template.base import import_library
+            tag_lib = import_library('beproud.django.commons.tests.test_tags')
+        elif DJANGO_VERSION > (1,2):
             from django.template import import_library
             tag_lib = import_library('beproud.django.commons.tests.test_tags')
         else:
