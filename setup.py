@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='beproud.django.commons',
-    version='0.33',
+    version='0.34',
     description='Common utilities for Django',
     author='BeProud Inc.',
     author_email='ian@beproud.jp',
