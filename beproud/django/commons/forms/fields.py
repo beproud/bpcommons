@@ -1,8 +1,9 @@
 #:coding=utf-8:
 
+from __future__ import absolute_import
 import re
+import sys
 import warnings
-from types import StringType, UnicodeType
 
 try:
     import json
@@ -11,9 +12,9 @@ except ImportError:
 
 from django.forms import CharField, RegexField, ValidationError
 from django.utils.translation import ugettext_lazy as _
-from django.utils.encoding import smart_unicode
+from django.utils.encoding import smart_text
 
-from widgets import JSONWidget
+from .widgets import JSONWidget
 
 __all__ = (
     'StripRegexField',
@@ -25,15 +26,37 @@ __all__ = (
     'JSONField',
 )
 
+
+PY2 = sys.version_info[0] == 2
+PY3 = sys.version_info[0] == 3
+
+
 RE_EMAIL = re.compile(
     r"^[-\.!#$%&'*+/=?^_`{}|~0-9A-Z]+"  # account
     r"@(?:[A-Z0-9]+(?:-*[A-Z0-9]+)*\.)+[A-Z]{2,6}$",  # domain
     re.IGNORECASE
 )
-RE_ALPHA_NUM = re.compile(ur'^[a-zA-Z0-9\-_]*$')
-RE_NUM = re.compile(ur'^[0-9]*$')
-RE_FULL_WIDTH = re.compile(ur'[一-龠]+|[ぁ-ん]+|[ァ-ヴ]+|[０-９]+')
-RE_HIRAGANA = re.compile(ur'^[ぁ-ゞー〜～＆ 　、・]*$')
+
+
+def unicode_re_pattern_py2(string):
+    """
+    :type string: str
+    """
+    return re.compile(string.decode('utf-8'))
+
+
+if PY2:
+    unicode_re = unicode_re_pattern_py2
+    from types import StringType, UnicodeType
+elif PY3:
+    unicode_re = re.compile
+    StringType, UnicodeType = bytes, str
+
+
+RE_ALPHA_NUM = unicode_re(r'^[a-zA-Z0-9\-_]*$')
+RE_NUM = unicode_re(r'^[0-9]*$')
+RE_FULL_WIDTH = unicode_re(r'[一-龠]+|[ぁ-ん]+|[ァ-ヴ]+|[０-９]+')
+RE_HIRAGANA = unicode_re(r'^[ぁ-ゞー〜～＆ 　、・]*$')
 
 
 class StripRegexField(RegexField):
@@ -120,7 +143,7 @@ class JSONField(CharField):
         if value in ('', None):
             return u''
         if isinstance(value, basestring):
-            return smart_unicode(value)
+            return smart_text(value)
         else:
             return json.dumps(value)
 

@@ -5,7 +5,12 @@ try:
 except ImportError:
     import simplejson as json
 
-from types import StringType, UnicodeType
+import sys
+if sys.version_info[0] == 2:
+    from types import StringType, UnicodeType
+elif sys.version_info[0] == 3:
+    StringType = bytes
+    UnicodeType = str
 from django.test import TestCase
 
 __all__ = (
@@ -88,7 +93,7 @@ class RequestTestCase(TestCase):
     def assertJson(self, response):
         try:
             return json.loads(response.content)
-        except ValueError, e:
+        except ValueError as e:
             self.fail(e.message)
 
     def assertXml(self, response):
@@ -96,7 +101,7 @@ class RequestTestCase(TestCase):
         try:
             p = expat.ParserCreate()
             return p.Parse(response.content)
-        except expat.ExpatError, e:
+        except expat.ExpatError as e:
             self.fail(e.message)
 
     def _assertLocationHeader(self, response, redirect_url=None):
