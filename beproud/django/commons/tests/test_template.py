@@ -2,9 +2,18 @@
 
 from django import VERSION as DJANGO_VERSION
 from django.test import TestCase as DjangoTestCase
-from django.template import Template, Lexer, Parser, TemplateSyntaxError
+from django.template import Template, TemplateSyntaxError
 from django.template.loader import LoaderOrigin 
 from django.template.context import Context
+
+if DJANGO_VERSION > (1, 7):
+    from django.template.base import Lexer, Parser, import_library
+else:
+    from django.template import Lexer, Parser
+    if DJANGO_VERSION > (1, 2):
+        from django.template import import_library
+    else:
+        from django.template import get_library as import_library
 
 
 class BaseTemplateTagTest(object):
@@ -13,13 +22,7 @@ class BaseTemplateTagTest(object):
         return LoaderOrigin("Commons Test", lambda x,y: ("<string>", "<string>"), "commons", [])
 
     def _render_html(self, template_string, context={}):
-        # :(
-        if DJANGO_VERSION > (1,2):
-            from django.template import import_library
-            tag_lib = import_library('beproud.django.commons.tests.test_tags')
-        else:
-            from django.template import get_library
-            tag_lib = get_library('beproud.django.commons.tests.test_tags')
+        tag_lib = import_library('beproud.django.commons.tests.test_tags')
 
         lexer = Lexer(template_string, self._make_origin())
         parser = Parser(lexer.tokenize())
@@ -35,12 +38,12 @@ class DataTemplateTagTestCase(BaseTemplateTagTest, DjangoTestCase):
 
     def test_data_template_tag(self):
         self.assertEquals(self._render_html(self.TEMPLATE_STRING), "<html><body>MY DATA</body></html>")
-    
+
     def test_bad_template_tag(self):
         try:
             html = self._render_html(self.BAD_TEMPLATE_STRING)
             self.fail("Expected Fail: %s" % html)
-        except TemplateSyntaxError, e:
+        except TemplateSyntaxError as e:
             pass
 
 class KwargDataTemplateTagTestCase(BaseTemplateTagTest, DjangoTestCase):
@@ -76,12 +79,12 @@ class KwargDataTemplateTagTestCase(BaseTemplateTagTest, DjangoTestCase):
         try:
             html = self._render_html(self.BAD_TEMPLATE_STRING1)
             self.fail("Expected Fail: %s" % html)
-        except TemplateSyntaxError, e:
+        except TemplateSyntaxError as e:
             pass
 
     def test_bad_template_tag2(self):
         try:
             html = self._render_html(self.BAD_TEMPLATE_STRING2)
             self.fail("Expected Fail: %s" % html)
-        except TemplateSyntaxError, e:
+        except TemplateSyntaxError as e:
             pass
