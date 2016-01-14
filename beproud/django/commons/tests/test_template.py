@@ -14,7 +14,7 @@ except ImportError:
         Parser,
     )
 
-from django.template.loader import LoaderOrigin 
+from django.template.loader import LoaderOrigin
 from django.template.context import Context
 
 
@@ -25,7 +25,10 @@ class BaseTemplateTagTest(object):
 
     def _render_html(self, template_string, context={}):
         # :(
-        if DJANGO_VERSION > (1,7):
+        if DJANGO_VERSION > (1,9):
+            from django.template.library import import_library
+            tag_lib = import_library('beproud.django.commons.tests.test_tags')
+        elif DJANGO_VERSION > (1,7):
             from django.template.base import import_library
             tag_lib = import_library('beproud.django.commons.tests.test_tags')
         elif DJANGO_VERSION > (1,2):
@@ -35,7 +38,10 @@ class BaseTemplateTagTest(object):
             from django.template import get_library
             tag_lib = get_library('beproud.django.commons.tests.test_tags')
 
-        lexer = Lexer(template_string, self._make_origin())
+        if DJANGO_VERSION > (1,9):
+            lexer = Lexer(template_string)
+        else:
+            lexer = Lexer(template_string, self._make_origin())
         parser = Parser(lexer.tokenize())
         parser.add_library(tag_lib)
         nodelist = parser.parse()
@@ -49,7 +55,7 @@ class DataTemplateTagTestCase(BaseTemplateTagTest, DjangoTestCase):
 
     def test_data_template_tag(self):
         self.assertEquals(self._render_html(self.TEMPLATE_STRING), "<html><body>MY DATA</body></html>")
-    
+
     def test_bad_template_tag(self):
         try:
             html = self._render_html(self.BAD_TEMPLATE_STRING)
@@ -76,7 +82,7 @@ class KwargDataTemplateTagTestCase(BaseTemplateTagTest, DjangoTestCase):
 
     def test_kwarg_data_template_tag2(self):
         self.assertEquals(self._render_html(self.TEMPLATE_STRING2), self.BASE_HTML % "121:spam:other")
-    
+
     def test_kwarg_data_template_tag3(self):
         self.assertEquals(self._render_html(self.TEMPLATE_STRING3), self.BASE_HTML % "121:None:eggs")
 
