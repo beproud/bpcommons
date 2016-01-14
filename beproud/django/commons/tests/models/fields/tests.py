@@ -1,4 +1,5 @@
 #:coding=utf-8:
+import os
 
 from django.db import models
 from django.db import connection
@@ -14,8 +15,11 @@ from beproud.django.commons.tests.models.fields.models import (
     JSONFieldTestModel,
 )
 
+here = os.path.dirname(__file__)
+
 
 class BigForeignKeyTest(DjangoTestCase):
+    fixtures = [os.path.join(here, 'fixtures', 'initial_data.json')]
 
     def test_simple(self):
         qs = TestBigIntModel.objects.recently_updated()

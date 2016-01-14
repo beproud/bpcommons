@@ -1,11 +1,16 @@
 #:coding=utf-8:
+import os
 
 from django.test import TestCase as DjangoTestCase
 
 from beproud.django.commons.tests.models.base.models import TestDatedModel, TestBaseModel
 
 
+here = os.path.dirname(__file__)
+
+
 class DatedModelTest(DjangoTestCase):
+    fixtures = [os.path.join(here, 'fixtures', 'initial_data.json')]
 
     def test_simple(self):
         qs = TestDatedModel.objects.recently_updated()
@@ -21,6 +26,7 @@ class DatedModelTest(DjangoTestCase):
 
 
 class BaseModelTest(DjangoTestCase):
+    fixtures = [os.path.join(here, 'fixtures', 'initial_data.json')]
 
     def test_be(self):
         qs = TestBaseModel.objects.be()
