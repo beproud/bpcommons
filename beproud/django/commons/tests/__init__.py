@@ -5,16 +5,18 @@
 # このファイル (__init__.py) に入っているテストは認識しない。
 # このファイルは主に Django 1.5以下のテストランナーのために
 # テストをインポートしています。
+import django
 
-from beproud.django.commons.tests.test_javascript import *  # NOQA
-from beproud.django.commons.tests.test_template import *  # NOQA
-from beproud.django.commons.tests.test_cache import *  # NOQA
-from beproud.django.commons.tests.test_views import *  # NOQA
-from beproud.django.commons.tests.test_templatetags import *  # NOQA
-from beproud.django.commons.tests.test_http import *  # NOQA
-from beproud.django.commons.tests.test_shortcuts import *  # NOQA
+if django.VERSION < (1, 9):
+    from beproud.django.commons.tests.test_javascript import *  # NOQA
+    from beproud.django.commons.tests.test_template import *  # NOQA
+    from beproud.django.commons.tests.test_cache import *  # NOQA
+    from beproud.django.commons.tests.test_views import *  # NOQA
+    from beproud.django.commons.tests.test_templatetags import *  # NOQA
+    from beproud.django.commons.tests.test_http import *  # NOQA
+    from beproud.django.commons.tests.test_shortcuts import *  # NOQA
 
-from beproud.django.commons.tests.models.base.tests import *  # NOQA
-from beproud.django.commons.tests.models.fields.tests import *  # NOQA
+    from beproud.django.commons.tests.models.base.tests import *  # NOQA
+    from beproud.django.commons.tests.models.fields.tests import *  # NOQA
 
-from beproud.django.commons.tests.forms.test_field import *  # NOQA
+    from beproud.django.commons.tests.forms.test_field import *  # NOQA

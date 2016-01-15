@@ -1,6 +1,10 @@
 # vim:fileencoding=utf-8
 
-from django.utils.datastructures import SortedDict
+try:
+    from collections import OrderedDict as SortedDict
+except ImportError:
+    from django.utils.datastructures import SortedDict
+
 
 __all__ = (
     'Choices',
