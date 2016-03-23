@@ -27,7 +27,7 @@ __all__ = (
 
 RE_EMAIL = re.compile(
     r"^[-\.!#$%&'*+/=?^_`{}|~0-9A-Z]+"  # account
-    r"@(?:[A-Z0-9]+(?:-*[A-Z0-9]+)*\.)+[A-Z0-9\-]{2,15}$",  # domain
+    r"@(?:[A-Z0-9]+(?:-*[A-Z0-9]+)*\.)+(xn--[A-Z0-9\-]{2,15}|[A-Z]{2,15})$",  # domain
     re.IGNORECASE
 )
 RE_ALPHA_NUM = re.compile(ur'^[a-zA-Z0-9\-_]*$')
