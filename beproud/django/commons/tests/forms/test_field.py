@@ -41,10 +41,10 @@ class EmailFieldTest(DjangoTestCase):
 
     def test_longtld(self):
         form = EmailTestForm({"email": "spam@eggs.engineer"})
-        self.assert(form.is_valid())
+        self.assertTrue(form.is_valid())
 
         form = EmailTestForm({"email": "spam@eggs.xn--i1b6b1a6a2e"})
-        self.assert(form.is_valid())
+        self.assertTrue(form.is_valid())
 
 
 class JSONFormFieldTest(DjangoTestCase):
