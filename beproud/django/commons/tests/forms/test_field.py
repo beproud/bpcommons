@@ -43,6 +43,7 @@ class EmailFieldTest(DjangoTestCase):
         form = EmailTestForm({"email": "spam@eggs.engineer"})
         self.assertTrue(form.is_valid())
 
+    def test_punycode(self):
         form = EmailTestForm({"email": "spam@eggs.xn--i1b6b1a6a2e"})
         self.assertTrue(form.is_valid())
 
