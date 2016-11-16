@@ -2,7 +2,7 @@
 
 from django import VERSION as DJANGO_VERSION
 from django.test import TestCase as DjangoTestCase
-from django.template import Template, TemplateSyntaxError
+from django.template import TemplateSyntaxError
 try:
     from django.template import (
         Lexer,
@@ -28,15 +28,9 @@ class BaseTemplateTagTest(object):
         if DJANGO_VERSION > (1,9):
             from django.template.library import import_library
             tag_lib = import_library('beproud.django.commons.tests.test_tags')
-        elif DJANGO_VERSION > (1,7):
+        else:  # DJANGO_VERSION > (1,7):
             from django.template.base import import_library
             tag_lib = import_library('beproud.django.commons.tests.test_tags')
-        elif DJANGO_VERSION > (1,2):
-            from django.template import import_library
-            tag_lib = import_library('beproud.django.commons.tests.test_tags')
-        else:
-            from django.template import get_library
-            tag_lib = get_library('beproud.django.commons.tests.test_tags')
 
         if DJANGO_VERSION > (1,9):
             lexer = Lexer(template_string)

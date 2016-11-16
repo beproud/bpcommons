@@ -78,21 +78,6 @@
 
 .. class:: JSONField
 
+   .. deprecated:: 0.37
 
-    JSONデータのポストデータを受け取れる、AJAXに便利なフィールド::
-
-        from django import forms
-        from commons.forms import JSONField 
-
-        class MyForm(forms.Form):
-            json_data = JSONField()
-
-    検証する時にJSONを解析してくれます::
-
-        @ajax_view
-        def my_ajax_view(request):
-            form = MyForm(request.POST)
-            if form.is_valid():
-                json_data = form.cleaned_data["json_data"]
-                field3 = json_data["field1"] + json_data["field2"]
-                ...
+      削除されました。

@@ -6,13 +6,12 @@ from django.db import connection
 from django.test import TestCase as DjangoTestCase
 from django.core.exceptions import ValidationError
 
-from beproud.django.commons.models import BigIntegerField, JSONField
+from beproud.django.commons.models import BigIntegerField
 from beproud.django.commons.tests.models.fields.models import (
     TestBigIntModel,
     TestBigToSmallModel,
     ManyToManyTestModel,
     BigIDModel,
-    JSONFieldTestModel,
 )
 
 here = os.path.dirname(__file__)
@@ -77,53 +76,3 @@ class BadBigAutoIdTest(DjangoTestCase):
             self.fail("Expected fail")
         except ValidationError:
             pass
-
-
-class JSONFieldTest(DjangoTestCase):
-    def test_json_field(self):
-        obj = JSONFieldTestModel(json='''{
-            "spam": "eggs"
-        }''')
-        self.assertEquals(obj.json, {'spam': 'eggs'})
-
-    def test_json_field_empty(self):
-        obj = JSONFieldTestModel(json='')
-        self.assertEquals(obj.json, None)
-
-    def test_json_field_save(self):
-        JSONFieldTestModel.objects.create(
-            id=10,
-            json='''{
-                "spam": "eggs"
-            }''',
-        )
-        obj2 = JSONFieldTestModel.objects.get(id=10)
-        self.assertEquals(obj2.json, {'spam': 'eggs'})
-
-    def test_json_field_save_empty(self):
-        JSONFieldTestModel.objects.create(id=10, json='')
-        obj2 = JSONFieldTestModel.objects.get(id=10)
-        self.assertEquals(obj2.json, None)
-
-    def test_db_prep_value(self):
-        field = JSONField(u"test")
-        field.set_attributes_from_name("json")
-        self.assertEquals(None, field.get_db_prep_value(None))
-        self.assertEquals('{"spam": "eggs"}', field.get_db_prep_value({"spam": "eggs"}))
-
-    def test_value_to_string(self):
-        field = JSONField(u"test")
-        field.set_attributes_from_name("json")
-        obj = JSONFieldTestModel(json='''{
-            "spam": "eggs"
-        }''')
-        self.assertEquals('{"spam": "eggs"}', field.value_to_string(obj))
-
-    def test_formfield(self):
-        from beproud.django.commons.forms import JSONField as JSONFormField
-        from beproud.django.commons.forms.widgets import JSONWidget
-        field = JSONField(u"test")
-        field.set_attributes_from_name("json")
-        formfield = field.formfield()
-        self.assertEquals(type(formfield), JSONFormField)
-        self.assertEquals(type(formfield.widget), JSONWidget)

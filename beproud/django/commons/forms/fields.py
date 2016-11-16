@@ -9,11 +9,8 @@ try:
 except ImportError:
     import simplejson as json
 
-from django.forms import CharField, RegexField, ValidationError
+from django.forms import RegexField
 from django.utils.translation import ugettext_lazy as _
-from django.utils.encoding import smart_unicode
-
-from widgets import JSONWidget
 
 __all__ = (
     'StripRegexField',
@@ -22,7 +19,6 @@ __all__ = (
     'NumCharField',
     'FullWidthCharField',
     'HiraganaCharField',
-    'JSONField',
 )
 
 RE_EMAIL = re.compile(
@@ -101,43 +97,3 @@ class HiraganaCharField(StripRegexField):
 
     def __init__(self, *args, **kwargs):
         super(HiraganaCharField, self).__init__(RE_HIRAGANA, *args, **kwargs)
-
-
-class JSONField(CharField):
-    u""" JSONデータをポストする場合のフィールド。AJAXに便利かも """
-    default_error_messages = {
-        'required': _('This field is required.'),
-        'invalid': _('Enter a valid value.'),
-    }
-
-    def __init__(self, *args, **kwargs):
-        warnings.warn('JSONField is deprecated. Use django-jsonfield instead.')
-        if "widget" not in kwargs:
-            kwargs["widget"] = JSONWidget
-        super(JSONField, self).__init__(*args, **kwargs)
-
-    def to_python(self, value):
-        if value in ('', None):
-            return u''
-        if isinstance(value, basestring):
-            return smart_unicode(value)
-        else:
-            return json.dumps(value)
-
-    def clean(self, value):
-        """
-        Django 1.1 の場合、to_python()がないので、
-        ここで、to_python() を呼び出して、super().clean()に渡す。
-        Django 1.2 の場合、clean() の中に to_python() を
-        ２重呼び出すが、２回呼び出しても、同じ結果になるのを
-        保証するので、大丈夫。
-        """
-        value = super(JSONField, self).clean(self.to_python(value))
-        if value in ('', None):
-            return None
-
-        try:
-            json_data = json.loads(value)
-        except Exception:
-            raise ValidationError(self.error_messages['invalid'])
-        return json_data

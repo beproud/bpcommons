@@ -2,9 +2,9 @@
 
 import os
 
-from django.conf.urls import url, patterns
+from django.conf.urls import url
 from django.http import HttpRequest, HttpResponse
-from django.test import TestCase as DjangoTestCase
+from django.test import TestCase as DjangoTestCase, override_settings
 from django.conf import settings
 
 from beproud.django.commons.views.decorators import render_to, ajax_request
@@ -18,14 +18,13 @@ class TestViews(Views):
 
     def get_urls(self):
         urls = super(TestViews, self).get_urls()
-        my_urls = patterns(
-            '',
+        my_urls = [
             url(
                 r'^test$',
                 self.test,
                 name='testview_test',
             ),
-        )
+        ]
         return my_urls + urls
 
 
@@ -46,20 +45,17 @@ def myview2(request):
     return HttpResponse("Error!")
 
 
+@override_settings(TEMPLATES=[{
+    'DIRS': [os.path.join(os.path.dirname(__file__), 'templates')],
+    'BACKEND': 'django.template.backends.django.DjangoTemplates',
+}])
 class RenderToTestCase(DjangoTestCase):
-    def setUp(self):
-        self.template_dirs = settings.TEMPLATE_DIRS
-
-    def tearDown(self):
-        settings.TEMPLATE_DIRS = self.template_dirs
 
     def test_render_to(self):
-        settings.TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), 'templates'),)
         resp = myview(HttpRequest())
         self.assertEquals(resp.content, '<html><body>MY VALUE</body></html>\n')
 
     def test_render_to_httpresponse(self):
-        settings.TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), 'templates'),)
         resp = myview2(HttpRequest())
         self.assertEquals(resp.content, 'Error!')
 

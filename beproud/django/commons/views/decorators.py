@@ -2,14 +2,13 @@
 
 from functools import wraps
 
-from django.shortcuts import render_to_response
-from django.template import RequestContext
+from django.shortcuts import render
 
 from beproud.django.commons.http import JSONResponse
 
 def render_to(template=None):
     """
-    Decorator for Django views that sends returned dict to render_to_response function.
+    Decorator for Django views that sends returned dict to render function.
 
     Template name can be decorator parameter or TEMPLATE item in returned dictionary.
     RequestContext always added as context instance.
@@ -29,9 +28,7 @@ def render_to(template=None):
     # equals to 
     def foo(request):
         bar = Bar.object.all()  
-        return render_to_response('template.html', 
-                                  {'bar': bar}, 
-                                  context_instance=RequestContext(request))
+        return render(request, 'template.html', {'bar': bar})
 
 
     # 2. Template name as TEMPLATE item value in return dictionary
@@ -44,9 +41,7 @@ def render_to(template=None):
     #equals to
     def foo(request, category):
         template_name = '%s.html' % category
-        return render_to_response(template_name, 
-                                  {'bar': bar}, 
-                                  context_instance=RequestContext(request))
+        return render(request, template_name, {'bar': bar})
 
     Taken from django-annoying
     """
@@ -57,7 +52,7 @@ def render_to(template=None):
             if not isinstance(output, dict):
                 return output
             tmpl = output.pop('TEMPLATE', template)
-            return render_to_response(tmpl, output, context_instance=RequestContext(request))
+            return render(request, tmpl, context=output)
         return wrapper
     return renderer
 
