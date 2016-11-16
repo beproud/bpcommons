@@ -81,3 +81,4 @@
    .. deprecated:: 0.37
 
       削除されました。
+      https://pypi.python.org/pypi/jsonfield を使用して下さい。

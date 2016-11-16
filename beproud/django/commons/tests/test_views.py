@@ -5,10 +5,8 @@ import os
 from django.conf.urls import url
 from django.http import HttpRequest, HttpResponse
 from django.test import TestCase as DjangoTestCase, override_settings
-from django.conf import settings
 
 from beproud.django.commons.views.decorators import render_to, ajax_request
-from beproud.django.commons.http import JSONResponse
 from beproud.django.commons.views import Views
 
 
@@ -80,15 +78,3 @@ class AjaxResponseTestCase(DjangoTestCase):
         resp = my_ajax_view2(HttpRequest())
         self.assertEquals(resp["content-type"], 'text/html; charset=utf-8')
         self.assertEquals(resp.content, 'Error!')
-
-
-def my_json_view(request):
-    return JSONResponse({"msg": "テスト"}, status=400)
-
-
-class JSONResponseTestCase(DjangoTestCase):
-    def test_json_view(self):
-        resp = my_json_view(HttpRequest())
-        self.assertEquals(resp["content-type"], 'application/json')
-        self.assertEquals(resp.content, r'{"msg": "\u30c6\u30b9\u30c8"}')
-        self.assertEquals(resp.status_code, 400)

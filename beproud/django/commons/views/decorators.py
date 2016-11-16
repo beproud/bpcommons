@@ -3,8 +3,8 @@
 from functools import wraps
 
 from django.shortcuts import render
+from django.http import JsonResponse
 
-from beproud.django.commons.http import JSONResponse
 
 def render_to(template=None):
     """
@@ -74,7 +74,7 @@ def ajax_request(func):
     def wrapper(request, *args, **kwargs):
         response = func(request, *args, **kwargs)
         if isinstance(response, (dict, list, tuple)):
-            return JSONResponse(response)
+            return JsonResponse(response)
         else:
             return response
     return wrapper
