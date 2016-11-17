@@ -1,6 +1,6 @@
 #:coding=utf-8:
 
-from beproud.django.commons.http import JSONResponse
+from django.http import JsonResponse
 
 __all__ = (
         'get_object_or_None',
@@ -32,7 +32,7 @@ def make_simple_response(msg=u'処理が成功しました', extra_context=None,
     obj = {'msg': msg}
     if extra_context:
         obj.update(extra_context)
-    return JSONResponse(obj, status=status, content_type=content_type)
+    return JsonResponse(obj, status=status, content_type=content_type)
 
 def make_simple_response400(msg=u'パラメータが不正です'):
     return make_simple_response(msg, status=400)

@@ -2,13 +2,11 @@
 
 import os
 
-from django.conf.urls import url, patterns
+from django.conf.urls import url
 from django.http import HttpRequest, HttpResponse
-from django.test import TestCase as DjangoTestCase
-from django.conf import settings
+from django.test import TestCase as DjangoTestCase, override_settings
 
 from beproud.django.commons.views.decorators import render_to, ajax_request
-from beproud.django.commons.http import JSONResponse
 from beproud.django.commons.views import Views
 
 
@@ -18,14 +16,13 @@ class TestViews(Views):
 
     def get_urls(self):
         urls = super(TestViews, self).get_urls()
-        my_urls = patterns(
-            '',
+        my_urls = [
             url(
                 r'^test$',
                 self.test,
                 name='testview_test',
             ),
-        )
+        ]
         return my_urls + urls
 
 
@@ -46,20 +43,17 @@ def myview2(request):
     return HttpResponse("Error!")
 
 
+@override_settings(TEMPLATES=[{
+    'DIRS': [os.path.join(os.path.dirname(__file__), 'templates')],
+    'BACKEND': 'django.template.backends.django.DjangoTemplates',
+}])
 class RenderToTestCase(DjangoTestCase):
-    def setUp(self):
-        self.template_dirs = settings.TEMPLATE_DIRS
-
-    def tearDown(self):
-        settings.TEMPLATE_DIRS = self.template_dirs
 
     def test_render_to(self):
-        settings.TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), 'templates'),)
         resp = myview(HttpRequest())
         self.assertEquals(resp.content, '<html><body>MY VALUE</body></html>\n')
 
     def test_render_to_httpresponse(self):
-        settings.TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), 'templates'),)
         resp = myview2(HttpRequest())
         self.assertEquals(resp.content, 'Error!')
 
@@ -84,15 +78,3 @@ class AjaxResponseTestCase(DjangoTestCase):
         resp = my_ajax_view2(HttpRequest())
         self.assertEquals(resp["content-type"], 'text/html; charset=utf-8')
         self.assertEquals(resp.content, 'Error!')
-
-
-def my_json_view(request):
-    return JSONResponse({"msg": "テスト"}, status=400)
-
-
-class JSONResponseTestCase(DjangoTestCase):
-    def test_json_view(self):
-        resp = my_json_view(HttpRequest())
-        self.assertEquals(resp["content-type"], 'application/json')
-        self.assertEquals(resp.content, r'{"msg": "\u30c6\u30b9\u30c8"}')
-        self.assertEquals(resp.status_code, 400)

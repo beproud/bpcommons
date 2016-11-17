@@ -24,16 +24,11 @@ from django.db.models import BigIntegerField
 
 from django.db import models
 
-from beproud.django.commons.forms import JSONField as JSONFormField
-from beproud.django.commons.forms.widgets import JSONWidget
-from beproud.django.commons.utils.javascript import DjangoJSONEncoder
 
 __all__ = (
     'BigIntegerField',
     'PositiveBigIntegerField',
     'BigAutoField',
-    'PickledObjectField',
-    'JSONField',
 )
 
 
@@ -56,7 +51,7 @@ class BigAutoField(models.AutoField):
                     DatabaseWrapper = getattr(module, 'DatabaseWrapper')
                     if isinstance(connection, DatabaseWrapper):
                         return db_type
-                    elif DJANGO_VERSION >= (1, 7):
+                    else:  # DJANGO_VERSION >= (1, 7):
                         from django.db import DefaultConnectionProxy, connections
                         from django.db.utils import DEFAULT_DB_ALIAS
                         if (isinstance(connection, DefaultConnectionProxy) and
@@ -119,57 +114,6 @@ class PositiveBigIntegerField(BigIntegerField):
         defaults = {'min_value': 0}
         defaults.update(kwargs)
         return super(PositiveBigIntegerField, self).formfield(**defaults)
-
-
-class PickledObjectField(models.TextField):
-    __metaclass__ = models.SubfieldBase
-
-    def __init__(self, *args, **kwargs):
-        warnings.warn('PickledObjectField is deprecated. Use django-picklefield instead.')
-        super(PickledObjectField, self).__init__(*args, **kwargs)
-
-    def to_python(self, value):
-        if value is None:
-            return None
-        if not isinstance(value, basestring):
-            return value
-        return pickle.loads(base64.b64decode(value))
-
-    def get_db_prep_save(self, value, connection=None):
-        if value is None:
-            return
-        return base64.b64encode(pickle.dumps(value))
-
-
-class JSONField(models.TextField):
-    __metaclass__ = models.SubfieldBase
-
-    def __init__(self, *args, **kwargs):
-        warnings.warn('JSONField is deprecated. Use django-jsonfield instead.')
-        super(JSONField, self).__init__(*args, **kwargs)
-
-    def formfield(self, **kwargs):
-        defaults = {'widget': JSONWidget, 'form_class': JSONFormField}
-        defaults.update(kwargs)
-        return super(JSONField, self).formfield(**defaults)
-
-    def to_python(self, value):
-        # If value is a bastring but empty then pass
-        if isinstance(value, basestring):
-            if value == '':
-                return None
-            else:
-                value = json.loads(value)
-        return value
-
-    def get_db_prep_value(self, value, connection=None, prepared=None):
-        if value is None:
-            return
-        return json.dumps(value, cls=DjangoJSONEncoder)
-
-    def value_to_string(self, obj):
-        value = self._get_val_from_obj(obj)
-        return self.get_db_prep_value(value)
 
 
 try:

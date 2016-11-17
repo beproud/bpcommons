@@ -5,7 +5,6 @@ from django.db import models
 from beproud.django.commons.models import (
     BaseModel,
     BigAutoField,
-    JSONField,
 )
 
 
@@ -36,9 +35,3 @@ class ManyToManyTestModel(BaseModel):
     bigids = models.ManyToManyField(BigIDModel)
     class Meta:
         app_label = 'fields'
-
-
-class JSONFieldTestModel(models.Model):
-    json = JSONField(u"test", null=True, blank=True)
-    class Meta:
-        app_label = 'base'

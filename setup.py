@@ -5,10 +5,10 @@ from setuptools import setup, find_packages
 
 setup(
     name='beproud.django.commons',
-    version='0.36',
+    version='0.37',
     description='Common utilities for Django',
     author='BeProud Inc.',
-    author_email='ian@beproud.jp',
+    author_email='project@beproud.jp',
     url='http://www.beproud.jp/',
     classifiers=[
         'Development Status :: 3 - Alpha',
@@ -23,7 +23,7 @@ setup(
     packages=find_packages(),
     namespace_packages=['beproud', 'beproud.django'],
     install_requires=[
-        'Django>=1.2',
+        'Django>=1.8',
         'zenhan>=0.4',
         # 'bputils>=0.34'
     ],
