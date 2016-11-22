@@ -13,7 +13,6 @@ try:
 except ImportError:
     import simplejson as json
 
-from django import VERSION as DJANGO_VERSION
 from django.core import exceptions
 from django.utils.translation import ugettext_lazy as _
 try:
@@ -26,7 +25,6 @@ from django.db import models
 
 
 __all__ = (
-    'BigIntegerField',
     'PositiveBigIntegerField',
     'BigAutoField',
 )

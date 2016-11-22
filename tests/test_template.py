@@ -1,4 +1,5 @@
 #:coding=utf-8:
+from __future__ import print_function
 
 from django import VERSION as DJANGO_VERSION
 from django.test import TestCase as DjangoTestCase
@@ -27,10 +28,10 @@ class BaseTemplateTagTest(object):
         # :(
         if DJANGO_VERSION > (1,9):
             from django.template.library import import_library
-            tag_lib = import_library('beproud.django.commons.tests.test_tags')
+            tag_lib = import_library('testapp.tags')
         else:  # DJANGO_VERSION > (1,7):
             from django.template.base import import_library
-            tag_lib = import_library('beproud.django.commons.tests.test_tags')
+            tag_lib = import_library('testapp.tags')
 
         if DJANGO_VERSION > (1,9):
             lexer = Lexer(template_string)
@@ -51,11 +52,8 @@ class DataTemplateTagTestCase(BaseTemplateTagTest, DjangoTestCase):
         self.assertEquals(self._render_html(self.TEMPLATE_STRING), "<html><body>MY DATA</body></html>")
 
     def test_bad_template_tag(self):
-        try:
-            html = self._render_html(self.BAD_TEMPLATE_STRING)
-            self.fail("Expected Fail: %s" % html)
-        except TemplateSyntaxError, e:
-            pass
+        with self.assertRaises(TemplateSyntaxError):
+            print(self._render_html(self.BAD_TEMPLATE_STRING))
 
 class KwargDataTemplateTagTestCase(BaseTemplateTagTest, DjangoTestCase):
 
@@ -87,15 +85,9 @@ class KwargDataTemplateTagTestCase(BaseTemplateTagTest, DjangoTestCase):
         self.assertEquals(self._render_html(self.TEMPLATE_STRING5, {"spam": "eggs", "eggs": "spam"}), self.BASE_HTML % "121:eggs:spam")
 
     def test_bad_template_tag1(self):
-        try:
-            html = self._render_html(self.BAD_TEMPLATE_STRING1)
-            self.fail("Expected Fail: %s" % html)
-        except TemplateSyntaxError, e:
-            pass
+        with self.assertRaises(TemplateSyntaxError):
+            print(self._render_html(self.BAD_TEMPLATE_STRING1))
 
     def test_bad_template_tag2(self):
-        try:
-            html = self._render_html(self.BAD_TEMPLATE_STRING2)
-            self.fail("Expected Fail: %s" % html)
-        except TemplateSyntaxError, e:
-            pass
+        with self.assertRaises(TemplateSyntaxError):
+            print(self._render_html(self.BAD_TEMPLATE_STRING2))
