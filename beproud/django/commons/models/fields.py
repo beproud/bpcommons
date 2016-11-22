@@ -1,18 +1,6 @@
 #:coding=utf-8:
 
-import base64
-import warnings
-
-try:
-    import cPickle as pickle
-except ImportError:
-    import pickle
-
-try:
-    import json
-except ImportError:
-    import simplejson as json
-
+from django import VERSION as DJANGO_VERSION
 from django.core import exceptions
 from django.utils.translation import ugettext_lazy as _
 try:
@@ -87,7 +75,10 @@ def fk_db_type(self, connection):
     # in which case the column type is simply that of an IntegerField.
     # If the database needs similar types for key fields however, the only
     # thing we can do is making AutoField an IntegerField.
-    rel_field = self.rel.get_related_field()
+    if DJANGO_VERSION >= (1, 9):
+        rel_field = self.remote_field.get_related_field()
+    else:  # for django-1.8
+        rel_field = self.rel.get_related_field()
 
     if (isinstance(rel_field, BigAutoField) or
             (not connection.features.related_fields_match_type and

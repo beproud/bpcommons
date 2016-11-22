@@ -17,6 +17,8 @@ Release 0.37 (Unreleased)
   - beproud.django.commons.forms.widgets.JSONWidget
   - beproud.django.commons.forms.widgets.AdminJSONWidget
 
+- Drop ``switch`` templatetag.
+
 - Remove 'BigIntegerField' from __all__ of beproud.django.commons.models.fields.
   Please use django.db.models.BigIntegerField instead.
 
