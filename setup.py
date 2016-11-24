@@ -2,11 +2,19 @@
 #:coding=utf-8:
 
 from setuptools import setup, find_packages
+from beproud.django.commons import VERSION
+
+
+def read(filename):
+    with open(filename) as f:
+        return f.read()
+
 
 setup(
     name='beproud.django.commons',
-    version='0.37',
+    version=VERSION,
     description='Common utilities for Django',
+    long_description=read('README.rst') + read('ChangeLog.rst'),
     author='BeProud Inc.',
     author_email='project@beproud.jp',
     url='http://www.beproud.jp/',
