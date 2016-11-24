@@ -21,16 +21,11 @@ class BigIdModelFactory(factory.django.DjangoModelFactory):
         model = BigIDModel
 
     id = factory.Sequence(lambda n: n * 10000000 + 1)
-    ctime = factory.LazyAttribute(lambda a: datetime.now())
-    utime = factory.LazyAttribute(lambda a: datetime.now())
 
 
 class SmallIDModelFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = SmallIDModel
-
-    ctime = factory.LazyAttribute(lambda a: datetime.now())
-    utime = factory.LazyAttribute(lambda a: datetime.now())
 
 
 class BigIntModelFactory(factory.django.DjangoModelFactory):
@@ -38,8 +33,6 @@ class BigIntModelFactory(factory.django.DjangoModelFactory):
         model = BigIntModel
 
     big_id_obj = factory.SubFactory(BigIdModelFactory)
-    ctime = factory.LazyAttribute(lambda a: datetime.now())
-    utime = factory.LazyAttribute(lambda a: datetime.now())
 
 
 class BigToSmallModelFactory(factory.django.DjangoModelFactory):
@@ -47,8 +40,6 @@ class BigToSmallModelFactory(factory.django.DjangoModelFactory):
         model = BigToSmallModel
 
     small_id_obj = factory.SubFactory(SmallIDModelFactory)
-    ctime = factory.LazyAttribute(lambda a: datetime.now())
-    utime = factory.LazyAttribute(lambda a: datetime.now())
 
 
 class ManyToManyModelFactory(factory.django.DjangoModelFactory):

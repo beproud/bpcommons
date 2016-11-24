@@ -11,17 +11,10 @@ class DatedModelFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = DatedModel
 
-    ctime = factory.LazyAttribute(lambda a: datetime.now())
-    utime = factory.LazyAttribute(lambda a: datetime.now())
-
 
 class BaseModelFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = BaseModel
-
-    ctime = factory.LazyAttribute(lambda a: datetime.now())
-    utime = factory.LazyAttribute(lambda a: datetime.now())
-    del_flg = False
 
 
 @pytest.mark.django_db
