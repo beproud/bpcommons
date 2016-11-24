@@ -2,11 +2,12 @@
 
 from django.test import TestCase as DjangoTestCase
 
-from beproud.django.commons.utils.cache import *
 
 class CacheGetTestCase(DjangoTestCase):
 
     def test_cache_get(self):
+        from beproud.django.commons.utils.cache import cache_get
+
         test_val = []
         def get_val():
             test_val.append("test")
@@ -19,4 +20,3 @@ class CacheGetTestCase(DjangoTestCase):
         cached_val = cache_get("test-cache-get", get_val)
         self.assertEqual(cached_val, "test-val")
         self.assertEqual(test_val, [])
-

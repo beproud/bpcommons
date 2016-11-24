@@ -1,11 +1,8 @@
 #:coding=utf-8:
 
-import os
-
 from BeautifulSoup import BeautifulSoup
 
-from django.test import TestCase as DjangoTestCase, override_settings
-from django.conf import settings
+from django.test import TestCase as DjangoTestCase
 from django.template.loader import render_to_string
 
 __all__ = (
@@ -15,10 +12,6 @@ __all__ = (
 )
 
 
-@override_settings(TEMPLATES=[{
-    'DIRS': [os.path.join(os.path.dirname(__file__), 'templates')],
-    'BACKEND': 'django.template.backends.django.DjangoTemplates',
-}])
 class StringTagsTestCase(DjangoTestCase):
 
     def test_abbrev(self):
@@ -32,10 +25,6 @@ class StringTagsTestCase(DjangoTestCase):
         self.assertEquals(output, "<html><body>1234567...</body></html>\n")
 
 
-@override_settings(TEMPLATES=[{
-    'DIRS': [os.path.join(os.path.dirname(__file__), 'templates')],
-    'BACKEND': 'django.template.backends.django.DjangoTemplates',
-}])
 class HtmlTagsTestCase(DjangoTestCase):
 
     def test_to_anchor(self):
@@ -63,10 +52,6 @@ class HtmlTagsTestCase(DjangoTestCase):
         self.assertEquals(anchors[0].contents[0], 'http://www.b...')
 
 
-@override_settings(TEMPLATES=[{
-    'DIRS': [os.path.join(os.path.dirname(__file__), 'templates')],
-    'BACKEND': 'django.template.backends.django.DjangoTemplates',
-}])
 class SwitchTestCase(DjangoTestCase):
 
     def test_first(self):

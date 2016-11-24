@@ -14,7 +14,7 @@ class BigIDModel(BaseModel):
         app_label = 'fields'
 
 
-class TestBigIntModel(BaseModel):
+class BigIntModel(BaseModel):
     big_id_obj = models.ForeignKey(BigIDModel)
     class Meta:
         app_label = 'fields'
@@ -25,13 +25,13 @@ class SmallIDModel(BaseModel):
         app_label = 'fields'
 
 
-class TestBigToSmallModel(BaseModel):
+class BigToSmallModel(BaseModel):
     small_id_obj = models.ForeignKey(SmallIDModel)
     class Meta:
         app_label = 'fields'
 
 
-class ManyToManyTestModel(BaseModel):
+class ManyToManyModel(BaseModel):
     bigids = models.ManyToManyField(BigIDModel)
     class Meta:
         app_label = 'fields'

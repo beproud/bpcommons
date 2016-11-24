@@ -17,6 +17,9 @@ Release 0.37 (Unreleased)
   - beproud.django.commons.forms.widgets.JSONWidget
   - beproud.django.commons.forms.widgets.AdminJSONWidget
 
+- Remove 'BigIntegerField' from __all__ of beproud.django.commons.models.fields.
+  Please use django.db.models.BigIntegerField instead.
+
 Please use https://pypi.python.org/pypi/jsonfield instead of our JSONField.
 
 Release 0.36 (2016-03-23)
