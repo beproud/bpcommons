@@ -14,6 +14,7 @@ Run tests using tox::
 Links
 =====
 
+- `PyPI <https://pypi.python.org/pypi/beproud.django.commons>`__
 - `Documentation <http://bpcommons.rtfd.io/>`__
 - `Repository <https://github.com/beproud/bpcommons/>`__
 
