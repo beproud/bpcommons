@@ -1,8 +1,8 @@
-=========
-bpcommons
-=========
+======================
+beproud.django.commons
+======================
 
-Common utilities for Django
+Common utilities for Django A.K.A. bpcommons.
 
 See the docs at: http://bpcommons.rtfd.io/
 
