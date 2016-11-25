@@ -2,13 +2,21 @@
 #:coding=utf-8:
 
 from setuptools import setup, find_packages
+from beproud.django.commons import VERSION
+
+
+def read(filename):
+    with open(filename) as f:
+        return f.read()
+
 
 setup(
     name='beproud.django.commons',
-    version='0.35',
+    version=VERSION,
     description='Common utilities for Django',
+    long_description=read('README.rst') + read('ChangeLog.rst'),
     author='BeProud Inc.',
-    author_email='ian@beproud.jp',
+    author_email='project@beproud.jp',
     url='http://www.beproud.jp/',
     classifiers=[
         'Development Status :: 3 - Alpha',
@@ -23,7 +31,7 @@ setup(
     packages=find_packages(),
     namespace_packages=['beproud', 'beproud.django'],
     install_requires=[
-        'Django>=1.2',
+        'Django>=1.8',
         'zenhan>=0.4',
         # 'bputils>=0.34'
     ],

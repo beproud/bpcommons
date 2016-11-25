@@ -1,18 +1,5 @@
 #:coding=utf-8:
 
-import base64
-import warnings
-
-try:
-    import cPickle as pickle
-except ImportError:
-    import pickle
-
-try:
-    import json
-except ImportError:
-    import simplejson as json
-
 from django import VERSION as DJANGO_VERSION
 from django.core import exceptions
 from django.utils.translation import ugettext_lazy as _
@@ -24,16 +11,10 @@ from django.db.models import BigIntegerField
 
 from django.db import models
 
-from beproud.django.commons.forms import JSONField as JSONFormField
-from beproud.django.commons.forms.widgets import JSONWidget
-from beproud.django.commons.utils.javascript import DjangoJSONEncoder
 
 __all__ = (
-    'BigIntegerField',
     'PositiveBigIntegerField',
     'BigAutoField',
-    'PickledObjectField',
-    'JSONField',
 )
 
 
@@ -56,7 +37,7 @@ class BigAutoField(models.AutoField):
                     DatabaseWrapper = getattr(module, 'DatabaseWrapper')
                     if isinstance(connection, DatabaseWrapper):
                         return db_type
-                    elif DJANGO_VERSION >= (1, 7):
+                    else:  # DJANGO_VERSION >= (1, 7):
                         from django.db import DefaultConnectionProxy, connections
                         from django.db.utils import DEFAULT_DB_ALIAS
                         if (isinstance(connection, DefaultConnectionProxy) and
@@ -94,7 +75,10 @@ def fk_db_type(self, connection):
     # in which case the column type is simply that of an IntegerField.
     # If the database needs similar types for key fields however, the only
     # thing we can do is making AutoField an IntegerField.
-    rel_field = self.rel.get_related_field()
+    if DJANGO_VERSION >= (1, 9):
+        rel_field = self.remote_field.get_related_field()
+    else:  # for django-1.8
+        rel_field = self.rel.get_related_field()
 
     if (isinstance(rel_field, BigAutoField) or
             (not connection.features.related_fields_match_type and
@@ -119,57 +103,6 @@ class PositiveBigIntegerField(BigIntegerField):
         defaults = {'min_value': 0}
         defaults.update(kwargs)
         return super(PositiveBigIntegerField, self).formfield(**defaults)
-
-
-class PickledObjectField(models.TextField):
-    __metaclass__ = models.SubfieldBase
-
-    def __init__(self, *args, **kwargs):
-        warnings.warn('PickledObjectField is deprecated. Use django-picklefield instead.')
-        super(PickledObjectField, self).__init__(*args, **kwargs)
-
-    def to_python(self, value):
-        if value is None:
-            return None
-        if not isinstance(value, basestring):
-            return value
-        return pickle.loads(base64.b64decode(value))
-
-    def get_db_prep_save(self, value, connection=None):
-        if value is None:
-            return
-        return base64.b64encode(pickle.dumps(value))
-
-
-class JSONField(models.TextField):
-    __metaclass__ = models.SubfieldBase
-
-    def __init__(self, *args, **kwargs):
-        warnings.warn('JSONField is deprecated. Use django-jsonfield instead.')
-        super(JSONField, self).__init__(*args, **kwargs)
-
-    def formfield(self, **kwargs):
-        defaults = {'widget': JSONWidget, 'form_class': JSONFormField}
-        defaults.update(kwargs)
-        return super(JSONField, self).formfield(**defaults)
-
-    def to_python(self, value):
-        # If value is a bastring but empty then pass
-        if isinstance(value, basestring):
-            if value == '':
-                return None
-            else:
-                value = json.loads(value)
-        return value
-
-    def get_db_prep_value(self, value, connection=None, prepared=None):
-        if value is None:
-            return
-        return json.dumps(value, cls=DjangoJSONEncoder)
-
-    def value_to_string(self, obj):
-        value = self._get_val_from_obj(obj)
-        return self.get_db_prep_value(value)
 
 
 try:

@@ -1,3 +1,0 @@
-http://downloads.sourceforge.net/project/mecab/mecab-python/0.98/mecab-python-0.98.tar.gz
--e hg+https://project.beproud.jp/hg/bputils/@v0.31#egg=bputils
-zenhan==0.4
