@@ -18,3 +18,8 @@ Links
 - `Documentation <http://bpcommons.rtfd.io/>`__
 - `Repository <https://github.com/beproud/bpcommons/>`__
 
+LICENSE
+=======
+
+BSD License.
+
