@@ -8,7 +8,6 @@ from django.template.loader import render_to_string
 __all__ = (
     'StringTagsTestCase',
     'HtmlTagsTestCase',
-    'SwitchTestCase',
 )
 
 
@@ -50,28 +49,3 @@ class HtmlTagsTestCase(DjangoTestCase):
         self.assertEquals(anchors[0]['target'], '_blank')
         self.assertEquals(anchors[0]['rel'], 'nofollow')
         self.assertEquals(anchors[0].contents[0], 'http://www.b...')
-
-
-class SwitchTestCase(DjangoTestCase):
-
-    def test_first(self):
-        output = render_to_string("templatetags_tests/switch_test.html", {
-            'value': 'first',
-        })
-        self.assertEquals(output, u'<html><body>first value</body></html>\n')
-
-    def test_second(self):
-        output = render_to_string("templatetags_tests/switch_test.html", {
-            'value': 'second',
-        })
-        self.assertEquals(output, u'<html><body>second value</body></html>\n')
-
-    def test_default(self):
-        output = render_to_string("templatetags_tests/switch_test.html", {
-            'value': 'not_exists',
-        })
-        self.assertEquals(output, u'<html><body>default</body></html>\n')
-
-    def test_missing(self):
-        output = render_to_string("templatetags_tests/switch_test.html", {})
-        self.assertEquals(output, u'<html><body>default</body></html>\n')
