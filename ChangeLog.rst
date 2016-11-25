@@ -1,4 +1,8 @@
-Release 0.37 (Unreleased)
+Unreleased
+=========================
+
+
+Release 0.37 (2016-11-25)
 =========================
 
 - Support Django-1.10
