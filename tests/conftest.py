@@ -1,5 +1,6 @@
 import os
 import warnings
+warnings.filterwarnings("error", module='django')
 warnings.filterwarnings("error", module='beproud.django.commons')
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'

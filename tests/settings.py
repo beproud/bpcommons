@@ -10,6 +10,7 @@ INSTALLED_APPS = (
     'models.base',
     'models.fields',
 )
+MIDDLEWARE = []  # to pass deprecation tcheck
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
