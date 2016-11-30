@@ -19,6 +19,7 @@ bpcommonsはDjango用のプロジェクト共有ライブラリです。
   http/index
   management/commands
   middleware/debug
+  changes
 
 .. Ajax 
 .. ベースモデル
