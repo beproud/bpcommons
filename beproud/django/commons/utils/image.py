@@ -1,10 +1,6 @@
 # vim:fileencoding=utf-8
 from __future__ import division
-try:
-    from io import StringIO
-except ImportError:
-    from io import StringIO
-
+from io import StringIO
 from PIL import Image
 
 def valid_image(image):
@@ -32,10 +28,10 @@ def make_content_image_file(image, size=None):
     from django.core.files.base import ContentFile
     format = image.format
     if size:
-        image = image.resize(size, Image.ANTIALIAS);
+        image = image.resize(size, Image.ANTIALIAS)
     sio = StringIO()
     image.save(sio, format)
-    return ContentFile(sio.getvalue());
+    return ContentFile(sio.getvalue())
 
 def get_image_size(fileobj, limit=None):
     image = Image.open(fileobj)
