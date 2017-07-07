@@ -45,7 +45,7 @@ class DatedModelAdmin(admin.ModelAdmin):
             return super(DatedModelAdmin, self).get_fieldsets(request, obj)
 
         form = self.get_form(request, obj)
-        fields = form.base_fields.keys() + list(self.get_readonly_fields(request, obj))
+        fields = list(form.base_fields.keys()) + list(self.get_readonly_fields(request, obj))
         normal_fields = [f for f in fields if f not in self.system_fields]
 
         return (

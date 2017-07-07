@@ -5,7 +5,7 @@ try:
 except ImportError:
     import simplejson as json
 
-from types import StringType, UnicodeType
+from six import string_types, with_metaclass
 from django.test import TestCase
 
 __all__ = (
@@ -123,7 +123,7 @@ class BaseURLTestCase(type):
             urlparams = {}
 
             # url only
-            if type(data) in (StringType, UnicodeType):
+            if isinstance(data, string_types):
                 url = data
             else:
                 # url
@@ -135,7 +135,7 @@ class BaseURLTestCase(type):
                     options = data[1]
                     # check
                     if 'check' in options:
-                        if type(options['check']) in (StringType, UnicodeType):
+                        if isinstance(options['check'], string_types):
                             check = (options['check'], )
                         else:
                             check = options['check']
@@ -163,7 +163,7 @@ class BaseURLTestCase(type):
                     response = getattr(self.client, method)(url, urlparams, **headers)
                     for check_options in check:
                         # check method
-                        if type(check_options) in (StringType, UnicodeType):
+                        if isinstance(check_options, string_types):
                             getattr(self, check_options)(response)
                         else:
                             _method = getattr(self, check_options[0])
@@ -183,7 +183,7 @@ class BaseURLTestCase(type):
         return type.__new__(cls, name, bases, attrs)
 
 
-class URLTestCase(RequestTestCase):
+class URLTestCase(with_metaclass(BaseURLTestCase, RequestTestCase)):
     """
     URLに対してGET/POSTを実行してレスポンスを確認する
 
@@ -201,4 +201,3 @@ class URLTestCase(RequestTestCase):
     username = ''
     password = ''
     url_list = ()
-    __metaclass__ = BaseURLTestCase

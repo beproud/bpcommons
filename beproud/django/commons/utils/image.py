@@ -1,10 +1,9 @@
 # vim:fileencoding=utf-8
-import os
-import re
+from __future__ import division
 try:
-    from cStringIO import StringIO
+    from io import StringIO
 except ImportError:
-    from StringIO import StringIO
+    from io import StringIO
 
 from PIL import Image
 
@@ -17,14 +16,12 @@ def valid_image(image):
     return True
 
 def optimize_resize(image,size):
-    frm = image.format
     w, h = image.size
-    box = () 
     if w < h :
-        s = (h - w) / 2
+        s = (h - w) // 2
         box = (0, s, w, s + w)
     else :
-        s = (w-h) / 2
+        s = (w - h) // 2
         box = (s, 0, s + h, h)
     image = image.crop(box)
     image = image.resize(size, Image.ANTIALIAS)

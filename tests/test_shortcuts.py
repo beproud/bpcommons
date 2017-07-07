@@ -43,5 +43,5 @@ class MakeSimpleResponseTestCase(DjangoTestCase):
         response = make_simple_response()
         self.assertEqual(
             response.content,
-            u'{"msg": "\\u51e6\\u7406\\u304c\\u6210\\u529f\\u3057\\u307e\\u3057\\u305f"}',
+            b'{"msg": "\\u51e6\\u7406\\u304c\\u6210\\u529f\\u3057\\u307e\\u3057\\u305f"}',
         )

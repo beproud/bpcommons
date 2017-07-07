@@ -1,4 +1,5 @@
 # vim:fileencoding=utf-8
+from __future__ import division
 import time
 import calendar
 from datetime import datetime, timedelta
@@ -33,10 +34,10 @@ def relative_time(d, basetime=None, shortname=False, delta=None):
         else:
             return d.strftime("%Y-%m-%d %H:%M")
     elif delta.seconds > SEC_1_HOURS:
-        hours = delta.seconds >= SEC_1_MINUTES * 30 and (delta.seconds / SEC_1_HOURS) + 1 or (delta.seconds / SEC_1_HOURS)
+        hours = delta.seconds >= SEC_1_MINUTES * 30 and (delta.seconds // SEC_1_HOURS) + 1 or (delta.seconds // SEC_1_HOURS)
         result = u"%s時間前" % (hours)
     elif delta.seconds > SEC_1_MINUTES:
-        minutes = delta.seconds >= 30 and (delta.seconds / SEC_1_MINUTES) + 1  or (delta.seconds / SEC_1_MINUTES)
+        minutes = delta.seconds >= 30 and (delta.seconds // SEC_1_MINUTES) + 1  or (delta.seconds // SEC_1_MINUTES)
         result = u"%s分前" % (minutes)
     else :
         result = u"%s秒前" % (delta.seconds)
@@ -55,9 +56,9 @@ def times_left(d, basetime=None, delta=None):
         days = delta.seconds >= SEC_1_HOURS * 12 and delta.days + 1 or delta.days
         result = u"あと%s日" % (days)
     elif delta.seconds > SEC_1_HOURS:
-        hours = delta.seconds >= SEC_1_MINUTES * 30 and (delta.seconds / SEC_1_HOURS) + 1 or (delta.seconds / SEC_1_HOURS)
+        hours = delta.seconds >= SEC_1_MINUTES * 30 and (delta.seconds // SEC_1_HOURS) + 1 or (delta.seconds // SEC_1_HOURS)
         result = u"あと%s時間" % (hours)
     else:
-        minutes = delta.seconds >= 30 and (delta.seconds / SEC_1_MINUTES) + 1  or (delta.seconds / SEC_1_MINUTES)
+        minutes = delta.seconds >= 30 and (delta.seconds // SEC_1_MINUTES) + 1  or (delta.seconds // SEC_1_MINUTES)
         result = u"あと%s分" % (minutes)
     return result
