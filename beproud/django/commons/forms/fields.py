@@ -1,8 +1,7 @@
 #:coding=utf-8:
 
 import re
-import warnings
-from types import StringType, UnicodeType
+from six import text_type
 
 try:
     import json
@@ -26,10 +25,10 @@ RE_EMAIL = re.compile(
     r"@(?:[A-Z0-9]+(?:-*[A-Z0-9]+)*\.)+(xn--[A-Z0-9\-]+|[A-Z]{2,15})$",  # domain
     re.IGNORECASE
 )
-RE_ALPHA_NUM = re.compile(ur'^[a-zA-Z0-9\-_]*$')
-RE_NUM = re.compile(ur'^[0-9]*$')
-RE_FULL_WIDTH = re.compile(ur'[一-龠]+|[ぁ-ん]+|[ァ-ヴ]+|[０-９]+')
-RE_HIRAGANA = re.compile(ur'^[ぁ-ゞー〜～＆ 　、・]*$')
+RE_ALPHA_NUM = re.compile(r'^[a-zA-Z0-9\-_]*$')
+RE_NUM = re.compile(r'^[0-9]*$')
+RE_FULL_WIDTH = re.compile(u'[一-龠]+|[ぁ-ん]+|[ァ-ヴ]+|[０-９]+')
+RE_HIRAGANA = re.compile(u'^[ぁ-ゞー〜～＆ 　、・]*$')
 
 
 class StripRegexField(RegexField):
@@ -37,7 +36,7 @@ class StripRegexField(RegexField):
     検証する前にstripする正規表現のフィールド
     """
     def clean(self, value):
-        if type(value) in (StringType, UnicodeType):
+        if isinstance(value, text_type):
             value = value.strip()
         return super(StripRegexField, self).clean(value)
 

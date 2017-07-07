@@ -88,7 +88,7 @@ class RequestTestCase(TestCase):
     def assertJson(self, response):
         try:
             return json.loads(response.content)
-        except ValueError, e:
+        except ValueError as e:
             self.fail(e.message)
 
     def assertXml(self, response):
@@ -96,7 +96,7 @@ class RequestTestCase(TestCase):
         try:
             p = expat.ParserCreate()
             return p.Parse(response.content)
-        except expat.ExpatError, e:
+        except expat.ExpatError as e:
             self.fail(e.message)
 
     def _assertLocationHeader(self, response, redirect_url=None):

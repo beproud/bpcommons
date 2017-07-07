@@ -33,6 +33,7 @@ setup(
     install_requires=[
         'Django>=1.8',
         'zenhan>=0.4',
+        'six',
         # 'bputils>=0.34'
     ],
     test_suite='tests.main',

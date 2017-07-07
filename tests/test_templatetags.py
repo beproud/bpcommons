@@ -1,6 +1,6 @@
 #:coding=utf-8:
 
-from BeautifulSoup import BeautifulSoup
+from bs4 import BeautifulSoup
 
 from django.test import TestCase as DjangoTestCase
 from django.template.loader import render_to_string
