@@ -17,6 +17,7 @@ setup(
     long_description=read('README.rst') + read('ChangeLog.rst'),
     author='BeProud Inc.',
     author_email='project@beproud.jp',
+    license='BSD',
     url='http://www.beproud.jp/',
     classifiers=[
         'Development Status :: 3 - Alpha',
