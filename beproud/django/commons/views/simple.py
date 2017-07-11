@@ -25,7 +25,7 @@ def redirect_to(request, url, permanent=True, **kwargs):
     if url is not None:
         klass = permanent and HttpResponsePermanentRedirect or HttpResponseRedirect
         quoted_kwargs = {}
-        for k,v in kwargs.iteritems():
+        for k,v in kwargs.items():
             quoted_kwargs[k] = urlquote(v)
 
         # Encoded urls confuses python templating. Properly escape the templates.

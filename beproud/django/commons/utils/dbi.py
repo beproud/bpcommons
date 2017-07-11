@@ -1,5 +1,8 @@
 # vim:fileencoding=utf-8
 
+from six import iteritems
+
+
 def select(connection, sql, params=None, model=None):
     """
     SQLを実行してmodelに値を入れる
@@ -24,7 +27,7 @@ def select(connection, sql, params=None, model=None):
     obj_results = []
     for item in dict_results:
         instance = model()
-        for key, value in item.iteritems():
+        for key, value in iteritems(item):
             setattr(instance, key, value)
         obj_results.append(instance)
     return obj_results

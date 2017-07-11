@@ -22,7 +22,7 @@ class GoogleAdNode(Node):
 
             return render_to_string(template_name, context_dict)
 
-        except TemplateDoesNotExist,e:
+        except TemplateDoesNotExist as e:
             return ''
 
 @register.tag

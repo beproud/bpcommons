@@ -1,5 +1,6 @@
 #:coding=utf-8:
 
+from __future__ import print_function
 from django.conf import settings
 
 class DebugMiddleware(object):
@@ -7,5 +8,5 @@ class DebugMiddleware(object):
         if settings.DEBUG: 
             from django.db import connection
             for query in connection.queries:
-                print query
+                print(query)
         return response

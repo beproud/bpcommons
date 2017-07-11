@@ -79,6 +79,6 @@ class DataNode(template.Node):
 
     def render(self, context):
         args = [template.Variable(arg).resolve(context) for arg in self.args]
-        kwargs = dict((str(key), template.Variable(value).resolve(context)) for key, value in self.kwargs.iteritems())
+        kwargs = dict((str(key), template.Variable(value).resolve(context)) for key, value in self.kwargs.items())
         context[self.var_name] = self.data_func(*args, **kwargs)
         return u''

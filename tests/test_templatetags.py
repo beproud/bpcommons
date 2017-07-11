@@ -1,6 +1,6 @@
 #:coding=utf-8:
 
-from BeautifulSoup import BeautifulSoup
+from bs4 import BeautifulSoup
 
 from django.test import TestCase as DjangoTestCase
 from django.template.loader import render_to_string
@@ -31,11 +31,11 @@ class HtmlTagsTestCase(DjangoTestCase):
             "my_data": u"これはテストデータ。http://www.beproud.jp/これはテストデータ。",
         })
 
-        soup = BeautifulSoup(output)
+        soup = BeautifulSoup(output, "html.parser")
         anchors = soup.findAll('a')
         self.assertTrue(len(anchors), 1)
         self.assertEquals(anchors[0]['target'], '_blank')
-        self.assertEquals(anchors[0]['rel'], 'nofollow')
+        self.assertEquals(anchors[0]['rel'], ['nofollow'])
         self.assertEquals(anchors[0].contents[0], 'http://www.beproud.jp/')
 
     def test_to_anchortrunc(self):
@@ -43,9 +43,9 @@ class HtmlTagsTestCase(DjangoTestCase):
             "my_data": u"これはテストデータ。http://www.beproud.jp/これはテストデータ。",
         })
 
-        soup = BeautifulSoup(output)
+        soup = BeautifulSoup(output, "html.parser")
         anchors = soup.findAll('a')
         self.assertTrue(len(anchors), 1)
         self.assertEquals(anchors[0]['target'], '_blank')
-        self.assertEquals(anchors[0]['rel'], 'nofollow')
+        self.assertEquals(anchors[0]['rel'], ['nofollow'])
         self.assertEquals(anchors[0].contents[0], 'http://www.b...')

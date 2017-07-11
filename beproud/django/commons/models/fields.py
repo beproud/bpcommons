@@ -57,13 +57,13 @@ class BigAutoField(models.AutoField):
     def get_prep_value(self, value):
         if value is None:
             return None
-        return long(value)
+        return int(value)
 
     def to_python(self, value):
         if value is None:
             return value
         try:
-            return long(value)
+            return int(value)
         except (TypeError, ValueError):
             raise exceptions.ValidationError(self.error_messages['invalid'])
 

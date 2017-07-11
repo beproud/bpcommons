@@ -50,7 +50,7 @@ class Choices(object):
             self.reverse_map[prop] = code
             
     def __iter__(self):
-        return self.code_map.iteritems()
+        return iter(self.code_map.items())
                 
     def __len__(self):
         return len(self.code_map)

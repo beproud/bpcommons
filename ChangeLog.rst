@@ -2,8 +2,12 @@
 ChangeLog
 =========
 
-Unreleased 0.38
-=========================
+Unreleased 0.38 (2017-07-10)
+============================
+- Support Python-3.6
+- Support Django-1.11
+- Drop Django-1.9
+- Remove dependency to bputils
 
 
 Release 0.37 (2016-11-25)

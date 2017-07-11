@@ -1,5 +1,7 @@
 # vim:fileencoding=utf-8
 
+from six import text_type
+
 __all__ = (
     'compare_obj',
     'copy_obj',
@@ -35,8 +37,8 @@ def compare_obj(base_obj, new_obj, check_primary_key=False, check_related=False,
                 else:
                     _v2 = getattr(new_obj, field.name)
                 diff_dict[field] = (
-                    unicode(_v1 or ''),
-                    unicode(_v2 or '')
+                    text_type(_v1 or ''),
+                    text_type(_v2 or '')
                 )
             else:
                 diff_dict[field] = (v1, v2)
