@@ -1,4 +1,5 @@
 #:coding=utf-8:
+import warnings
 
 
 __all__ = (
@@ -14,6 +15,12 @@ class Views(object):
             self.name = self.default_name
         else:
             self.name = name
+        if self.name:
+            warnings.warn(
+                'beproud.django.commons.views.classes.Views: Attribute'
+                ' `default_name` and constructor prametor `name` has been'
+                ' Removed. It doesn\'t effect anymore.', DeprecationWarning)
+
         if app_name is None:
             self.app_name = self.default_name
         else:
@@ -24,4 +31,4 @@ class Views(object):
 
     @property
     def urls(self):
-        return self.get_urls(), self.app_name, self.name
+        return self.get_urls(), self.app_name

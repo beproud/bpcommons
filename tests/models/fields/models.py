@@ -15,7 +15,7 @@ class BigIDModel(BaseModel):
 
 
 class BigIntModel(BaseModel):
-    big_id_obj = models.ForeignKey(BigIDModel)
+    big_id_obj = models.ForeignKey(BigIDModel, on_delete=models.CASCADE)
     class Meta:
         app_label = 'fields'
 
@@ -26,7 +26,7 @@ class SmallIDModel(BaseModel):
 
 
 class BigToSmallModel(BaseModel):
-    small_id_obj = models.ForeignKey(SmallIDModel)
+    small_id_obj = models.ForeignKey(SmallIDModel, on_delete=models.CASCADE)
     class Meta:
         app_label = 'fields'
 
