@@ -6,6 +6,8 @@ Unreleased 0.39
 ===============
 - Support Python-3.7
 - Drop Python-2.7
+- Drop Django-1.8 (Because it doesn't support Py36 but maybe still works)
+- Drop Django-1.10 (Because it doesn't support Py36 but maybe still works)
 - Drop dependency: zenhan
 
 
