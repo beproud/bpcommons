@@ -4,7 +4,7 @@ ChangeLog
 
 Unreleased 0.39
 ===============
-
+- Drop dependency: zenhan
 
 
 Release 0.38 (2017-07-11)

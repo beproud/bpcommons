@@ -40,7 +40,6 @@ setup(
     namespace_packages=['beproud', 'beproud.django'],
     install_requires=[
         'Django>=1.8',
-        'zenhan>=0.4',
         'six',
     ],
     test_suite='tests.main',
