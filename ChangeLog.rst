@@ -4,6 +4,8 @@ ChangeLog
 
 Unreleased 0.39
 ===============
+- Support Python-3.7
+- Drop Python-2.7
 - Drop dependency: zenhan
 
 
