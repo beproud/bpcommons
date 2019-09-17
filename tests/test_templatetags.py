@@ -16,12 +16,12 @@ class StringTagsTestCase(DjangoTestCase):
     def test_abbrev(self):
         output = render_to_string("templatetags_tests/string_tags.html",
                                   {"my_data": "1234567890abcdefghi"})
-        self.assertEquals(output, "<html><body>1234567...</body></html>\n")
+        self.assertEqual(output, "<html><body>1234567...</body></html>\n")
 
     def test_abbrev_filter_tag(self):
         output = render_to_string("templatetags_tests/string_tags2.html",
                                   {"my_data": "1234567890abcdefghi"})
-        self.assertEquals(output, "<html><body>1234567...</body></html>\n")
+        self.assertEqual(output, "<html><body>1234567...</body></html>\n")
 
 
 class HtmlTagsTestCase(DjangoTestCase):
@@ -34,9 +34,9 @@ class HtmlTagsTestCase(DjangoTestCase):
         soup = BeautifulSoup(output, "html.parser")
         anchors = soup.findAll('a')
         self.assertTrue(len(anchors), 1)
-        self.assertEquals(anchors[0]['target'], '_blank')
-        self.assertEquals(anchors[0]['rel'], ['nofollow'])
-        self.assertEquals(anchors[0].contents[0], 'http://www.beproud.jp/')
+        self.assertEqual(anchors[0]['target'], '_blank')
+        self.assertEqual(anchors[0]['rel'], ['nofollow'])
+        self.assertEqual(anchors[0].contents[0], 'http://www.beproud.jp/')
 
     def test_to_anchortrunc(self):
         output = render_to_string("templatetags_tests/to_anchortrunc.html", {
@@ -46,6 +46,6 @@ class HtmlTagsTestCase(DjangoTestCase):
         soup = BeautifulSoup(output, "html.parser")
         anchors = soup.findAll('a')
         self.assertTrue(len(anchors), 1)
-        self.assertEquals(anchors[0]['target'], '_blank')
-        self.assertEquals(anchors[0]['rel'], ['nofollow'])
-        self.assertEquals(anchors[0].contents[0], 'http://www.b...')
+        self.assertEqual(anchors[0]['target'], '_blank')
+        self.assertEqual(anchors[0]['rel'], ['nofollow'])
+        self.assertEqual(anchors[0].contents[0], 'http://www.b...')

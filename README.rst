@@ -12,8 +12,8 @@ Run tests using tox::
 
 Supports
 ========
-- Python: 2.7, 3.6
-- Django: 1.8, 1.10, 1.11
+- Python: 3.6, 3.7
+- Django: 1.11, 2.2
 
 Links
 =====

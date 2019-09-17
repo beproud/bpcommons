@@ -15,14 +15,14 @@ except ImportError:
         Parser,
     )
 
-from django.template.loader import LoaderOrigin
+from django.template import Origin
 from django.template.context import Context
 
 
 class BaseTemplateTagTest(object):
 
     def _make_origin(self):
-        return LoaderOrigin("Commons Test", lambda x,y: ("<string>", "<string>"), "commons", [])
+        return Origin("Commons Test", lambda x,y: ("<string>", "<string>"), "commons", [])
 
     def _render_html(self, template_string, context={}):
         # :(
@@ -49,7 +49,7 @@ class DataTemplateTagTestCase(BaseTemplateTagTest, DjangoTestCase):
     BAD_TEMPLATE_STRING = "<html><body>{% get_my_data 121 my_data %}{{ my_data }}</body></html>"
 
     def test_data_template_tag(self):
-        self.assertEquals(self._render_html(self.TEMPLATE_STRING), "<html><body>MY DATA</body></html>")
+        self.assertEqual(self._render_html(self.TEMPLATE_STRING), "<html><body>MY DATA</body></html>")
 
     def test_bad_template_tag(self):
         with self.assertRaises(TemplateSyntaxError):
@@ -70,19 +70,19 @@ class KwargDataTemplateTagTestCase(BaseTemplateTagTest, DjangoTestCase):
     BASE_HTML = "<html><body>%s</body></html>"
 
     def test_kwarg_data_template_tag1(self):
-        self.assertEquals(self._render_html(self.TEMPLATE_STRING1), self.BASE_HTML % "121:None:other")
+        self.assertEqual(self._render_html(self.TEMPLATE_STRING1), self.BASE_HTML % "121:None:other")
 
     def test_kwarg_data_template_tag2(self):
-        self.assertEquals(self._render_html(self.TEMPLATE_STRING2), self.BASE_HTML % "121:spam:other")
+        self.assertEqual(self._render_html(self.TEMPLATE_STRING2), self.BASE_HTML % "121:spam:other")
 
     def test_kwarg_data_template_tag3(self):
-        self.assertEquals(self._render_html(self.TEMPLATE_STRING3), self.BASE_HTML % "121:None:eggs")
+        self.assertEqual(self._render_html(self.TEMPLATE_STRING3), self.BASE_HTML % "121:None:eggs")
 
     def test_kwarg_data_template_tag4(self):
-        self.assertEquals(self._render_html(self.TEMPLATE_STRING4), self.BASE_HTML % "121:spam:eggs")
+        self.assertEqual(self._render_html(self.TEMPLATE_STRING4), self.BASE_HTML % "121:spam:eggs")
 
     def test_kwarg_data_template_tag5(self):
-        self.assertEquals(self._render_html(self.TEMPLATE_STRING5, {"spam": "eggs", "eggs": "spam"}), self.BASE_HTML % "121:eggs:spam")
+        self.assertEqual(self._render_html(self.TEMPLATE_STRING5, {"spam": "eggs", "eggs": "spam"}), self.BASE_HTML % "121:eggs:spam")
 
     def test_bad_template_tag1(self):
         with self.assertRaises(TemplateSyntaxError):
