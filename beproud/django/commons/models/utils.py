@@ -7,6 +7,7 @@ __all__ = (
     'copy_obj',
 )
 
+
 def compare_obj(base_obj, new_obj, check_primary_key=False, check_related=False, exclude=[], check_related_id=False, display=False):
     """
     モデルインスタンスの比較を行う
@@ -16,23 +17,23 @@ def compare_obj(base_obj, new_obj, check_primary_key=False, check_related=False,
     for field in base_obj._meta.fields:
         if field.primary_key and not check_primary_key:
             continue
-        if field.rel and not check_related:
+        if field.remote_field and not check_related:
             continue
         if field.name in exclude:
             continue
-        if field.rel and check_related_id:
+        if field.remote_field and check_related_id:
             v1 = getattr(base_obj, field.name + '_id')
             v2 = getattr(new_obj, field.name + '_id')
         else:
             v1 = getattr(base_obj, field.name)
             v2 = getattr(new_obj, field.name)
         if v1 != v2:
-            if field.choices or field.rel and display:
-                if field.rel and v1 is None:
+            if field.choices or field.remote_field and display:
+                if field.remote_field and v1 is None:
                     _v1 = None
                 else:
                     _v1 = getattr(base_obj, field.name)
-                if field.rel and v2 is None:
+                if field.remote_field and v2 is None:
                     _v2 = None
                 else:
                     _v2 = getattr(new_obj, field.name)
@@ -70,6 +71,7 @@ def compare_obj(base_obj, new_obj, check_primary_key=False, check_related=False,
             )
     return diff_dict
 
+
 def copy_obj(from_obj, to_obj, check_primary_key=False, check_related=False, exclude=[], copy_related_id=False, check_many_to_many=False):
     """
     モデルインスタンスのフィールドの内容をコピーする
@@ -77,11 +79,11 @@ def copy_obj(from_obj, to_obj, check_primary_key=False, check_related=False, exc
     for field in from_obj._meta.fields:
         if field.primary_key and not check_primary_key:
             continue
-        if field.rel and not check_related:
+        if field.remote_field and not check_related:
             continue
         if field.name in exclude:
             continue
-        if field.rel and copy_related_id:
+        if field.remote_field and copy_related_id:
             v = getattr(from_obj, field.name + '_id')
             setattr(to_obj, field.name + '_id', v)
         else:
