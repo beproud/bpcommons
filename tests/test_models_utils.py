@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from datetime import datetime
 
 import pytest
@@ -51,4 +50,4 @@ class TestCopyModel(object):
         assert from_obj.id != to_obj.id
         assert from_obj.ctime == to_obj.ctime
         assert from_obj.utime == to_obj.utime
-        assert from_obj.del_flg == to_obj.del_flg
+        assert from_obj.del_flg is to_obj.del_flg
