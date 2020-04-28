@@ -2,6 +2,12 @@
 ChangeLog
 =========
 
+Release 0.40 (2020-04-28)
+==========================
+
+- Fix: Field.rel and Field.remote_field.to are removed in Django 2.0
+
+
 Release 0.39 (2019-09-17)
 ==========================
 Supports:
