@@ -2,6 +2,20 @@
 ChangeLog
 =========
 
+Release 0.42(Unreleased)
+==========================
+
+
+Release 0.41(Unreleased)
+==========================
+
+- Update BeautifulSoup4-4.10 (from 4.6)
+- Support Django-3.2
+- Support Python-3.7, 3.8, 3.9, 3.10
+- Drop Django-1.11
+- Drop Python-2.7
+
+
 Release 0.40 (2020-04-28)
 ==========================
 

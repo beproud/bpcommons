@@ -2,7 +2,7 @@
 
 from django import VERSION as DJANGO_VERSION
 from django.core import exceptions
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 try:
    from django.db import load_backend
 except ImportError:

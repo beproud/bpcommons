@@ -23,8 +23,8 @@ setup(
         'Development Status :: 3 - Alpha',
         'Environment :: Plugins',
         'Framework :: Django',
-        'Framework :: Django :: 1.11',
         'Framework :: Django :: 2.2',
+        'Framework :: Django :: 3.2',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
         'Programming Language :: Python',
@@ -38,7 +38,7 @@ setup(
     packages=find_packages(),
     namespace_packages=['beproud', 'beproud.django'],
     install_requires=[
-        'Django>=1.11',
+        'Django>=2.2',
     ],
     test_suite='tests.main',
     zip_safe=False,

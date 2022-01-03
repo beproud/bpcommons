@@ -3,7 +3,7 @@ import re
 import json
 
 import six
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.core.serializers.json import DjangoJSONEncoder
 try:
     from django.utils.functional import keep_lazy  # Django-1.8 doesn't have it.
@@ -44,7 +44,7 @@ def escape(html):
     """
     Returns the given HTML with ampersands, quotes and angle brackets encoded.
     """
-    return (force_text(html).replace('&', '&amp;')
+    return (force_str(html).replace('&', '&amp;')
             .replace('<', '&lt;')
             .replace('>', '&gt;')
             .replace('"', '&quot;')

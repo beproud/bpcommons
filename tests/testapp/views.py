@@ -1,6 +1,6 @@
 #:coding=utf-8:
 
-from django.conf.urls import url
+from django.conf.urls import re_path
 from django.http import HttpResponse
 
 from beproud.django.commons.views.decorators import render_to, ajax_request
@@ -14,7 +14,7 @@ class TestViews(Views):
     def get_urls(self):
         urls = super(TestViews, self).get_urls()
         my_urls = [
-            url(
+            re_path(
                 r'^test$',
                 self.test,
                 name='testview_test',
