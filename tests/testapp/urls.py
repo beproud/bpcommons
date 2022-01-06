@@ -1,9 +1,9 @@
 #:coding=utf-8:
 
-from django.conf.urls import re_path, include
+from django.urls import path, include
 
 from .views import TestViews
 
 urlpatterns = [
-    re_path(r'', include(TestViews().urls)),
+    path('', include(TestViews().urls)),
 ]

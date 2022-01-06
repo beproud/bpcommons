@@ -24,4 +24,3 @@ TEMPLATES=[{
     'BACKEND': 'django.template.backends.django.DjangoTemplates',
 }]
 SECRET_KEY = '<key>'
-USE_TZ = False
