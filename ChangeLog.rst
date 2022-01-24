@@ -8,7 +8,7 @@ Release 0.41(Unreleased)
 ==========================
 
 - Support Django-3.2
-- Support Python-3.7, 3.8, 3.9
+- Support Python-3.7, 3.8, 3.9, 3.10
 - Drop Django-1.11
 
 
