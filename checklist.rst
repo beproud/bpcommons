@@ -9,5 +9,6 @@ Procedure:
 5. upload ``twine upload dist/*``
 6. check PyPI page: https://pypi.org/p/beproud.django.commons/
 7. bump versions and commit/push them onto GitHub
-    * ``ChangeLog.rst``  next version
-    * ``bpcommons/beproud/django/commons/__init__.py`` next version
+
+   * ``ChangeLog.rst``  next version
+   * ``bpcommons/beproud/django/commons/__init__.py`` next version
