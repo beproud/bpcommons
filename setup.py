@@ -15,6 +15,7 @@ setup(
     version=VERSION,
     description='Common utilities for Django',
     long_description=read('README.rst') + read('ChangeLog.rst'),
+    long_description_content_type='text/x-rst',
     author='BeProud Inc.',
     author_email='project@beproud.jp',
     license='BSD',
