@@ -3,7 +3,7 @@ from __future__ import absolute_import
 
 from django import template
 from django.template.defaultfilters import stringfilter
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 
 from .compat import abbrev as abbrev_
 
@@ -18,7 +18,7 @@ def cat(value, arg):
   """ 
   Concatenates value with argument 
   """ 
-  return u"%s%s" % (value, force_text(arg))
+  return u"%s%s" % (value, force_str(arg))
 cat.is_safe=True 
 cat = stringfilter(cat)
 register.filter(cat)
