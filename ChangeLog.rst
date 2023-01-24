@@ -2,7 +2,7 @@
 ChangeLog
 =========
 
-Release 0.42 (Unreleased)
+Release 0.42 (2023-01-24)
 ==========================
 
 - Support Django-4.1
