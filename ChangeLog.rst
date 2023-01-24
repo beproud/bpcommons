@@ -5,6 +5,10 @@ ChangeLog
 Release 0.42 (Unreleased)
 ==========================
 
+- Support Django-4.1
+- Support Python-3.8, 3.9, 3.10, 3.11
+- Drop Django-2.2
+- Drop Python-3.6, 3.7
 
 
 Release 0.41 (2022-01-25)

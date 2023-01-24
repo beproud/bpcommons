@@ -1,11 +1,11 @@
 # vim:fileencoding=utf-8
 
 import re
+from urllib.parse import quote
 
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect, HttpResponseGone
 from django.conf import settings
 from django.template.loader import render_to_string
-from django.utils.http import urlquote
 
 __all__ = (
     'redirect_to',
@@ -26,10 +26,10 @@ def redirect_to(request, url, permanent=True, **kwargs):
         klass = permanent and HttpResponsePermanentRedirect or HttpResponseRedirect
         quoted_kwargs = {}
         for k,v in kwargs.items():
-            quoted_kwargs[k] = urlquote(v)
+            quoted_kwargs[k] = quote(v, "/")
 
         # Encoded urls confuses python templating. Properly escape the templates.
-        return klass(urlquote(RE_QUOTE.sub(r"%%\1", url) % quoted_kwargs))
+        return klass(quote(RE_QUOTE.sub(r"%%\1", url) % quoted_kwargs), "/")
     else:
         return HttpResponseGone()
 
