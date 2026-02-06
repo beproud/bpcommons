@@ -34,6 +34,9 @@ dependencies = [
     "Django>=4.2", "six",
 ]
 
+[project.optional-dependencies]
+doc = ["sphinx"]
+
 [project.urls]
 Homepage = "http://www.beproud.jp/"
 
