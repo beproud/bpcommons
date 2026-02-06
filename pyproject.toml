@@ -4,9 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "beproud.django.commons"
-version = "0.43"
+dynamic = ["version"]
 description = "Common utilities for Django"
+requires-python = ">=3.10"
 readme = "README.rst"
+license = {text = "BSD"}
 authors = [
     { name = "BeProud Inc.", email = "project@beproud.jp" },
 ]
@@ -35,8 +37,16 @@ dependencies = [
 [project.urls]
 Homepage = "http://www.beproud.jp/"
 
+[tool.setuptools]
+zip-safe = false
+
+[tool.setuptools.dynamic]
+version = {attr = "beproud.django.commons.VERSION"}
+
 [tool.setuptools.packages.find]
 where = ["."]
+namespaces = false
+include = ["beproud*"]
 
 [tool.tox]
 legacy_tox_ini = """

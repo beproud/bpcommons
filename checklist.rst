@@ -15,4 +15,3 @@ Procedure:
 
    * ``ChangeLog.rst``  next version
    * ``beproud/django/commons/__init__.py`` next version
-   * ``pyproject.toml`` next version
