@@ -45,6 +45,7 @@ class BigToSmallModelFactory(factory.django.DjangoModelFactory):
 class ManyToManyModelFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = ManyToManyModel
+        skip_postgeneration_save = True
 
     @factory.post_generation
     def bigids(self, create, extracted, **kwargs):
