@@ -48,8 +48,7 @@ version = {attr = "beproud.django.commons.VERSION"}
 
 [tool.setuptools.packages.find]
 where = ["."]
-namespaces = false
-include = ["beproud*"]
+include = ["beproud.django.commons*"]
 
 [tool.tox]
 legacy_tox_ini = """
