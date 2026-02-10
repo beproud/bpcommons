@@ -89,7 +89,7 @@ PORT_RE = "%s" % "|".join([
 DOMAIN_RE = '(?:[a-z0-9](?:[-a-z0-9]*[a-z0-9])?\\.)+(?:(?:aero|arpa|a[cdefgilmnoqrstuwxz])|(?:cat|com|coop|b[abdefghijmnorstvwyz]|biz)|(?:c[acdfghiklmnorsuvxyz])|d[ejkmoz]|(?:edu|e[ceghrstu])|f[ijkmor]|(?:gov|g[abdefghilmnpqrstuwy])|h[kmnrtu]|(?:info|int|i[delmnoqrst])|(?:jobs|j[emop])|k[eghimnprwyz]|l[abcikrstuvy]|(?:mil|mobi|museum|m[acdghklmnopqrstuvwxyz])|(?:name|net|n[acefgilopruz])|(?:om|org)|(?:pro|p[aefghklmnrstwy])|qa|r[eouw]|s[abcdeghijklmnortvyz]|(?:travel|t[cdfghjklmnoprtvwz])|u[agkmsyz]|v[aceginu]|w[fs]|y[etu]|z[amw])'
 
 # See: http://www.regular-expressions.info/regexbuddy/ipaccurate.html
-IP_ADDRESS_RE = '(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)'
+IP_ADDRESS_RE = r'(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)'
 
 # Domain or IP address
 IP_DOMAIN_RE = '(%s)|(%s)' % (DOMAIN_RE, IP_ADDRESS_RE)
@@ -112,7 +112,7 @@ URLIZE_TMPL = '<a href="%(link_url)s"%(attrs)s>%(link_text)s</a>'
 def urlize(text, trim_url_limit=None, attrs={}, url_re=URL_RE_CMP, autoescape=False):
     """text内URLを抽出してアンカータグで囲む
 
-    URLのデリミタは半角カンマ、<>(エスケープ済み含む)、\s、全角スペース、行末で、これらが末尾にマッチしない場合はURLとして認識しません。
+    URLのデリミタは半角カンマ、<>(エスケープ済み含む)、\\s、全角スペース、行末で、これらが末尾にマッチしない場合はURLとして認識しません。
     URL部分は.+の最小マッチ、もしくはtrim_url_limitが指定された場合は{,trim_url_limit}の最小マッチとなります。
 
     -args

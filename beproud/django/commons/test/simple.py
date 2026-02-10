@@ -26,7 +26,7 @@ class InvalidTest(Exception):
 class RequestTestCase(TestCase):
 
     def assertStatus(self, response, status=200):
-        self.assertEquals(response.status_code, status)
+        self.assertEqual(response.status_code, status)
 
     def assertOk(self, response):
         self.assertStatus(response)
@@ -70,12 +70,12 @@ class RequestTestCase(TestCase):
         self.assertStatus(response, 404)
 
     def assertNotAllowed(self, response, allow=None):
-        self.assertEquals(response.status_code, 405)
+        self.assertEqual(response.status_code, 405)
         if allow is not None:
-            self.assertEquals(response["Allow"], allow)
+            self.assertEqual(response["Allow"], allow)
 
     def assertGone(self, response):
-        self.assertEquals(response.status_code, 410)
+        self.assertEqual(response.status_code, 410)
 
     def assertHtml(self, response):
         self.assertContains(response, "<html")  # open tag
@@ -103,7 +103,7 @@ class RequestTestCase(TestCase):
         if redirect_url is None:
             self.assertTrue(response.get("Location", None) is not None)
         else:
-            self.assertEquals(response.get("Location", None), redirect_url)
+            self.assertEqual(response.get("Location", None), redirect_url)
 
 
 class BaseURLTestCase(type):

@@ -4,6 +4,11 @@ ChangeLog
 
 Release 0.43 (Unreleased)
 ==========================
+- Support Python-3.12, 3.13, 3.14
+- Support Django-4.2, 5.2
+- Drop Python-3.8, 3.9
+- Drop Django-3.2, 4.1, 5.1
+- Migrate packaging from setup.py to pyproject.toml
 
 Release 0.42 (2023-01-24)
 ==========================
