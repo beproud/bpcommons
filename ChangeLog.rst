@@ -2,7 +2,10 @@
 ChangeLog
 =========
 
-Release 0.43 (Unreleased)
+Release 0.44 (Unreleased)
+==========================
+
+Release 0.43 (2026/02/10)
 ==========================
 - Support Python-3.12, 3.13, 3.14
 - Support Django-4.2, 5.2
